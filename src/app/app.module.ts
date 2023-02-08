@@ -6,14 +6,12 @@ import { TaxonomyEditorModule } from 'taxonomy-editor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {MatButtonModule} from '@angular/material/button';
-import { LandingPageComponent } from './landing-page/landing-page.component';
 import { AppRoutingModule } from './app-routing.module';
 
 
 @NgModule({
   declarations: [
-    AppComponent,
-    LandingPageComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
