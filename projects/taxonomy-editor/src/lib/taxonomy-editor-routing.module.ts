@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
-import { LandingPageComponent } from './landing-page/landing-page.component'
+import { DashboardComponent } from './containers/dashboard/dashboard.component'
+import { LandingPageComponent } from './containers/landing-page/landing-page.component'
 
 const routes: Routes = [
     {
@@ -10,12 +11,17 @@ const routes: Routes = [
     },
     {
         path:'home', component:LandingPageComponent
+    },
+    {
+        path:'dashboard', component:DashboardComponent
     }
 ]
 @NgModule({
-    imports: [],
+    imports: [
+      RouterModule.forRoot(routes),
+    ],
     exports: [RouterModule],
     providers: [],
   })
-  export class AppRoutingModule { }
+  export class TaxonomyEditorRoutingModule { }
   

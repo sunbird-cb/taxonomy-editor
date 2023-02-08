@@ -1,0 +1,17 @@
+<div class="form-wrap">
+    <form [formGroup]="createCategoriesForm" (ngSubmit)="saveForm()" novalidate>
+        <div class="form-field">
+            <div class="form-field__wrap" formArrayName="categories">
+                    <mat-form-field appearance="outline" *ngFor="let cat of categories().controls; let i = index" [formGroupName]="i">
+                        <mat-label>Category {{i}}</mat-label>
+                        <input matInput placeholder="Enter name" formControlName="name" > 
+                    </mat-form-field>
+            </div>
+            <button type="button" (click)="addCategory()" mat-button color="primary">Add</button>
+        </div>
+        <footer>
+            <!-- <button mat-button color="primary" type="reset">clear</button>    -->
+            <button mat-raised-button color="primary" type="submit">Save</button>
+        </footer>
+    </form>
+</div>

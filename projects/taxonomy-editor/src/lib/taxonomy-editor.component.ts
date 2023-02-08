@@ -6,6 +6,10 @@ import { Component, OnInit } from '@angular/core';
     <p>
       taxonomy-editor works! One... Two
     </p>
+    <router-outlet></router-outlet>
+    <p>
+    taxonomy-editor works! One... Two
+  </p>
   `,
   styles: []
 })
