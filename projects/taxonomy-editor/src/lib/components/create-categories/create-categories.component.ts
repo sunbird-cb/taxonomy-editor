@@ -17,7 +17,9 @@ export class CreateCategoriesComponent implements OnInit {
    this.createCategoriesForm = this.fb.group({
       categories:this.fb.array([])
     })
-    this.addCategory()
+    this.initCategoryForm()
+    // this.addCategory()
+
   }
   categories(): FormArray {
     return this.createCategoriesForm.get('categories') as FormArray
@@ -37,6 +39,16 @@ export class CreateCategoriesComponent implements OnInit {
     this.categories().removeAt(i);  
   }  
 
+  initCategoryForm(){
+    for(var cat of this.taxonomyInfo){
+      this.categories().push(
+      this.fb.group({
+          name:cat.name
+        })
+      );  
+    }
+   
+  }
   saveForm() {
     console.log(this.createCategoriesForm.value.categories)
   }
