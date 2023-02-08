@@ -4,10 +4,14 @@
             <div class="form-field__wrap" formArrayName="categories">
                     <mat-form-field appearance="outline" *ngFor="let cat of categories().controls; let i = index" [formGroupName]="i">
                         <mat-label>Category {{i}}</mat-label>
-                        <input matInput placeholder="Enter name" formControlName="name" > 
+                        <input matInput placeholder="Enter category name" formControlName="name" > 
                     </mat-form-field>
             </div>
-            <button type="button" (click)="addCategory()" mat-button color="primary">Add</button>
+            <div class="form__btns">
+                 <button type="button" (click)="addCategory()" mat-button color="primary">
+                    <mat-icon fontIcon="add"></mat-icon>
+                 </button>
+            </div>
         </div>
         <footer>
             <!-- <button mat-button color="primary" type="reset">clear</button>    -->

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FrameworkService } from '../../shared/services/framework.service';
 
 @Component({
   selector: 'lib-landing-page',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LandingPageComponent implements OnInit {
 
-  constructor() { }
+  constructor(private frameworkService: FrameworkService) { }
 
   ngOnInit() {
+    this.frameworkService.getFrameworkInfo().subscribe(res => {
+      console.log('Service...',res)
+    })
   }
 
 }
