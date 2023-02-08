@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
+import { ConfigFrameworkComponent } from './containers/config-framework/config-framework.component'
 import { DashboardComponent } from './containers/dashboard/dashboard.component'
-import { LandingPageComponent } from './containers/landing-page/landing-page.component'
 
 const routes: Routes = [
     {
         path: '',
         pathMatch: 'full',
-        component: LandingPageComponent,
+        component: ConfigFrameworkComponent,
     },
     {
-        path:'home', component:LandingPageComponent
+        path:'home', component:ConfigFrameworkComponent
     },
     {
         path:'dashboard', component:DashboardComponent

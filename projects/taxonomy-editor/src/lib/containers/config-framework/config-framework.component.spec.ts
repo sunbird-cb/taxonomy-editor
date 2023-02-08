@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CreateLevelsComponent } from './create-levels.component';
+import { ConfigFrameworkComponent } from './config-framework.component';
 
-describe('CreateLevelsComponent', () => {
-  let component: CreateLevelsComponent;
-  let fixture: ComponentFixture<CreateLevelsComponent>;
+describe('ConfigFrameworkComponent', () => {
+  let component: ConfigFrameworkComponent;
+  let fixture: ComponentFixture<ConfigFrameworkComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CreateLevelsComponent ]
+      declarations: [ ConfigFrameworkComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CreateLevelsComponent);
+    fixture = TestBed.createComponent(ConfigFrameworkComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

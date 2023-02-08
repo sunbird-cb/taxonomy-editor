@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FrameworkService } from '../../services/framework.service';
 
 @Component({
-  selector: 'lib-landing-page',
-  templateUrl: './landing-page.component.html',
-  styleUrls: ['./landing-page.component.scss']
+  selector: 'lib-config-framework',
+  templateUrl: './config-framework.component.html',
+  styleUrls: ['./config-framework.component.scss']
 })
-export class LandingPageComponent implements OnInit {
+export class ConfigFrameworkComponent implements OnInit {
   frameworkCategories;
 
   constructor(private frameworkService: FrameworkService) { }

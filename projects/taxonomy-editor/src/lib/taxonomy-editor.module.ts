@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser'
 import { TaxonomyEditorComponent } from './taxonomy-editor.component';
-import { CreateLevelsComponent } from './shared/components/create-levels/create-levels.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TaxonomyEditorRoutingModule } from './taxonomy-editor-routing.module';
 
@@ -11,15 +10,17 @@ import { MatInputModule } from '@angular/material'
 import {MatIconModule} from '@angular/material/icon';
 
 import { DashboardComponent } from './containers/dashboard/dashboard.component';
-import { LandingPageComponent } from './containers/landing-page/landing-page.component';
-import { FrameworkService } from './shared/services/framework.service';
+import { FrameworkService } from './services/framework.service';
+import { CreateCategoriesComponent } from './components/create-categories/create-categories.component';
+import { ConfigFrameworkComponent } from './containers/config-framework/config-framework.component';
 
 @NgModule({
   declarations: [
     TaxonomyEditorComponent,
-    CreateLevelsComponent,
     DashboardComponent,
-    LandingPageComponent
+    ConfigFrameworkComponent,
+    CreateCategoriesComponent,
+    ConfigFrameworkComponent
     ],
   imports: [
     BrowserModule,
@@ -34,6 +35,6 @@ import { FrameworkService } from './shared/services/framework.service';
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline'}},
     FrameworkService
   ],
-  exports: [TaxonomyEditorComponent, CreateLevelsComponent]
+  exports: [TaxonomyEditorComponent, CreateCategoriesComponent, ConfigFrameworkComponent]
 })
 export class TaxonomyEditorModule { }

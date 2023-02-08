@@ -1,17 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormArray, FormControl, FormBuilder, FormGroup } from '@angular/forms';
 
-export interface IcreateLevel {
-  label: string,
-  type: string
-}
-
 @Component({
-  selector: 'lib-create-levels',
-  templateUrl: './create-levels.component.html',
-  styleUrls: ['./create-levels.component.scss']
+  selector: 'lib-create-categories',
+  templateUrl: './create-categories.component.html',
+  styleUrls: ['./create-categories.component.scss']
 })
-export class CreateLevelsComponent implements OnInit {
+export class CreateCategoriesComponent implements OnInit {
   @Input() taxonomyInfo:any
 
   createCategoriesForm: FormGroup
@@ -45,4 +40,5 @@ export class CreateLevelsComponent implements OnInit {
   saveForm() {
     console.log(this.createCategoriesForm.value.categories)
   }
+
 }
