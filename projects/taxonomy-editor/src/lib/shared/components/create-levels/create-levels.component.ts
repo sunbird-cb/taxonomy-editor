@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormArray, FormControl, FormBuilder, FormGroup } from '@angular/forms';
 
 export interface IcreateLevel {
@@ -12,7 +12,8 @@ export interface IcreateLevel {
   styleUrls: ['./create-levels.component.scss']
 })
 export class CreateLevelsComponent implements OnInit {
-  
+  @Input() taxonomyInfo:any
+
   createCategoriesForm: FormGroup
 
   constructor(private fb: FormBuilder) { }

@@ -7,12 +7,14 @@ import { FrameworkService } from '../../shared/services/framework.service';
   styleUrls: ['./landing-page.component.scss']
 })
 export class LandingPageComponent implements OnInit {
+  frameworkCategories;
 
   constructor(private frameworkService: FrameworkService) { }
 
   ngOnInit() {
     this.frameworkService.getFrameworkInfo().subscribe(res => {
       console.log('Service...',res)
+      this.frameworkCategories = res.result.framework.categories
     })
   }
 
