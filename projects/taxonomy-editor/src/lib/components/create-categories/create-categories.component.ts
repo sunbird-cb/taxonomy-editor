@@ -17,9 +17,11 @@ export class CreateCategoriesComponent implements OnInit {
    this.createCategoriesForm = this.fb.group({
       categories:this.fb.array([])
     })
-    this.initCategoryForm()
-    // this.addCategory()
-
+    if(this.taxonomyInfo){
+      this.initCategoryForm()
+    } else {
+       this.addCategory()
+    }
   }
   categories(): FormArray {
     return this.createCategoriesForm.get('categories') as FormArray
@@ -28,6 +30,7 @@ export class CreateCategoriesComponent implements OnInit {
   newCategories(): FormGroup {  
     return this.fb.group({  
       name:'',  
+      description:''
     })  
   }  
 
@@ -43,7 +46,8 @@ export class CreateCategoriesComponent implements OnInit {
     for(var cat of this.taxonomyInfo){
       this.categories().push(
       this.fb.group({
-          name:cat.name
+          name:cat.name,
+          description:cat.description
         })
       );  
     }
