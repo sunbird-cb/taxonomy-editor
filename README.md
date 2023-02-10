@@ -27,6 +27,14 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 
 
-## Watching Library build
 
+## Watching Library build
 ng build taxonomy-editor --watch
+
+
+## Unit test library 
+ng test taxonomy-editor --watch
+
+
+## Run code coverage
+ng test taxonomy-editor --code-coverage
