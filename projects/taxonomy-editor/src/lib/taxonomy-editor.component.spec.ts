@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { RouterTestingModule } from '@angular/router/testing'
 import { TaxonomyEditorComponent } from './taxonomy-editor.component';
 
 describe('TaxonomyEditorComponent', () => {
@@ -8,7 +8,8 @@ describe('TaxonomyEditorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaxonomyEditorComponent ]
+      declarations: [ TaxonomyEditorComponent ],
+      imports:[RouterTestingModule]
     })
     .compileComponents();
   }));
