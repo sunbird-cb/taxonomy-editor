@@ -1,0 +1,12 @@
+<div class="flex">
+    <ng-container *ngFor="let cat of framework">
+        <div class="flex-1 felx-col padding-x2">
+            <div class="category-heading">
+                <h3>{{cat.name}}</h3>
+            </div>
+            <ng-container *ngFor="let term of cat.terms">
+                <lib-term-card  [data]="{'term': term, cardSubType: 'minimal'}"></lib-term-card>
+            </ng-container>
+        </div>
+    </ng-container>
+</div>

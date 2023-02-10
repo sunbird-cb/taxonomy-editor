@@ -1,0 +1,9 @@
+.term-card {
+    border: 1px solid #eee;
+    padding: 1em;
+    margin: 0 0 1em 0;
+}
+
+.clickable {
+    cursor: pointer;
+}
