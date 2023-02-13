@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'lib-taxonomy-editor',
   template: `
     <p>
-      taxonomy-editor works!
+      taxonomy-editor works!!!
     </p>
   `,
   styles: []
