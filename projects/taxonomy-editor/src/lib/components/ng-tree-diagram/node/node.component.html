@@ -14,8 +14,8 @@
     (dragstart)="node.dragstart($event)" (dragover)="node.dragover($event)" (dragend)="node.dragend()"
     (dragleave)="node.dragleave($event)">
     <!-- [style.transform]="transformation" -->
-
-    <div class="rect" [style.min-width.px]="node.width" [style.max-width.px]="node.width" [style.min-height.px]="node.height">
+    <!-- [style.max-width.px]="node.width" for root only -->
+    <div class="rect" [style.min-width.px]="node.width"  [style.min-height.px]="node.height">
       <div class="buttons">
         <div class="delete" *ngIf="newNodeAllowed" (click)="node.destroy()">
           <mat-icon>delete</mat-icon>
