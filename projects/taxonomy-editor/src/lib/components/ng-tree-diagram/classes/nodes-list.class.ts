@@ -6,11 +6,13 @@ export class TreeDiagramNodesList {
   public makerGuid: string;
   public draggingNodeGuid;
   private nodesList: Map<string, TreeDiagramNode>;
-  private nodeTemplate  = {
+  private nodeTemplate = {
     displayName: 'New node',
     children: [],
     guid: '',
-    parentId: null
+    parentId: null,
+    description: 'description for new Node',
+    smallID: ''
   };
 
   constructor(nodes: any[], private config) {
@@ -30,6 +32,8 @@ export class TreeDiagramNodesList {
       children: [],
       displayName: 'New node',
       toggle: false,
+      description: 'description for new Node',
+      smallID: '',
     };
     const maker = new TreeDiagramNodeMaker(
       node,
@@ -138,6 +142,8 @@ export class TreeDiagramNodesList {
         displayName: node.displayName,
         parentId: node.parentId,
         children: Array.from(node.children),
+        description: node.description,
+        smallID: node.smallID,
       };
 
       out.push(json);
@@ -164,12 +170,12 @@ export class TreeDiagramNodesList {
   }
 
   public newNode(parentId = null) {
-    const count=this.nodesList.size
+    const count = this.nodesList.size
     const nodeTemplate = Object.assign({}, this.nodeTemplate);
 
     nodeTemplate.guid = this.uuidv4();
     nodeTemplate.parentId = parentId;
-    nodeTemplate.displayName=`${nodeTemplate.displayName} ${count}`
+    nodeTemplate.displayName = `${nodeTemplate.displayName} ${count}`
     this.nodesList.set(
       nodeTemplate.guid,
       new TreeDiagramNode(
@@ -185,7 +191,7 @@ export class TreeDiagramNodesList {
 
   private uuidv4() {
     // tslint:disable-next-line:only-arrow-functions
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       // tslint:disable-next-line:one-variable-per-declaration no-bitwise
       const r = (Math.random() * 16) | 0,
         // tslint:disable-next-line:triple-equals no-bitwise

@@ -23,6 +23,7 @@ export class NodeComponent {
     this.isRtl = document.getElementsByTagName('html')[0].getAttribute('dir') === 'rtl';
   }
   @Input() keysState = 3
+  @Input() newNodeAllowed: boolean = false
   @Input() set nodeId(guid) {
     this.node = this.nodesSrv.getNode(guid);
 
@@ -49,4 +50,5 @@ export class NodeComponent {
   get transformation() {
     return this.sanitizer.bypassSecurityTrustStyle(`rotate(${(4 - this.keysState) * 90}deg)`);
   }
+  
 }

@@ -6,8 +6,8 @@
   user-select: none;
   overflow: hidden;
   overflow-y: hidden;
-  height: 100vh;
-  width: 100VW;
+  height: fit-content;
+  width: fit-content;
   text-align: center;
 }
 
@@ -43,8 +43,8 @@
   bottom: 0;
   margin: auto;
   border: 1px solid red;
-  width: 90vw;
-  height: 90vh;
+  width: inherit;
+  height: inherit;
 }
 
 .tree-pane-hori {
@@ -56,6 +56,6 @@
   bottom: 0;
   margin: auto;
   border: 1px solid red;
-  width: 95vh;
-  height: 93vw;
+  width: inherit;
+  height: inherit;
 }

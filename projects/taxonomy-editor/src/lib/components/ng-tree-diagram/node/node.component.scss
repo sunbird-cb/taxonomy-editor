@@ -51,7 +51,7 @@
   justify-content: center;
   align-items: center;
   font-size: 15px;
-  border-radius: 50%;
+  border-radius: 4px;
 }
 
 .tree-element-main {
@@ -204,6 +204,7 @@
 .tree-text {
   z-index: 10;
   white-space: pre-line;
+  overflow-wrap: break-word;
 
   span {
     cursor: pointer;

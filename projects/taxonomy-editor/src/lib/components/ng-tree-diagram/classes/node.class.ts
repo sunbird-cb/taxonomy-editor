@@ -10,6 +10,8 @@ export class TreeDiagramNode {
   public children: Set<string>;
   public displayName: string;
   private toggleState: boolean;
+  public description: string;
+  public smallID: string;
 
   public get isMaker() {
     return false;
