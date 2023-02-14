@@ -1,0 +1,10 @@
+<form [formGroup]="formName">
+    <mat-form-field appearance="outline">
+        <mat-label>{{field.label}}</mat-label>
+        <mat-select [formControlName]="field.fieldName">
+            <mat-option  *ngFor="let option of field.options" [value]="option"> {{option}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+</form>
+
+

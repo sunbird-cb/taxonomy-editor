@@ -1,0 +1,21 @@
+<!-- <form [formGroup]="createCategoriesForm">
+    <div *ngFor="let field of fields" >
+        <ng-container  [ngSwitch]="field.type">
+            <ng-container *ngSwitchCase="'text'">
+                <label>{{field.label}}</label>
+                <input [type]="field.type" [formControlName]="field.fieldName" />
+            </ng-container>
+        </ng-container>
+    </div>
+</form> -->
+<form [formGroup]="createCategoriesForm" (ngSubmit)="saveForm()">
+    <ng-container *ngIf="fields">
+        <div *ngFor="let field of fields" >
+            <ng-container  [ngSwitch]="field.type">
+                <lib-input *ngSwitchCase="'text'" [formName]="createCategoriesForm" [field]="field"></lib-input>
+                <lib-select *ngSwitchCase="'select'" [formName]="createCategoriesForm" [field]="field"></lib-select>
+            </ng-container>
+        </div>    
+        <button mat-raised-button color="primary" type="submit">Save</button>
+    </ng-container>
+</form>

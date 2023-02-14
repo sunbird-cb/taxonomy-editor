@@ -14,7 +14,7 @@ export class CreateCategoriesComponent implements OnInit {
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() { 
-   this.createCategoriesForm = this.fb.group({
+    this.createCategoriesForm = this.fb.group({
       categories:this.fb.array([])
     })
     if(this.taxonomyInfo){
@@ -51,8 +51,8 @@ export class CreateCategoriesComponent implements OnInit {
         })
       );  
     }
-   
   }
+
   saveForm() {
     console.log(this.createCategoriesForm.value.categories)
   }
