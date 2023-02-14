@@ -15,6 +15,9 @@ import { CreateCategoriesComponent } from './components/create-categories/create
 import { ConfigFrameworkComponent } from './containers/config-framework/config-framework.component'
 import { TaxonomyViewComponent } from './components/taxonomy-view/taxonomy-view.component'
 import { TermCardComponent } from './components/term-card/term-card.component'
+import { NodeComponent } from './components/ng-tree-diagram/node/node.component'
+import { NodesListService } from './components/ng-tree-diagram/services/nodes-list.service'
+import { TreeComponent } from './components/ng-tree-diagram/tree.component'
 
 @NgModule({
   declarations: [
@@ -24,7 +27,9 @@ import { TermCardComponent } from './components/term-card/term-card.component'
     CreateCategoriesComponent,
     ConfigFrameworkComponent,
     TaxonomyViewComponent,
-    TermCardComponent
+    TermCardComponent,
+    TreeComponent,
+    NodeComponent,
     ],
   imports: [
     BrowserModule,
@@ -37,7 +42,8 @@ import { TermCardComponent } from './components/term-card/term-card.component'
   ],
   providers: [
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline'}},
-    FrameworkService
+    FrameworkService,
+    NodesListService,
   ],
   exports: [
     TaxonomyEditorComponent,
@@ -45,6 +51,8 @@ import { TermCardComponent } from './components/term-card/term-card.component'
     ConfigFrameworkComponent,
     TaxonomyViewComponent,
     TermCardComponent,
+    TreeComponent,
+    NodeComponent,
   ]
 })
 export class TaxonomyEditorModule { }
