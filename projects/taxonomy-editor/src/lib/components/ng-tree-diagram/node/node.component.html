@@ -1,0 +1,52 @@
+<div class="line-to"></div>
+<div id="tree-node-{{ node.guid }}" [ngClass]="{
+    'tree-element-container': !0,
+    'tree-element-has-children': node.hasChildren()
+  }" [style.min-width.px]="node.width" [style.min-height.px]="node.height">
+  <div [ngClass]="{
+      'tree-element-main': !0,
+      dragover: node.isDragover,
+      expanded: node.isExpanded,
+      dragging: node.isDragging,
+      'tree-new-node': node.isMaker
+    }" [attr.draggable]="node.isMaker ? null : 'true'" [style.min-width.px]="node.width"
+    [style.min-height.px]="node.height" (drop)="node.drop($event)" (dragenter)="node.dragenter($event)"
+    (dragstart)="node.dragstart($event)" (dragover)="node.dragover($event)" (dragend)="node.dragend()"
+    (dragleave)="node.dragleave($event)">
+    <!-- [style.transform]="transformation" -->
+    <!-- [style.max-width.px]="node.width" for root only -->
+    <div class="rect" [style.min-width.px]="node.width"  [style.min-height.px]="node.height">
+      <div class="buttons">
+        <div class="delete" *ngIf="newNodeAllowed" (click)="node.destroy()">
+          <mat-icon>delete</mat-icon>
+        </div>
+        <div class="toggler" (click)="node.toggle()">
+          <!-- <mat-icon>visibility</mat-icon> -->
+        </div>
+        <div class="add" *ngIf="newNodeAllowed" (click)="node.addChild()">
+          <mat-icon>add_circle</mat-icon>
+        </div>
+      </div>
+      <div class="tree-text tree-text-non-editable"  [style.transform]="transformation">
+        <span>{{ node.displayName }}</span>
+      </div>
+      <div class="tree-text"  [style.transform]="transformation">
+        <span>{{ node.smallID || 'R11' }}</span>
+      </div>
+      <div class="tree-text tree-text-editable" [style.transform]="transformation">
+        <!-- contenteditable -->
+        <span [innerHtml]="node.displayName" (blur)="onNodeBlur($event, node.guid)"></span>
+        <span class="children-count"> ({{ node.childrenCount() }})</span>
+      </div>
+      <div>
+        <span [innerHtml]="node.description"></span>
+      </div>
+    </div>
+  </div>
+  <div class="tree-children" [style.transform]="childrenTransform" *ngIf="node.isExpanded">
+    <div class="tree-elements-group container">
+      <tree-diagram-node *ngFor="let child of node.children" [nodeId]="child" class="tree-node tree-child">
+      </tree-diagram-node>
+    </div>
+  </div>
+</div>
