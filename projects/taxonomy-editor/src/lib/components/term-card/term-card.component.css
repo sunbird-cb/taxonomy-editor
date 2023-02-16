@@ -2,7 +2,14 @@
     border: 1px solid #eee;
     padding: 1em;
     margin: 0 0 1em 0;
+    background-color: #f0f0f0;
+    border-radius: 4px;
 }
+
+.term-card .selected {
+    background-color: #515151;
+}
+
 
 .clickable {
     cursor: pointer;

@@ -2,6 +2,14 @@
     display: flex;
 }
 
+.w-full {
+    width: 100%;
+}
+
+.mb1{
+    margin-bottom: 1em;
+}
+
 flex-center {
     flex-wrap: nowrap;
     align-items: start;
@@ -17,5 +25,19 @@ flex-center {
 }
 
 .padding-x2 {
-    padding: 0 2em;
+    padding: 0 2.5em;
+}
+
+/* .scrollable-y {
+    overflow: hidden;
+    overflow-y: scroll;
+} */
+
+.heightFix{
+    height: 100vh;
+    overflow: hidden;
+}
+
+.cat-columns:hover {
+    overflow-y: scroll;
 }

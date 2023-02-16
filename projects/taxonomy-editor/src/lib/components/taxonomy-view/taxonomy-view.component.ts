@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { NSFramework } from '../../models/framework.model';
 import { FrameworkService } from '../../services/framework.service';
 
 @Component({
@@ -7,6 +8,7 @@ import { FrameworkService } from '../../services/framework.service';
   styleUrls: ['./taxonomy-view.component.css']
 })
 export class TaxonomyViewComponent implements OnInit {
+  @Input() frameworkData: any
   framework
   constructor(private frameworkService: FrameworkService) { }
 

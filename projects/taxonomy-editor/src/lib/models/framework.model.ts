@@ -11,7 +11,10 @@ export namespace NSFramework {
         | 'live'
 
     export interface Icategory {
-        identifier: string
+        identifier?: string,
+        name?: string,
+        description?: string,
+        status?:TNodeStatus,
     }
 
     export interface ITerm {
@@ -32,4 +35,32 @@ export namespace NSFramework {
         deletedMode?: 'greyOut' | 'hide'
         stateData?: any
     }
+
+    export interface ISelectedCategory {
+        identifier: string,
+        level:number,
+
+        category: Icategory
+    }
+
+    // {
+    //     column1
+    //     CBSC,
+    //     lstOfRows[
+    //         {
+
+    //         }
+    //     ]
+
+    // },{
+    //     column2
+    //     HINDI,
+    //     lstOfRows[
+    //         {
+
+    //         }
+    //     ]
+
+    // }
+
 }
