@@ -6817,6 +6817,7 @@ export const FRAMEWORK = {
         {
           name: 'Board 2',
           description: 'board 2',
+          selected:true,
           connected:true,
           domId:"board2",
           connectedDomId:'medium1'
@@ -6830,6 +6831,7 @@ export const FRAMEWORK = {
         {
           name:'Medium 1',
           description: 'medium 1',
+          selected:true,
           connected:true,
           domId:"medium1",
           connectedDomId:'grade2'
@@ -6853,6 +6855,7 @@ export const FRAMEWORK = {
         {
           name: 'Grade 2',
           description: 'grade 2',
+          selected:true,
           connected:true,
           domId:"grade2",
           connectedDomId:'subject1'
@@ -6866,6 +6869,7 @@ export const FRAMEWORK = {
         {
           name:'Subject 1',
           description: 'subject 1',
+          selected:true,
           connected:false,
           domId:"subject1",
         },
