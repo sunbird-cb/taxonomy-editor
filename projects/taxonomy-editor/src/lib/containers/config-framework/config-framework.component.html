@@ -1,6 +1,4 @@
-<div class="landing-wrap">
-    <lib-create-categories [taxonomyInfo]="frameworkCategories"></lib-create-categories>
-    <div>
-        tree view...
-    </div>
-</div>
+<div class="config__wrap">
+    <lib-create-categories class="config__form-wrap" [taxonomyInfo]="frameworkCategories"></lib-create-categories>
+    <lib-categories-preview  class="config__preview" [data]="categoriesRepresentations"></lib-categories-preview>
+ </div>
