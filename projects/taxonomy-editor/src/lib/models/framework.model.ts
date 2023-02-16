@@ -34,6 +34,7 @@ export namespace NSFramework {
         cardSubType: TCardSubType
         deletedMode?: 'greyOut' | 'hide'
         stateData?: any
+        selected?:boolean
     }
 
     export interface ISelectedCategory {

@@ -6,8 +6,9 @@
     border-radius: 4px;
 }
 
-.term-card .selected {
+.term-card.selected {
     background-color: #515151;
+    color: #fff;
 }
 
 
