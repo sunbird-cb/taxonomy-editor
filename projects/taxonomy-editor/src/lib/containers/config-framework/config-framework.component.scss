@@ -1,9 +1,16 @@
-.landing {
-    &-wrap{
+.config {
+    &__wrap{
         display: flex;
         flex-direction:row;
-        justify-content: space-evenly;
-        align-items: center;
+        // justify-content: space-evenly;
+        align-items: start;
         height: 100vh;
     }
+    &__form-wrap{
+        flex-grow: 1;
+    }
+    &__preview {
+        flex-grow: 9;
+    }
+
 }
