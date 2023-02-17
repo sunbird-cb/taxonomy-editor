@@ -21,6 +21,7 @@ import { NodesListService } from './components/ng-tree-diagram/services/nodes-li
 import { TreeComponent } from './components/ng-tree-diagram/tree.component'
 import { CommonModule } from '@angular/common';
 import { CategoriesPreviewComponent } from './components/categories-preview/categories-preview.component'
+import { ConnectorService } from './services/connector.service'
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { CategoriesPreviewComponent } from './components/categories-preview/cate
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
     FrameworkService,
     NodesListService,
+    ConnectorService
   ],
   exports: [
     TaxonomyEditorComponent,
