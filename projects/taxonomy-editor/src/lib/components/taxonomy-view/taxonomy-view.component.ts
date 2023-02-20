@@ -2,6 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NSFramework } from '../../models/framework.model';
 import { FrameworkService } from '../../services/framework.service';
 import { ConnectorService } from '../../services/connector.service';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import { CreateTermComponent } from '../create-term/create-term.component'
 
 @Component({
   selector: 'lib-taxonomy-view',
@@ -13,7 +15,7 @@ export class TaxonomyViewComponent implements OnInit {
   framework
   mapping = {};
 
-  constructor(private frameworkService: FrameworkService, private connectorService: ConnectorService) { }
+  constructor(private frameworkService: FrameworkService, private connectorService: ConnectorService, public dialog: MatDialog) { }
 
   ngOnInit() {
     this.frameworkService.getFrameworkInfo().subscribe(res => {
@@ -53,5 +55,15 @@ export class TaxonomyViewComponent implements OnInit {
     }
   }
   
+  openCreateTermDialog(name){
+    const dialog = this.dialog.open(CreateTermComponent, {
+       data: { name:name },
+       width: '500px',
+       panelClass: 'custom-dialog-container' 
+      })
+    dialog.afterClosed().subscribe(res => {
+      console.log(`Dialog result: ${res}`)
+    })
+  }
 
 }

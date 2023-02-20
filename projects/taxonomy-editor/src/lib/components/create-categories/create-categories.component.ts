@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output , EventEmitter} from '@angular/core';
 import { FormArray, FormControl, FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
@@ -8,7 +8,9 @@ import { FormArray, FormControl, FormBuilder, FormGroup } from '@angular/forms';
 })
 export class CreateCategoriesComponent implements OnInit {
   @Input() taxonomyInfo:any
-
+  @Output() updateCategory = new EventEmitter()
+  @Output() removeCategories = new EventEmitter()
+  
   createCategoriesForm: FormGroup
 
   constructor(private fb: FormBuilder) { }
@@ -17,9 +19,11 @@ export class CreateCategoriesComponent implements OnInit {
    this.createCategoriesForm = this.fb.group({
       categories:this.fb.array([])
     })
-    this.initCategoryForm()
-    // this.addCategory()
-
+    if(this.taxonomyInfo){
+      this.initCategoryForm()
+      } else {
+      this.addCategory()
+    }
   }
   categories(): FormArray {
     return this.createCategoriesForm.get('categories') as FormArray
@@ -37,6 +41,7 @@ export class CreateCategoriesComponent implements OnInit {
      
   removeCategory(i:number) {  
     this.categories().removeAt(i);  
+    this.removeCategories.emit(i)
   }  
 
   initCategoryForm(){
@@ -47,10 +52,15 @@ export class CreateCategoriesComponent implements OnInit {
         })
       );  
     }
-   
   }
+
   saveForm() {
     console.log(this.createCategoriesForm.value.categories)
+    this.updateCategory.emit(this.createCategoriesForm.value.categories)
+  }
+
+  emitCategory(event){
+    this.updateCategory.emit(event.target.value)
   }
 
 }
