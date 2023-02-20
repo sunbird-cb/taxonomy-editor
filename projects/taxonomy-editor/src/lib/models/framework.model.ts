@@ -10,15 +10,19 @@ export namespace NSFramework {
         | 'draft'
         | 'live'
 
-    export interface Icategory {
+    export interface ICategory {
         identifier?: string,
         name?: string,
         description?: string,
-        status?:TNodeStatus,
+        status?: TNodeStatus,
+        code?: string,
+        translations?: any
+        index?: number
+        terms: any[]
     }
 
     export interface ITerm {
-        associations: Icategory[]
+        associations: ICategory[]
         identifier: string
         code: string
         translations: string | null
@@ -34,16 +38,22 @@ export namespace NSFramework {
         cardSubType: TCardSubType
         deletedMode?: 'greyOut' | 'hide'
         stateData?: any
-        selected?:boolean
+        selected?: boolean
     }
 
     export interface ISelectedCategory {
         identifier: string,
-        level:number,
-
-        category: Icategory
+        level: number,
+        category: ICategory
     }
 
+    export interface ITermsByCategory {
+        categoryIdentifier: string,
+        categoryLevel: number,
+        categoryName: string,
+        categoryCode: string,
+        terms: ITerm[]
+    }
     // {
     //     column1
     //     CBSC,

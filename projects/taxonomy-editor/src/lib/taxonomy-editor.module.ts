@@ -19,6 +19,7 @@ import { TermCardComponent } from './components/term-card/term-card.component'
 import { CommonModule } from '@angular/common';
 import { CategoriesPreviewComponent } from './components/categories-preview/categories-preview.component'
 import { ConnectorService } from './services/connector.service'
+import { TaxonomySubViewComponent } from './components/taxonomy-sub-view/taxonomy-sub-view.component'
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { ConnectorService } from './services/connector.service'
     ConfigFrameworkComponent,
     TaxonomyViewComponent,
     TermCardComponent,
+    TaxonomySubViewComponent,
     CategoriesPreviewComponent
   ],
   imports: [

@@ -8,7 +8,7 @@ import { NSFramework } from '../../models/framework.model'
 })
 export class TermCardComponent implements OnInit {
   @Input() data!: NSFramework.ITermCard
-
+  @Input() selected = false
   constructor() { }
 
   ngOnInit() {

@@ -5,7 +5,8 @@
 </ng-container>
 
 <ng-template #cardMinimal>
-    <div class="term-card clickable" [ngClass]="{'selected': data.selected}" (click)="data.selected=!data.selected">
+    <div class="term-card clickable" [ngClass]="{'selected': data.selected || selected}" >
+        <!-- (click)="data.selected=!data.selected" -->
         {{data.term.name}}
     </div>
 </ng-template>

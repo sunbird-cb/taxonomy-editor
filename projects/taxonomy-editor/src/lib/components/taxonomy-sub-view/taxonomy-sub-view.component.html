@@ -1,0 +1,7 @@
+<ng-container *ngFor="let term of cat.terms; let j = index">
+    {{getExisting}}=====
+    <div *ngIf="getExisting" #cardEle id="box{{idx}}card{{j}}" (click)="CardClick(term)">
+        <lib-term-card [selected]="isSelected(term.code)" [data]="{'term': term, cardSubType: 'minimal'}">
+        </lib-term-card>
+    </div>
+</ng-container>
