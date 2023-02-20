@@ -2,6 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NSFramework } from '../../models/framework.model';
 import { FrameworkService } from '../../services/framework.service';
 import { ConnectorService } from '../../services/connector.service';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import { CreateTermComponent } from '../create-term/create-term.component'
 
 @Component({
   selector: 'lib-taxonomy-view',
@@ -16,9 +18,7 @@ export class TaxonomyViewComponent implements OnInit {
   currentCat = 'cbse'
   currentCatIdx = 1
 
-  constructor(private frameworkService: FrameworkService, private connectorService: ConnectorService) {
-
-  }
+  constructor(private frameworkService: FrameworkService, private connectorService: ConnectorService, public dialog: MatDialog) { }
 
   ngOnInit() {
     // this.frameworkService.getFrameworkInfo().subscribe(res => {

@@ -1,0 +1,31 @@
+.dialog {
+    
+    .mat-dialog-title{
+        padding:10px 20px;
+        margin-bottom: 0;
+        background: #dfdfdf;
+    }
+
+    .mat-form-field{
+        width: 84%;
+        padding:0 20px;
+        background:#fff;
+        margin:20px;
+    }
+
+    .actions{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding:0 20px 20px 20px;
+    }
+}
+
+::ng-deep .custom-dialog-container {
+.mat-dialog-container {
+    width:500px;
+    padding:0px;
+    border-radius: 0;
+    background: #d1d1d1;
+}
+}

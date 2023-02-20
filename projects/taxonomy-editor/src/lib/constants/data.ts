@@ -6881,3 +6881,82 @@ export const FRAMEWORK = {
       ]
     }
   ]
+
+  export const categoryRepresentationsV1 = [
+    {
+      name: 'Board',
+      description: 'Board',
+      terms:[
+        {
+          name:'Board 1',
+          description: 'board 1',
+          domId:"board1"
+        },
+        {
+          name: 'Board 2',
+          description: 'board 2',
+          selected:true,
+          connected:true,
+          domId:"board2",
+          parent:''
+        }
+      ]
+    },
+    {
+      name: 'Medium',
+      description: 'Medium',
+      terms:[
+        {
+          name:'Medium 1',
+          description: 'medium 1',
+          selected:true,
+          connected:true,
+          domId:"medium1",
+          parent:'board2'
+        },
+        {
+          name: 'Medium 2',
+          description: 'medium 2',
+          domId:"medium2"
+        }
+      ]
+    },
+    {
+      name: 'Grade',
+      description: 'Grade',
+      terms:[
+        {
+          name:'Grade 1',
+          description: 'grade 1',
+          domId:"grade1",
+        },
+        {
+          name: 'Grade 2',
+          description: 'grade 2',
+          selected:true,
+          connected:true,
+          domId:"grade2",
+          parent:'medium1'
+        }
+      ]
+    },
+    {
+      name: 'Subject',
+      description: 'subject',
+      terms:[
+        {
+          name:'Subject 1',
+          description: 'subject 1',
+          selected:true,
+          connected:true,
+          domId:"subject1",
+          parent:'grade2'
+        },
+        {
+          name: 'Subject 2',
+          description: 'subject 2',
+          domId:"subject1",
+        }
+      ]
+    }
+  ]
