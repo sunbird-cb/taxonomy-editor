@@ -29,6 +29,7 @@ import { ConnectorService } from './services/connector.service'
     ConfigFrameworkComponent,
     TaxonomyViewComponent,
     TermCardComponent,
+    CategoriesPreviewComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +39,7 @@ import { ConnectorService } from './services/connector.service'
     MatButtonModule,
     MatInputModule,
     MatIconModule,
-    MatCardModule
+    MatCardModule,
   ],
   providers: [
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
@@ -51,6 +52,8 @@ import { ConnectorService } from './services/connector.service'
     ConfigFrameworkComponent,
     TaxonomyViewComponent,
     TermCardComponent,
+    CategoriesPreviewComponent
+
   ]
 })
 export class TaxonomyEditorModule { }
