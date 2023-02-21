@@ -39,12 +39,14 @@ export namespace NSFramework {
         deletedMode?: 'greyOut' | 'hide'
         stateData?: any
         selected?: boolean
+        category: string
     }
 
     export interface ISelectedCategory {
         identifier: string,
         level: number,
         category: ICategory
+        next?: any
     }
 
     export interface ITermsByCategory {

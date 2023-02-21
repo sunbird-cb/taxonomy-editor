@@ -1,11 +1,11 @@
 <ng-container [ngSwitch]="( (data && data?.cardSubType) || 'cardMinimal')">
-  <ng-container *ngSwitchCase="'standard'" [ngTemplateOutlet]="cardStandard"></ng-container>
-  <ng-container *ngSwitchCase="'space-saving'" [ngTemplateOutlet]="cardSpaceSaving"></ng-container>
-  <ng-container *ngSwitchDefault [ngTemplateOutlet]="cardMinimal"></ng-container>
+    <ng-container *ngSwitchCase="'standard'" [ngTemplateOutlet]="cardStandard"></ng-container>
+    <ng-container *ngSwitchCase="'space-saving'" [ngTemplateOutlet]="cardSpaceSaving"></ng-container>
+    <ng-container *ngSwitchDefault [ngTemplateOutlet]="cardMinimal"></ng-container>
 </ng-container>
 
 <ng-template #cardMinimal>
-    <div class="term-card clickable" [ngClass]="{'selected': data.selected || selected}" >
+    <div class="term-card clickable" (click)="cardClicked($event); data.selected = !data.selected" [ngClass]="{'selected': data.selected}">
         <!-- (click)="data.selected=!data.selected" -->
         {{data.term.name}}
     </div>

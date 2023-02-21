@@ -19,7 +19,41 @@
     </ng-container>
 </div> -->
 <div class="flex heightFix container">
-    <ng-container *ngFor="let cat of framework; let i = index;">
+    <ng-container *ngIf="framework[0]">
+        <div class="flex-1 felx-col padding-x2 cat-columns container" id="box1">
+            <div class="category-heading">
+                <h3>{{firstTerms()[0].term.category}}</h3>
+                <!-- {{firstTerms | json}} -->
+                <div class="mb1">
+                    <button class="w-full" mat-stroked-button color="primary">Create New
+                        {{firstTerms()[0].term.category}}</button>
+                </div>
+            </div>
+            <ng-container *ngFor="let f of firstTerms(); let i = index;">
+                <lib-term-card [data]="f" (clicked)="cardClick($event,i)"></lib-term-card>
+            </ng-container>
+            <!-- <lib-taxonomy-sub-view style="flex: 1;" [cat]="getCategory(framework[0])" [idx]="1" [previous]="getPrevious(framework[0])" [next]="getNext(framework[0])">
+            </lib-taxonomy-sub-view> -->
+        </div>
+    </ng-container>
+
+    <ng-container *ngFor="let cat of selectedCategoryHash; let i = index;">
+        <div class="flex-1 felx-col padding-x2 cat-columns container" id="box2">
+            <div class="category-heading">
+                <h3>{{getNextCatByOldName(cat.category.category || cat.category.code)}}</h3>
+                <!-- {{firstTerms | json}} -->
+                <div class="mb1">
+                    <button class="w-full" mat-stroked-button color="primary">Create New
+                        {{getNextCatByOldName(cat.category.category  || cat.category.code)}}</button>
+                </div>
+            </div>
+            <lib-taxonomy-sub-view style="flex: 1;" [cat]="getCategory(cat)" [idx]="i"
+                (clicked)="cardSubClick($event,i)">
+            </lib-taxonomy-sub-view>
+        </div>
+    </ng-container>
+
+    <!-- <ng-container *ngFor="let cat of framework.slice(1); let i = index;">
         <div class="flex-1 felx-col padding-x2 cat-columns container" id="box{{i}}">
             <div class="category-heading">
                 <h3>{{cat.name}}</h3>
@@ -27,8 +61,8 @@
                     <button class="w-full" mat-stroked-button color="primary">Create New {{cat.name}}</button>
                 </div>
             </div>
-            <lib-taxonomy-sub-view style="flex: 1;" [cat]="cat" [idx]="i" [previous]="getPrevious(cat)" [next]="getNext(cat)">
+            <lib-taxonomy-sub-view style="flex: 1;" [cat]="getCategory(cat)" [idx]="i" [previous]="getPrevious(cat)" [next]="getNext(cat)">
             </lib-taxonomy-sub-view>
         </div>
-    </ng-container>
+    </ng-container> -->
 </div>

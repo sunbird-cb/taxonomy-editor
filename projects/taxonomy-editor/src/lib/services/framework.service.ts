@@ -9,7 +9,7 @@ import { NSFramework } from '../models/framework.model';
 export class FrameworkService {
   categoriesHash: BehaviorSubject<NSFramework.ICategory[] | []> = new BehaviorSubject<NSFramework.ICategory[] | []>([])
   // termsByCategory: BehaviorSubject<NSFramework.ITermsByCategory[] | []> = new BehaviorSubject<NSFramework.ITermsByCategory[] | []>([])
-  selectedCategoryHash: BehaviorSubject<NSFramework.ISelectedCategory | []> = new BehaviorSubject<NSFramework.ISelectedCategory | []>([])
+  selectedCategoryHash: BehaviorSubject<NSFramework.ISelectedCategory[]> = new BehaviorSubject<NSFramework.ISelectedCategory[]>([])
   currentSelection: BehaviorSubject<any[] | []> = new BehaviorSubject<any[] | []>([])
 
   constructor() {
@@ -112,7 +112,15 @@ export class FrameworkService {
       this.currentSelection.next(old)
     }
   }
+  getNextLevel(cat: NSFramework.ITermCard) {
+    debugger
+    // console.log("getNextLevel===>", this.categoriesHash.getValue().filter(f => { return f.index === cat.term.index + 1 })[0])
+    console.log("getNextLevel", cat)
+    console.log("this.categoriesHash.getValue()", this.categoriesHash.getValue())
+    const CurrentIdx = this.categoriesHash.getValue().findIndex((f => { return (f.code || '') === cat.category; })) + 1
 
+    return this.categoriesHash.getValue().filter(f => { return f.index === CurrentIdx + 1 })[0]
+  }
   removeItemFromArray(array, item) {
     /* assign a empty array */
     var tmp = [];

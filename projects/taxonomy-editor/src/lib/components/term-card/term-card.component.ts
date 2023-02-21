@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core'
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
 import { NSFramework } from '../../models/framework.model'
 
 @Component({
@@ -8,10 +8,15 @@ import { NSFramework } from '../../models/framework.model'
 })
 export class TermCardComponent implements OnInit {
   @Input() data!: NSFramework.ITermCard
-  @Input() selected = false
+  @Output() clicked = new EventEmitter<any>()
   constructor() { }
 
   ngOnInit() {
+    // console.log(this.data)
   }
 
+  cardClicked($event) {
+    debugger
+    this.clicked.emit({...this.data,$event})
+  }
 }

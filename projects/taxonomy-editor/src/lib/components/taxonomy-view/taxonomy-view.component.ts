@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NSFramework } from '../../models/framework.model';
 import { FrameworkService } from '../../services/framework.service';
 import { ConnectorService } from '../../services/connector.service';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CreateTermComponent } from '../create-term/create-term.component'
 
 @Component({
@@ -25,10 +25,11 @@ export class TaxonomyViewComponent implements OnInit {
     // this.framework = res.result.framework.categories
     // })
     this.frameworkService.categoriesHash.subscribe(c => {
+      debugger
       this.framework = c
-      if (this.frameworkService.currentSelection.value.length == 0) {
-        this.frameworkService.currentSelection.next([{ cat: this.framework[0] }])
-      }
+      // if (this.frameworkService.currentSelection.value.length == 0) {
+      //   this.frameworkService.currentSelection.next([{ cat: this.framework[0] }])
+      // }
     })
     console.log(this.framework)
     this.mapping = {
@@ -92,6 +93,62 @@ export class TaxonomyViewComponent implements OnInit {
 
   }
   getNext(cat: NSFramework.ICategory) {
-    return this.framework.filter(f => { return f.index === cat.index + 1 })[0]
+    debugger
+    // return this.framework.filter(f => { return f.index === cat.index + 1 })[0]
+  }
+
+  getCategory(cat: any) {
+    return {
+      category: cat.category,
+      next: cat.next
+    }
+  }
+  get categoriesList() {
+    return [...this.framework]
+  }
+  firstTerms() {
+    const localData = [...this.framework].shift()
+    return localData.terms.map(t => {
+      return {
+        cardSubType: 'cardMinimal',
+        term: t,
+        stateData: {},
+        category: localData.code,
+        selected: true
+      } as unknown as NSFramework.ITermCard
+    })
+  }
+  cardClick(event, data: NSFramework.ITermCard) {
+    console.log(data, event.term)
+    const value: NSFramework.ISelectedCategory = {
+      category: event.term,
+      identifier: event.term.identifier,
+      level: event.term.index,
+      next: this.frameworkService.getNextLevel(event)
+    }
+    debugger
+    const oldData = [...this.frameworkService.selectedCategoryHash.value]
+    oldData.push(value)
+    this.frameworkService.selectedCategoryHash.next(oldData)
+  }
+  cardSubClick(event: NSFramework.ISelectedCategory, idx: Number) {
+    console.log(event, idx)
+    // const value: NSFramework.ISelectedCategory = {
+    //   category: event.term,
+    //   identifier: event.term.identifier,
+    //   level: event.term.index,
+    //   // next: this.getNextLevel(event)
+    // }
+    console.log("event.category=======>", event.category)
+    const oldData = [...this.frameworkService.selectedCategoryHash.value]
+    oldData.push(event)
+    this.frameworkService.selectedCategoryHash.next(oldData)
+  }
+  get selectedCategoryHash() {
+    return [...this.frameworkService.selectedCategoryHash.getValue()]
+  }
+  getNextCatByOldName(name: string) {
+    debugger
+    return (this.frameworkService.getNextLevel({ category: name, cardSubType: 'minimal', term: null }) || { name: '' }).name
   }
 }

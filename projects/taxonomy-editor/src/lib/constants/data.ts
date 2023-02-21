@@ -682,6 +682,17 @@ export const FRAMEWORK = {
                 index: 1,
                 category: "board",
                 status: "Live"
+              },
+              {
+                associations:[],
+                identifier: "ekstep_ncert_k-12_board_up",
+                code: "up",
+                translations: null,
+                name: "UP Board",
+                description: "UP Board",
+                index: 1,
+                category: "board",
+                status: "Live"
               }
             ],
             translations: null,
