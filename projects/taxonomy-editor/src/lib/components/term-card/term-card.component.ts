@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
 import { NSFramework } from '../../models/framework.model'
+import { FrameworkService } from '../../services/framework.service'
 
 @Component({
   selector: 'lib-term-card',
@@ -8,15 +9,17 @@ import { NSFramework } from '../../models/framework.model'
 })
 export class TermCardComponent implements OnInit {
   @Input() data!: NSFramework.ITermCard
-  @Output() clicked = new EventEmitter<any>()
-  constructor() { }
+  // @Output() clicked = new EventEmitter<any>()
+  constructor(private frameworkService: FrameworkService) { }
 
   ngOnInit() {
     // console.log(this.data)
   }
 
-  cardClicked($event) {
+  cardClicked(data: any) {
+    // console.log(child)
     debugger
-    this.clicked.emit({...this.data,$event})
+    this.frameworkService.currentSelection.next({ type: this.data.category, data: data.children })
   }
+
 }

@@ -10,8 +10,8 @@ export class FrameworkService {
   categoriesHash: BehaviorSubject<NSFramework.ICategory[] | []> = new BehaviorSubject<NSFramework.ICategory[] | []>([])
   // termsByCategory: BehaviorSubject<NSFramework.ITermsByCategory[] | []> = new BehaviorSubject<NSFramework.ITermsByCategory[] | []>([])
   selectedCategoryHash: BehaviorSubject<NSFramework.ISelectedCategory[]> = new BehaviorSubject<NSFramework.ISelectedCategory[]>([])
-  currentSelection: BehaviorSubject<any[] | []> = new BehaviorSubject<any[] | []>([])
-
+  currentSelection: BehaviorSubject<{ type: string, data: any } | null> = new BehaviorSubject<{ type: string, data: any } | null>(null)
+  list: any[] = []
   constructor() {
     this.fillCategories()
   }
@@ -20,107 +20,49 @@ export class FrameworkService {
     return of(FRAMEWORK)
   }
   fillCategories() {
-    const obj = FRAMEWORK
-    const categories = [];
-    const termsCategory: NSFramework.ITermsByCategory[] = [];
+    const obj = FRAMEWORK;
+    // const columns: NSFramework.IColumnView[] = [];
     (obj.result.framework.categories).forEach(a => {
-      const obj = {
-        categoryIdentifier: a.identifier,
-        categoryCode: a.code,
-        categoryName: a.name,
-        categoryLevel: a.index,
-      }
-      categories.push({
-        identifier: a.identifier,
+      this.list.push({
         code: a.code,
-        translations: a.translations,
-        name: a.name,
-        description: a.description,
+        identifier: a.identifier,
         index: a.index,
-        status: a.status,
-        terms: a.terms
-      } as NSFramework.ICategory)
-      // const terms = this.getTerms(a.terms as NSFramework.ITerm[])
-      // termsCategory.push({
-      //   ...obj,
-      //   terms: terms
-      // })
+        name: a.name,
+        status: a.status as NSFramework.TNodeStatus,
+        description: a.description,
+        translations: a.translations,
+        children: a.terms.map(c => {
+          const associations = c.associations
+          Object.assign(c, { children: associations })
+          delete c.associations
+          return c
+        }),
+      })
 
     })
-    //////////////////////////////////////////////
-    this.categoriesHash.next(categories)
-    // console.log(this.categoriesHash.value)
-    ////////////////////////////////////////////
-    // this.termsByCategory.next(termsCategory)
-    // console.log('termsByCategory', this.termsByCategory.value)
-    // console.log(this.findTerms('gradeLevel'))
-    this.findAssociations('gradeLevel')
-
+    this.categoriesHash.next(this.list.map(a => {
+      return {
+        code: a.code,
+        identifier: a.identifier,
+        index: a.index,
+        name: a.name,
+        status: a.status as NSFramework.TNodeStatus,
+        description: a.description,
+        translations: a.translations,
+      } as NSFramework.ICategory
+    }))
   }
-  // private getTerms(terms: NSFramework.ITerm[]): NSFramework.ITerm[] {
-  //   return terms.map(t => {
-  //     return {
-  //       identifier: t.identifier,
-  //       code: t.code,
-  //       translations: t.translations,
-  //       name: t.name,
-  //       description: t.description,
-  //       index: t.index,
-  //       category: t.category,
-  //       status: t.status,
-  //       associations: t.associations,
-  //     }
-  //   })
-  // }
-  findTerms(categoryCode: string, termCode: string): any {
-    const allTermsOfCategory = [...this.categoriesHash.getValue()].filter(c => { return c.code === categoryCode }).shift().terms
-    if (!termCode) {
-      return allTermsOfCategory
-    } else {
-      return allTermsOfCategory.filter(ct => { return ct.code === termCode })
-    }
-  }
-  findAssociations(categoryCode: string) {
-    const lst = (this.flatDeep([...this.categoriesHash.value].map(t => t.terms)) || []).filter(t => {
-      return t.category === categoryCode
+  getNextCategory(currentCategory: string) {
+    const currentIndex = this.categoriesHash.value.findIndex(a => {
+      return a.code === currentCategory
     })
-    // console.log('fLst', lst)
-
+    let categoryLength = this.categoriesHash.getValue().length
+    return (currentIndex + 1) <= categoryLength ? this.categoriesHash.getValue()[currentIndex + 1] : null
   }
-  // getCategory(): Observable<any> (
-
-  // )
-  private flatDeep(arr, d = 1) {
-    return d > 0 ? arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? this.flatDeep(val, d - 1) : val), []) : arr.slice();
-  };
-  setSelected(cat: NSFramework.ICategory, term) {
-    let old = this.currentSelection.getValue() as any[]
-    const idx = old.findIndex(ot => {
-      return ot.cat && ot.cat.code === cat.code
-    })
-    if (idx === -1) {
-      old.push({ cat, current: term })
-      this.currentSelection.next(old)
-    } else {
-      const filteredOld = old.filter(ot => { return ot.cat && ot.cat.index >= cat.index })
-      if (filteredOld.length > 0) {
-        filteredOld.forEach(fa => {
-          old = this.removeItemFromArray(old, fa)
-        })
-      }
-      old.push({ cat, current: term })
-      this.currentSelection.next(old)
-    }
+  childClick(event: { type: string, data: any }) {
+    this.currentSelection.next(event)
   }
-  getNextLevel(cat: NSFramework.ITermCard) {
-    debugger
-    // console.log("getNextLevel===>", this.categoriesHash.getValue().filter(f => { return f.index === cat.term.index + 1 })[0])
-    console.log("getNextLevel", cat)
-    console.log("this.categoriesHash.getValue()", this.categoriesHash.getValue())
-    const CurrentIdx = this.categoriesHash.getValue().findIndex((f => { return (f.code || '') === cat.category; })) + 1
 
-    return this.categoriesHash.getValue().filter(f => { return f.index === CurrentIdx + 1 })[0]
-  }
   removeItemFromArray(array, item) {
     /* assign a empty array */
     var tmp = [];

@@ -1,68 +1,16 @@
-<!-- <div class="flex heightFix container">
-    <ng-container *ngFor="let cat of framework; let i = index;">
-        <div class="flex-1 felx-col padding-x2 cat-columns container" id="box{{i}}">
-            <div class="category-heading">
-                <h3>{{cat.name}}</h3>
-                <div class="mb1">
-                    <button class="w-full" mat-stroked-button color="primary">Create New {{cat.name}}</button>
-                </div>
-            </div>
-            {{cat.code}} {{currentCat}}
-            <ng-container *ngFor="let term of getTermsByCat(cat.code,currentCat,currentCatIdx); let j = index">
-                 <div #cardEle *ngIf="isActive(cat)" (click)="setSourceTarget(cardEle, cat, term)"
-                    id="box{{i}}card{{j}}">
-                    <lib-term-card [data]="{'term': term, cardSubType: 'minimal'}"></lib-term-card>
-                </div>
-
-            </ng-container>
-        </div>
-    </ng-container>
-</div> -->
 <div class="flex heightFix container">
-    <ng-container *ngIf="framework[0]">
+    <ng-container *ngFor="let column of list; let i = index;">
         <div class="flex-1 felx-col padding-x2 cat-columns container" id="box1">
             <div class="category-heading">
-                <h3>{{firstTerms()[0].term.category}}</h3>
-                <!-- {{firstTerms | json}} -->
+                <h3>{{column.name}}</h3>
                 <div class="mb1">
                     <button class="w-full" mat-stroked-button color="primary">Create New
-                        {{firstTerms()[0].term.category}}</button>
+                        {{column.name}}</button>
                 </div>
             </div>
-            <ng-container *ngFor="let f of firstTerms(); let i = index;">
-                <lib-term-card [data]="f" (clicked)="cardClick($event,i)"></lib-term-card>
-            </ng-container>
-            <!-- <lib-taxonomy-sub-view style="flex: 1;" [cat]="getCategory(framework[0])" [idx]="1" [previous]="getPrevious(framework[0])" [next]="getNext(framework[0])">
-            </lib-taxonomy-sub-view> -->
+            {{column.code}}
+            <lib-taxonomy-column-view [column]="column">
+            </lib-taxonomy-column-view>
         </div>
     </ng-container>
-
-    <ng-container *ngFor="let cat of selectedCategoryHash; let i = index;">
-        <div class="flex-1 felx-col padding-x2 cat-columns container" id="box2">
-            <div class="category-heading">
-                <h3>{{getNextCatByOldName(cat.category.category || cat.category.code)}}</h3>
-                <!-- {{firstTerms | json}} -->
-                <div class="mb1">
-                    <button class="w-full" mat-stroked-button color="primary">Create New
-                        {{getNextCatByOldName(cat.category.category  || cat.category.code)}}</button>
-                </div>
-            </div>
-            <lib-taxonomy-sub-view style="flex: 1;" [cat]="getCategory(cat)" [idx]="i"
-                (clicked)="cardSubClick($event,i)">
-            </lib-taxonomy-sub-view>
-        </div>
-    </ng-container>
-
-    <!-- <ng-container *ngFor="let cat of framework.slice(1); let i = index;">
-        <div class="flex-1 felx-col padding-x2 cat-columns container" id="box{{i}}">
-            <div class="category-heading">
-                <h3>{{cat.name}}</h3>
-                <div class="mb1">
-                    <button class="w-full" mat-stroked-button color="primary">Create New {{cat.name}}</button>
-                </div>
-            </div>
-            <lib-taxonomy-sub-view style="flex: 1;" [cat]="getCategory(cat)" [idx]="i" [previous]="getPrevious(cat)" [next]="getNext(cat)">
-            </lib-taxonomy-sub-view>
-        </div>
-    </ng-container> -->
 </div>

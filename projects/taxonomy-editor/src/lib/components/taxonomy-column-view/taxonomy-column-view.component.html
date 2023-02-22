@@ -1,0 +1,16 @@
+<!-- 
+<ng-container *ngFor="let term of cat.children; let j = index">
+    <div #cardEle id="box{{j}}card{{j}}">
+        <lib-term-card [data]="{'term': term, cardSubType: 'minimal'}" (clicked)="cardClick($event,j)">
+        </lib-term-card>
+    </div>
+</ng-container> -->
+{{column.category}}==>{{column.index}}
+<ng-container *ngIf="columnData && columnData.length > 0">
+    <ng-container *ngFor="let child of columnData; let j = index">
+        <div #cardEle id="box{{j}}card{{j}}">
+            <lib-term-card [data]="{'children': child, 'category':column.code, cardSubType: 'minimal'}">
+            </lib-term-card>
+        </div>
+    </ng-container>
+</ng-container>

@@ -5,23 +5,23 @@
 </ng-container>
 
 <ng-template #cardMinimal>
-    <div class="term-card clickable" (click)="cardClicked($event); data.selected = !data.selected" [ngClass]="{'selected': data.selected}">
+    <div class="term-card clickable" (click)="cardClicked(data)" [ngClass]="{'selected': data.selected}">
         <!-- (click)="data.selected=!data.selected" -->
-        {{data.term.name}}
+        {{data.children.name}}
     </div>
 </ng-template>
 
 <ng-template #cardStandard>
     <div>
-        {{data.term.name}}
+        {{data.children.name}}
     </div>
     <div>
-        {{data.term.description}}
+        {{data.children.description}}
     </div>
 </ng-template>
 
 <ng-template #cardSpaceSaving>
     <div>
-        {{data.term.name}}
+        {{data.children.name}}
     </div>
 </ng-template>

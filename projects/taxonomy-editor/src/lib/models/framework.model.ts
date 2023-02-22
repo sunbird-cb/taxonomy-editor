@@ -11,13 +11,13 @@ export namespace NSFramework {
         | 'live'
 
     export interface ICategory {
-        identifier?: string,
-        name?: string,
-        description?: string,
-        status?: TNodeStatus,
-        code?: string,
+        identifier?: string
+        name?: string
+        description?: string
+        status?: TNodeStatus
+        code: string
         translations?: any
-        index?: number
+        index: number
         terms: any[]
     }
 
@@ -34,7 +34,7 @@ export namespace NSFramework {
     }
 
     export interface ITermCard {
-        term: ITerm
+        children: any
         cardSubType: TCardSubType
         deletedMode?: 'greyOut' | 'hide'
         stateData?: any
@@ -43,31 +43,29 @@ export namespace NSFramework {
     }
 
     export interface ISelectedCategory {
-        identifier: string,
-        level: number,
-        category: ICategory
-        next?: any
+        columnCode: string
+        children: IFrameworkView[]
     }
 
     export interface ITermsByCategory {
-        categoryIdentifier: string,
-        categoryLevel: number,
-        categoryName: string,
-        categoryCode: string,
+        categoryIdentifier: string
+        categoryLevel: number
+        categoryName: string
+        categoryCode: string
         terms: ITerm[]
     }
     // {
     //     column1
-    //     CBSC,
+    //     CBSC
     //     lstOfRows[
     //         {
 
     //         }
     //     ]
 
-    // },{
+    // }{
     //     column2
-    //     HINDI,
+    //     HINDI
     //     lstOfRows[
     //         {
 
@@ -75,5 +73,25 @@ export namespace NSFramework {
     //     ]
 
     // }
+
+    export interface IFrameworkView {
+        identifier: string
+        code: string
+        name: string
+        description: string
+        children: []
+        parent?: any
+    }
+    export interface IColumnView {
+        identifier: string
+        name: string
+        selected:boolean
+        description?: string
+        status: TNodeStatus
+        code: string
+        translations?: any
+        index: number
+        children: any[]
+    }
 
 }

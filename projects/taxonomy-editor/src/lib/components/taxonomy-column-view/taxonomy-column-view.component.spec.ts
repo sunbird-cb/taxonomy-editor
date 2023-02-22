@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaxonomySubViewComponent } from './taxonomy-sub-view.component';
+import { TaxonomyColumnViewComponent } from './taxonomy-column-view.component';
 
-describe('TaxonomySubViewComponent', () => {
-  let component: TaxonomySubViewComponent;
-  let fixture: ComponentFixture<TaxonomySubViewComponent>;
+describe('TaxonomyColumnViewComponent', () => {
+  let component: TaxonomyColumnViewComponent;
+  let fixture: ComponentFixture<TaxonomyColumnViewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaxonomySubViewComponent ]
+      declarations: [ TaxonomyColumnViewComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TaxonomySubViewComponent);
+    fixture = TestBed.createComponent(TaxonomyColumnViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
