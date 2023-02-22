@@ -7,7 +7,7 @@
 <ng-template #cardMinimal>
     <div class="term-card clickable" (click)="cardClicked(data)" [ngClass]="{'selected': data.selected}">
         <!-- (click)="data.selected=!data.selected" -->
-        {{data.children.name}}
+        {{data.children.name}} ==={{data.selected}}
     </div>
 </ng-template>
 

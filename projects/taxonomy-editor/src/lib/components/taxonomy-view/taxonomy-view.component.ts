@@ -35,7 +35,7 @@ export class TaxonomyViewComponent implements OnInit {
 
   }
   get list() {
-    console.log(this.frameworkService.list)
+    // console.log(this.frameworkService.list)
     return this.frameworkService.list
 
   }

@@ -1,7 +1,5 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { NSFramework } from '../../models/framework.model';
+import { Component, EventEmitter, Input, OnDestroy, OnInit } from '@angular/core';
 import { FrameworkService } from '../../services/framework.service';
-import { ConnectorService } from '../../services/connector.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -14,7 +12,6 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy {
   columnData = []
   childSubscription: Subscription = null
   constructor(private frameworkService: FrameworkService) {
-    console.log(this.columnData)
   }
 
   ngOnInit(): void {
@@ -31,29 +28,53 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy {
       if (!e) {
         return
       } else if (e.type === this.column.code) {
+        // set selected
+        // this.column.selected = true
         return
         // console.log("SKIP: from subscription===>", "FOR " + this.category, e)
       } else {
-        debugger
         const next = this.frameworkService.getNextCategory(e.type)
         // console.log("ADD: from subscription===>", "FOR " + this.category, next, this.children)
-        if (next.code === this.column.code) {
-          console.log('matched===========>', this.column.code)
-          this.columnData = e.data.children
+        if (next && next.code === this.column.code) {
+          // console.log('matched===========>', this.column.code)
+          this.columnData = (e.data.children || [])
             .filter(x => {
               return x.category == this.column.code
             }).map(mer => {
+              mer.selected = true
               mer.children = [...this.column.children.filter(x => { return x.code === mer.code }).map(a => a.children)].shift()
               return mer
             })
 
-          console.log(this.columnData)
+          // console.log(this.columnData)
         }
-        if (next.index < this.column.index) {
+        if (next && next.index < this.column.index) {
           this.columnData = []
         }
       }
     })
+  }
+  selected(selection: any) {
+    // console.log(selection.element.code, selection.isSelected)
+    this.column.children.map(col => {
+      if (col.code === selection.element.code) {
+        col.selected = true
+      } else {
+        col.selected = false
+      }
+    })
+  }
+  get columnItems() {
+    // const selected = this.column.children.filter(f => { return f.selected })
+    // if (selected.length > 0) {
+    //   const data= this.columnData.map(cd => {
+    //     cd.selected = this.column.children.filter(f => { return cd.code === f.code }).map(s => s.selected)[0]
+    //     return cd
+    //   })
+    //   return data
+    // } else {
+      return this.columnData
+    // }
   }
   ngOnDestroy(): void {
     if (this.childSubscription) {
