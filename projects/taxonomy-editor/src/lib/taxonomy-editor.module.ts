@@ -6,7 +6,7 @@ import { TaxonomyEditorRoutingModule } from './taxonomy-editor-routing.module'
 
 import { MatFormFieldModule, MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field'
 import { MatButtonModule } from '@angular/material/button'
-import { MatInputModule } from '@angular/material'
+import { MatInputModule, MatSelect, MatSelectModule } from '@angular/material'
 import { MatIconModule } from '@angular/material/icon'
 import {MatCardModule} from '@angular/material/card';
 import {MatDialogModule} from '@angular/material/dialog'
@@ -40,7 +40,7 @@ import { TokenInterceptorService } from './services/token-interceptor.service'
     TaxonomyColumnViewComponent,
     CategoriesPreviewComponent,
     CategoriesPreviewComponent,
-    CreateTermComponent
+    CreateTermComponent,
   ],
   imports: [
     BrowserModule,
@@ -55,6 +55,7 @@ import { TokenInterceptorService } from './services/token-interceptor.service'
     MatDialogModule,
     DragDropModule,
     MatAutocompleteModule,
+    MatSelectModule,
     HttpClientModule
   ],
   providers: [
@@ -69,7 +70,7 @@ import { TokenInterceptorService } from './services/token-interceptor.service'
     ConfigFrameworkComponent,
     TaxonomyViewComponent,
     TermCardComponent,
-    CategoriesPreviewComponent,
+    CategoriesPreviewComponent
   ],
   entryComponents:[
     CreateTermComponent

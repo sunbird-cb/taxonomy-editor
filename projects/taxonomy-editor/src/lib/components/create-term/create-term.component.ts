@@ -13,9 +13,8 @@ import { FormArray, FormControl, FormBuilder, FormGroup } from '@angular/forms';
 export class CreateTermComponent implements OnInit {
   name:string = ''
   termLists: any = []
-  createTermForm: FormGroup
-
-  constructor(
+  createTermForm: FormGroup 
+   constructor(
     public dialogRef: MatDialogRef<CreateTermComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private frameWorkService: FrameworkService,
@@ -33,32 +32,28 @@ export class CreateTermComponent implements OnInit {
     this.frameWorkService.readTerms(this.data.frameworkId, this.data.categoryId, requestBody).subscribe(data => {
        this.termLists = data.terms
     })
+    this.initTermForm()
   }
-
   initTermForm(){
     this.createTermForm = this.fb.group({
-      terms: this.fb.array([])
+      name:[''],
+      description:['']
     })
   }
 
-  private _filter(value: string): string[] {
-    const filterValue = this._normalizeValue(value);
-    return this.termLists.filter(street => this._normalizeValue(street).includes(filterValue));
-  }
 
-  private _normalizeValue(value: string): string {
-    return value.toLowerCase().replace(/\s/g, '');
-  }
+ onSelect(name){
+  console.log(name)
+ }
 
   saveTerm(){
-      if(this.name){
-        console.log(this.name)
+      if(this.createTermForm.valid){
         const requestBody =  {
           request: {
             term: {
               code:this.frameWorkService.getUuid(),
-              name:this.name,
-              description:'',
+              name:this.createTermForm.value.name,
+              description:this.createTermForm.value.description,
               category:this.data.name,
               status:'Draft',
               parents:[
@@ -70,8 +65,8 @@ export class CreateTermComponent implements OnInit {
         }
         this.frameWorkService.createTerm(this.data.frameworkId, this.data.categoryId, requestBody).subscribe(data => {
           console.log(data);
+          this.dialogClose()
         })
-        this.dialogClose()
       }
   }
 

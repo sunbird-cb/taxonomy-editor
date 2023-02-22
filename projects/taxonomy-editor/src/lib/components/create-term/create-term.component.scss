@@ -6,11 +6,23 @@
         background: #dfdfdf;
     }
 
-    .mat-form-field{
-        width: 84%;
-        padding:0 20px;
+    .mat-form-field {
+        width: 90%;
+        padding:0;
         background:#fff;
         margin:20px;
+        border-radius: 2px;
+        ::ng-deep .mat-form-field-wrapper{
+            padding-bottom:0;
+            .mat-form-field-infix{
+                padding:15px;
+                margin-top: 0;
+                border-top: 0;
+                textarea {
+                    resize: none;
+                }
+            }
+        }
     }
 
     .actions{
@@ -26,6 +38,6 @@
     width:500px;
     padding:0px;
     border-radius: 0;
-    background: #d1d1d1;
+    background: #f1f1f1;
 }
 }

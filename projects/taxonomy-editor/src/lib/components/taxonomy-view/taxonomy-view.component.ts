@@ -39,7 +39,7 @@ export class TaxonomyViewComponent implements OnInit {
   openCreateTermDialog(categoryId,name){
     const dialog = this.dialog.open(CreateTermComponent, {
        data: { name:name, frameworkId: this.frameworkCode, categoryId},
-       width: '500px',
+       width: '400px',
        panelClass: 'custom-dialog-container' 
       })
     dialog.afterClosed().subscribe(res => {

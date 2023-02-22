@@ -1,20 +1,22 @@
 <div class="dialog">
     <h1 mat-dialog-title>Create New {{data.name}}</h1>
-
-    <mat-form-field appearance="none">
-        <mat-label>Enter {{data.name}} name</mat-label>
-        <input matInput [(ngModel)]="name"  [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let option of termLists" [value]="option.name">
-              {{option.name}}
-            </mat-option>
-          </mat-autocomplete>
-    </mat-form-field>
-    
-    <footer class="actions">
-        <button mat-raised-button color="default" (click)="dialogClose()">Cancel</button>
-        <button mat-raised-button color="primary" (click)="saveTerm()" cdkFocusInitial>Create</button>
-    </footer>
-   
-    
+    <form [formGroup]="createTermForm" novalidate (ngSubmit)="saveTerm()">
+        <mat-form-field appearance="none">
+            <!-- <mat-label>Enter {{data.name}} name</mat-label> -->
+            <input matInput formControlName="name" placeholder="Enter name" (keyup.enter)="onSelect($event)" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let option of termLists"  [value]="option.name">
+                  {{option.name}}
+                </mat-option>
+              </mat-autocomplete>
+        </mat-form-field>
+        <mat-form-field appearance="none">
+            <!-- <mat-label>Enter {{data.name}} name</mat-label> -->
+            <textarea matInput formControlName="description" placeholder="Enter description"></textarea>
+        </mat-form-field>
+         <footer class="actions">
+            <button mat-raised-button color="default" (click)="dialogClose()">Cancel</button>
+            <button mat-raised-button color="primary" cdkFocusInitial>Create</button>
+        </footer>
+    </form>
 </div>
