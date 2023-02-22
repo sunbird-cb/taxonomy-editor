@@ -1,7 +1,17 @@
 .category{
     display: flex;
-    flex-flow: row;
-  
+    flex-flow: column;
+    padding-top:20px;
+    h1 {
+        font-size:24px;
+        color:#666;
+        font-weight: 500;
+    }
+    &__wrap{
+        display: flex;
+        flex-flow: row;
+        padding-top:20px;
+    }
     &__column {
         display: flex;
         flex-flow: column;
@@ -29,11 +39,11 @@
         position: absolute;
         top: 40%;
         display: inline-block;
-        width: 10px;
-        height: 10px;
-        border:2px solid #ccc;
-        border-radius: 7px;
-        background: #fff;
+        // width: 10px;
+        // height: 10px;
+        // border:2px solid #ccc;
+        // border-radius: 7px;
+        // background: #fff;
         &.left {
             left:-3.6%;
         }

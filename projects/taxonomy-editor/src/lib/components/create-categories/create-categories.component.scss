@@ -1,14 +1,20 @@
 .form {
+   
     &-wrap {
         display: flex;
         flex-direction: column;
         justify-content: center;
         padding:15px;
+        h1 {
+            font-size:24px;
+            color:#666;
+            font-weight: 500;
+        }
     }
     &-field{
         display: flex;
         flex-direction: row;
-        justify-content: center;
+        justify-content: start;
         &__wrap{
             display: flex;
              flex-direction: column;
@@ -29,17 +35,39 @@
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        .mat-raised-button{
+        .mat-form-field{
+            .mat-form-field-appearance-outline{
+                margin-bottom: 0;
+            }
+        }
+        .mat-icon{
             margin-left: 20px;
-            height: 34px;
+            height: 20px;
+            padding:5px 5px 25px;
+            color:rgb(182, 9, 9);
+            cursor:pointer;
         }
     }
-    
+   
 }
+
+.drag-Handle{
+    position: absolute;
+    top: 8px;
+    right: 0px;
+    color: #9b9b9b;
+    cursor: grabbing;
+}
+.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }  
 footer {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: start;
     .mat-raised-button {
         padding:0px 40px;
     }

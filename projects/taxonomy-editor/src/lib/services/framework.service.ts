@@ -3,6 +3,9 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators'
 import { FRAMEWORK } from '../constants/data'
 import { NSFramework } from '../models/framework.model';
+import { HttpClient } from '@angular/common/http';
+import { v4 as uuidv4 } from 'uuid';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -12,13 +15,31 @@ export class FrameworkService {
   selectedCategoryHash: BehaviorSubject<NSFramework.ISelectedCategory[]> = new BehaviorSubject<NSFramework.ISelectedCategory[]>([])
   currentSelection: BehaviorSubject<{ type: string, data: any } | null> = new BehaviorSubject<{ type: string, data: any } | null>(null)
   list: any[] = []
-  constructor() {
-    this.fillCategories()
+  environment
+  constructor(private http: HttpClient) {  this.fillCategories() }
+
+  getFrameworkInfo():Observable<any> {
+    // return of(FRAMEWORK)
+    return this.http.get(`${this.environment.url}/api/framework/v1/read/newmvp`)
   }
 
-  getFrameworkInfo() {
-    return of(FRAMEWORK)
+  readTerms(frameworkId, categoryId, requestBody) {
+    return this.http.post(`${this.environment.url}/api/framework/v1/term/search?framework=${frameworkId}&category=${categoryId}`, requestBody).pipe(
+      map((res:any) => res.result ))
   }
+
+  createTerm(frameworkId, categoryId, requestBody) {
+   return this.http.post(`${this.environment.url}/api/framework/v1/term/create?framework=${frameworkId}&category=${categoryId}`, requestBody)
+  }
+
+  getUuid(){
+    return uuidv4()
+  }
+
+  updateEnvironment(env) {
+    this.environment = env
+  }
+
   fillCategories() {
     const obj = FRAMEWORK;
     // const columns: NSFramework.IColumnView[] = [];

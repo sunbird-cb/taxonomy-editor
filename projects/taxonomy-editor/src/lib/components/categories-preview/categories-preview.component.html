@@ -1,10 +1,13 @@
 <div class="category">
-    <div class="category__column" *ngFor="let cat of data">
-        <header class="category__header">{{cat.name}}</header>
-        <mat-card class="category__cards"  [ngClass]="{'highlight':term.selected}" id="{{term.domId}}" *ngFor="let term of cat.terms">
-            <span class="category__circle left"></span>
-            <mat-card-content>{{term.name}}</mat-card-content>
-            <span class="category__circle right"></span>
-        </mat-card>
+    <h1>Categories preview</h1>
+    <div class="category__wrap" *ngIf="data.length>0">
+        <div class="category__column" *ngFor="let cat of data">
+            <header class="category__header">{{cat.name}}</header>
+            <mat-card class="category__cards"  [ngClass]="{'highlight':term.selected}" id="{{term.domId}}" *ngFor="let term of cat.terms">
+                <span class="category__circle left"></span>
+                <mat-card-content>{{term.name}}</mat-card-content>
+                <span class="category__circle right"></span>
+            </mat-card>
+        </div>
     </div>
 </div>

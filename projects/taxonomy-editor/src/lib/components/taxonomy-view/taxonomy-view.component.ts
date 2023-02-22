@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FrameworkService } from '../../services/framework.service';
 import { ConnectorService } from '../../services/connector.service';
 import { MatDialog } from '@angular/material/dialog';
+import { CreateTermComponent } from '../create-term/create-term.component';
 
 @Component({
   selector: 'lib-taxonomy-view',
@@ -11,13 +12,14 @@ import { MatDialog } from '@angular/material/dialog';
 export class TaxonomyViewComponent implements OnInit {
   @Input() frameworkData: any
   mapping = {};
-
-  constructor(private frameworkService: FrameworkService, private connectorService: ConnectorService, public dialog: MatDialog) {
- 
-   }
+  frameworkCode:string;
+  constructor(private frameworkService: FrameworkService, private connectorService: ConnectorService, public dialog: MatDialog) { }
 
   ngOnInit() {
-
+    this.frameworkService.getFrameworkInfo().subscribe(res => {
+      this.frameworkData = res.result.framework.categories
+      this.frameworkCode = res.result.framework.code
+    })
     this.mapping = {
       board: {
         box0card0: ['asd', 'box1card2', 'box1card3']
@@ -33,6 +35,16 @@ export class TaxonomyViewComponent implements OnInit {
       }
     }
 
+  }
+  openCreateTermDialog(categoryId,name){
+    const dialog = this.dialog.open(CreateTermComponent, {
+       data: { name:name, frameworkId: this.frameworkCode, categoryId},
+       width: '500px',
+       panelClass: 'custom-dialog-container' 
+      })
+    dialog.afterClosed().subscribe(res => {
+      console.log(`Dialog result: ${res}`)
+    })
   }
   get list() {
     // console.log(this.frameworkService.list)

@@ -25,6 +25,7 @@
     "leader-line": "^1.0.7",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
+    "uuid": "^9.0.0",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {

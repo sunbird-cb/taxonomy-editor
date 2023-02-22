@@ -1,5 +1,6 @@
 <div class="config__wrap">
-    <lib-create-categories class="config__form-wrap" [taxonomyInfo]="''" (updateCategory)="updateCategory($event)" (removeCategories)="removeCategory($event)"></lib-create-categories>
+    <lib-create-categories class="config__form-wrap" [taxonomyInfo]="''" (updateCategory)="updateCategory($event)" 
+    (removeCategories)="removeCategory($event)" (changePosition)="changePosition($event)"></lib-create-categories>
     <ng-container *ngIf="categoriesRepresentations">
         <lib-categories-preview  class="config__preview" [data]="categoriesRepresentations"></lib-categories-preview>
     </ng-container>

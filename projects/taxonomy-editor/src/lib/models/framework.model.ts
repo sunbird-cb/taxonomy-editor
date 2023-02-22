@@ -22,13 +22,12 @@ export namespace NSFramework {
     }
 
     export interface ITerm {
-        associations: ICategory[]
-        identifier: string
+        associations?: ICategory[]
         code: string
-        translations: string | null
+        translations?: string | null
         name: string
         description: string
-        index: number
+        index?: number
         category: string
         status: TNodeStatus
     }

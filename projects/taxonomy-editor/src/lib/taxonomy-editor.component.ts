@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { FrameworkService } from './services/framework.service';
 
 @Component({
   selector: 'lib-taxonomy-editor',
@@ -8,10 +9,11 @@ import { Component, OnInit } from '@angular/core';
   styles: []
 })
 export class TaxonomyEditorComponent implements OnInit {
-
-  constructor() { }
+  @Input() environment;
+  constructor(private frameworkService: FrameworkService) { }
 
   ngOnInit() {
+    this.frameworkService.updateEnvironment(this.environment)
   }
 
 }

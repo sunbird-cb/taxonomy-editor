@@ -1,3 +1,4 @@
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, OnInit, Input, Output , EventEmitter} from '@angular/core';
 import { FormArray, FormControl, FormBuilder, FormGroup } from '@angular/forms';
 
@@ -10,9 +11,10 @@ export class CreateCategoriesComponent implements OnInit {
   @Input() taxonomyInfo:any
   @Output() updateCategory = new EventEmitter()
   @Output() removeCategories = new EventEmitter()
-  
-  createCategoriesForm: FormGroup
+  @Output() changePosition = new EventEmitter()
 
+  createCategoriesForm: FormGroup
+  
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() { 
@@ -62,5 +64,17 @@ export class CreateCategoriesComponent implements OnInit {
   emitCategory(event){
     this.updateCategory.emit(event.target.value)
   }
-
+  drop(event: CdkDragDrop<string[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      this.changePosition.emit({cur:event.currentIndex, prev:event.previousIndex})
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+    }
+  }
 }

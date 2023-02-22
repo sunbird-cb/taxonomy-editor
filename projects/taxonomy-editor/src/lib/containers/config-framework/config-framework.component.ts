@@ -132,7 +132,18 @@ export class ConfigFrameworkComponent implements OnInit {
     this.categoriesRepresentations.splice(index,1)
     const temp = [...this.categoriesRepresentations]
     this.categoriesRepresentations = []
+    this.tempCategoryRepresentaions = []
     temp.forEach(cat => {
+      this.updateCategory(cat.name)
+    })
+  }
+
+  changePosition(event) {
+    let myArray = [...this.tempCategoryRepresentaions];
+    myArray[event.cur] = myArray.splice(event.prev, 1, myArray[event.cur])[0];
+    this.categoriesRepresentations = []
+    this.tempCategoryRepresentaions = []
+    myArray.forEach(cat => {
       this.updateCategory(cat.name)
     })
   }

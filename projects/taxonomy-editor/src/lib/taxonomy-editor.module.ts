@@ -10,6 +10,9 @@ import { MatInputModule } from '@angular/material'
 import { MatIconModule } from '@angular/material/icon'
 import {MatCardModule} from '@angular/material/card';
 import {MatDialogModule} from '@angular/material/dialog'
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+
 
 import { DashboardComponent } from './containers/dashboard/dashboard.component'
 import { FrameworkService } from './services/framework.service'
@@ -20,8 +23,10 @@ import { TermCardComponent } from './components/term-card/term-card.component'
 import { CommonModule } from '@angular/common';
 import { CategoriesPreviewComponent } from './components/categories-preview/categories-preview.component'
 import { ConnectorService } from './services/connector.service'
-import { CreateTermComponent } from './components/create-term/create-term.component'
+import { CreateTermComponent } from './components/create-term/create-term.component';
 import { TaxonomyColumnViewComponent } from './components/taxonomy-column-view/taxonomy-column-view.component'
+import { HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http'
+import { TokenInterceptorService } from './services/token-interceptor.service'
 
 @NgModule({
   declarations: [
@@ -35,7 +40,7 @@ import { TaxonomyColumnViewComponent } from './components/taxonomy-column-view/t
     TaxonomyColumnViewComponent,
     CategoriesPreviewComponent,
     CategoriesPreviewComponent,
-    CreateTermComponent,
+    CreateTermComponent
   ],
   imports: [
     BrowserModule,
@@ -47,10 +52,14 @@ import { TaxonomyColumnViewComponent } from './components/taxonomy-column-view/t
     MatInputModule,
     MatIconModule,
     MatCardModule,
-    MatDialogModule
+    MatDialogModule,
+    DragDropModule,
+    MatAutocompleteModule,
+    HttpClientModule
   ],
   providers: [
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },
     FrameworkService,
     ConnectorService
   ],
