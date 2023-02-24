@@ -16,23 +16,23 @@ export class FrameworkService {
   currentSelection: BehaviorSubject<{ type: string, data: any , cardRef?: any} | null> = new BehaviorSubject<{ type: string, data: any, cardRef?: any } | null>(null)
   list: any[] = []
   environment
-  constructor(private http: HttpClient) {  this.fillCategories() }
+  constructor(private http: HttpClient) { this.fillCategories() }
 
-  getFrameworkInfo():Observable<any> {
+  getFrameworkInfo(): Observable<any> {
     // return of(FRAMEWORK)
     return this.http.get(`${this.environment.url}/api/framework/v1/read/newmvp`)
   }
 
   readTerms(frameworkId, categoryId, requestBody) {
     return this.http.post(`${this.environment.url}/api/framework/v1/term/search?framework=${frameworkId}&category=${categoryId}`, requestBody).pipe(
-      map((res:any) => res.result ))
+      map((res: any) => res.result))
   }
 
   createTerm(frameworkId, categoryId, requestBody) {
-   return this.http.post(`${this.environment.url}/api/framework/v1/term/create?framework=${frameworkId}&category=${categoryId}`, requestBody)
+    return this.http.post(`${this.environment.url}/api/framework/v1/term/create?framework=${frameworkId}&category=${categoryId}`, requestBody)
   }
 
-  getUuid(){
+  getUuid() {
     return uuidv4()
   }
 
@@ -74,7 +74,7 @@ export class FrameworkService {
     }))
   }
   getNextCategory(currentCategory: string) {
-    const currentIndex = this.categoriesHash.value.findIndex(a => {
+    const currentIndex = this.categoriesHash.value.findIndex((a: NSFramework.ICategory) => {
       return a.code === currentCategory
     })
     let categoryLength = this.categoriesHash.getValue().length
