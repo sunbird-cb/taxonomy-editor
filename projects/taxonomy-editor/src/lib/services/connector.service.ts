@@ -57,14 +57,35 @@ export class ConnectorService {
   }
 
   _drawLine(source, target, options: LLOptions, sourceContainerId = undefined, targetContainerId = undefined) {
-    console.log('sourceContainerId: ', sourceContainerId)
-    console.log('targetContainerId: ', targetContainerId)
+    console.log('sourceContainerId ::', sourceContainerId)
+    console.log('targetContainerId ::', targetContainerId)
     const _options = <LLOptions>{...defaultConfig, ...options}
     let _line;
     if (Array.isArray(target)) {
+      // target.forEach((_target) => {
+      //   _line = this.renderLine(source, _target, _options);
+      // });
+      let connectedDots = [];
       target.forEach((_target) => {
-        _line = this.renderLine(source, _target, _options);
+        const tempLine = this.renderLine(source, _target, _options)
+        connectedDots.push(
+        {
+          target: _target, // ref element
+          line: tempLine
+        })
+        if(sourceContainerId) {
+          document.querySelector(sourceContainerId).addEventListener('scroll', () => {
+            tempLine.position();
+          }, false);
+        }
+        if (targetContainerId) {
+          document.querySelector(targetContainerId).addEventListener('scroll', () => {
+            tempLine.position();
+          }, false);
+        }
+
       });
+    return connectedDots;
     } else {
       _line = this.renderLine(source, target, _options);
     }
@@ -81,18 +102,18 @@ export class ConnectorService {
   }
 
   private renderLine(source, target, options: LLOptions) {
-    console.log('renderLine -----------')
-    console.log('source :', source)
-    console.log('target::', target)
     let _options = {
       animOptions: { duration: 3000, timing: 'linear' },
       hide: true,
     };
+    let _line
+    if(target.targetType === 'id'){
+      _line = new LeaderLine(source, document.getElementById(target.target), _options);
+    }
+    else {
+      _line = new LeaderLine(source, target.target, _options);
+    }
 
-    // using Element Refs
-    // let _line = new LeaderLine(source,target, _options);
-    // using IDs
-    let _line = new LeaderLine(source, document.getElementById(target.target), _options);
     _line.endPlugOutline = true;
     _line.startPlugOutline = true;
     _line.setOptions(options);
