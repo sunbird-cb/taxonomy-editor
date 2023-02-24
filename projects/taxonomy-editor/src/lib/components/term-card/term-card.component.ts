@@ -17,10 +17,10 @@ export class TermCardComponent implements OnInit {
     // console.log(this.data)
   }
 
-  cardClicked(data: any) {
+  cardClicked(data: any, cardRef: any) {
     // this.data.selected = true
     this.isSelected.emit({ element: this.data.children, isSelected: !data.selected })
-    this.frameworkService.currentSelection.next({ type: this.data.category, data: data.children })
+    this.frameworkService.currentSelection.next({ type: this.data.category, data: data.children , cardRef})
   }
 
 }

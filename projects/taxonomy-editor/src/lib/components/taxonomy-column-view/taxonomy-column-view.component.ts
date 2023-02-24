@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit } from '@angular/core';
 import { FrameworkService } from '../../services/framework.service';
 import { Subscription } from 'rxjs';
+import { ConnectorService } from '../../services/connector.service';
 
 @Component({
   selector: 'lib-taxonomy-column-view',
@@ -9,9 +10,14 @@ import { Subscription } from 'rxjs';
 })
 export class TaxonomyColumnViewComponent implements OnInit, OnDestroy {
   @Input() column: any
+  @Input() containerId: string
+  mapping: any = {}
   columnData = []
   childSubscription: Subscription = null
-  constructor(private frameworkService: FrameworkService) {
+  constructor(
+    private frameworkService: FrameworkService,
+    private connectorService: ConnectorService,
+  ) {
   }
 
   ngOnInit(): void {
@@ -19,6 +25,7 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy {
     if (this.column.index === 1) {
       this.columnData = this.column.children
     }
+    this.mapping = this.connectorService.connectorMap
   }
   subscribeEvents() {
     if (this.childSubscription) {
@@ -30,6 +37,7 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy {
       } else if (e.type === this.column.code) {
         // set selected
         // this.column.selected = true
+        this.setConnectors(e.cardRef,this.columnData, 'SINGLE')
         return
         // console.log("SKIP: from subscription===>", "FOR " + this.category, e)
       } else {
@@ -45,7 +53,9 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy {
               mer.children = [...this.column.children.filter(x => { return x.code === mer.code }).map(a => a.children)].shift()
               return mer
             })
-
+            setTimeout(() => {
+              this.setConnectors(e.cardRef, next && next.index < this.column.index ? []:this.columnData, 'ALL')
+            }, 100);
           // console.log(this.columnData)
         }
         if (next && next.index < this.column.index) {
@@ -75,6 +85,54 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy {
     // } else {
       return this.columnData
     // }
+  }
+
+  setConnectors(elementClicked, columnItem, mode) {
+    console.log('cardElementClick', mode)
+    console.log('child ', columnItem)
+    console.log('elementClicked', elementClicked)
+    console.log('mapping', this.mapping)
+    if(mode === 'ALL'){
+      let tempmapping = {}
+      this.connectorService.updateConnectorsMap(tempmapping)
+      // {
+      //   ['column' + (this.column.index- 1)]: ''
+        
+      // }
+      debugger
+      const ids = columnItem.map((c, i) => {
+        return this.column.code+'Card'+ (i+1)
+      })
+      this.mapping['box' + (this.column.index-1)] = {source: elementClicked, lines: (ids || []).map(id=> {return {target: id, line:''}})}
+      console.log('mapping:: ', this.mapping)
+
+      // console.log('next', next)
+      this.connectorService._drawLine(
+        this.mapping['box' + (this.column.index-1)].source,
+        this.mapping['box' + (this.column.index-1)].lines,
+        {startPlug: 'disc', endPlug: 'disc', color: 'black', path: 'grid'},
+        '#box'+(this.column.index- 1),
+        '#box'+this.column.index
+      )
+      // if (cat.code === 'board') {
+      //   this.connectorService._drawLine('box0card0', this.mapping['board']['box0card0'], {
+      //     startPlug: 'disc', endPlug: 'disc', color: 'black'
+      //   }, 'box0', 'box1')
+      // } else if (cat.code === 'medium') {
+      //   this.connectorService._drawLine('box1card1', this.mapping['medium']['box1card1'], {
+      //     startPlug: 'disc', endPlug: 'disc', color: 'black'
+      //   }, 'box0', 'box1')
+      // } else if (cat.code === 'gradeLevel') {
+      //   this.connectorService._drawLine('box2card7', this.mapping['grade']['box2card7'], {
+      //     startPlug: 'disc', endPlug: 'disc', color: 'black'
+      //   }, 'box0', 'box1')
+    } else {
+      const item = this.column.children.findIndex(c => c.selected) + 1
+      console.log('item :: ',item)
+      
+      
+    }
+      
   }
   ngOnDestroy(): void {
     if (this.childSubscription) {

@@ -13,7 +13,7 @@ export class FrameworkService {
   categoriesHash: BehaviorSubject<NSFramework.ICategory[] | []> = new BehaviorSubject<NSFramework.ICategory[] | []>([])
   // termsByCategory: BehaviorSubject<NSFramework.ITermsByCategory[] | []> = new BehaviorSubject<NSFramework.ITermsByCategory[] | []>([])
   selectedCategoryHash: BehaviorSubject<NSFramework.ISelectedCategory[]> = new BehaviorSubject<NSFramework.ISelectedCategory[]>([])
-  currentSelection: BehaviorSubject<{ type: string, data: any } | null> = new BehaviorSubject<{ type: string, data: any } | null>(null)
+  currentSelection: BehaviorSubject<{ type: string, data: any , cardRef?: any} | null> = new BehaviorSubject<{ type: string, data: any, cardRef?: any } | null>(null)
   list: any[] = []
   environment
   constructor(private http: HttpClient) {  this.fillCategories() }

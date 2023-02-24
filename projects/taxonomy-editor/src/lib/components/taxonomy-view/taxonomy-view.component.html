@@ -1,6 +1,6 @@
 <div class="flex heightFix container">
     <ng-container *ngFor="let column of list; let i = index;">
-        <div class="flex-1 felx-col padding-x2 cat-columns container" id="box1">
+        <div class="flex-1 felx-col padding-x2 cat-columns container" id="box{{i+1}}">
             <div class="category-heading">
                 <h3>{{column.name}}</h3>
                 <div class="mb1">
@@ -9,7 +9,7 @@
                 </div>
             </div>
             <!-- {{column.code}} -->
-            <lib-taxonomy-column-view [column]="column">
+            <lib-taxonomy-column-view [column]="column" [containerId]="'box'+(i+1)">
             </lib-taxonomy-column-view>
         </div>
     </ng-container>
