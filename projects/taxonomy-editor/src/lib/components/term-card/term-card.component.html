@@ -5,9 +5,9 @@
 </ng-container>
 
 <ng-template #cardMinimal>
-    <div #cardRef class="term-card clickable" (click)="cardClicked(data, cardRef)" [ngClass]="{'selected': data.selected}" id="{{data.children.name}}">
+    <div #cardRef class="term-card clickable" (click)="cardClicked(data, cardRef)" [ngClass]="{'selected': data.children.selected}" id="{{data.children.name}}">
         <!-- (click)="data.selected=!data.selected" -->
-        {{data.children.name}}
+        {{data.children.name}}==={{data.children.selected}}
     </div>
 </ng-template>
 

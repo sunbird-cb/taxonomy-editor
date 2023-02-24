@@ -20,6 +20,7 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy {
   ) {
   }
 
+
   ngOnInit(): void {
     this.subscribeEvents()
     if (this.column.index === 1) {
@@ -27,6 +28,7 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy {
     }
     this.mapping = this.connectorService.connectorMap
   }
+
   subscribeEvents() {
     if (this.childSubscription) {
       this.childSubscription.unsubscribe()
@@ -37,7 +39,7 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy {
       } else if (e.type === this.column.code) {
         // set selected
         // this.column.selected = true
-        this.setConnectors(e.cardRef,this.columnData, 'SINGLE')
+        this.setConnectors(e.cardRef, this.columnData, 'SINGLE')
         return
         // console.log("SKIP: from subscription===>", "FOR " + this.category, e)
       } else {
@@ -49,13 +51,15 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy {
             .filter(x => {
               return x.category == this.column.code
             }).map(mer => {
-              mer.selected = true
-              mer.children = [...this.column.children.filter(x => { return x.code === mer.code }).map(a => a.children)].shift()
+              /**reset Next level children */
+              this.column.children = this.column.children.map(col => { col.selected = false; return col })
+              mer.selected = false
+              mer.children = ([...this.column.children.filter(x => { return x.code === mer.code }).map(a => a.children)].shift() || [])
               return mer
             })
-            setTimeout(() => {
-              this.setConnectors(e.cardRef, next && next.index < this.column.index ? []:this.columnData, 'ALL')
-            }, 100);
+          setTimeout(() => {
+            this.setConnectors(e.cardRef, next && next.index < this.column.index ? [] : this.columnData, 'ALL')
+          }, 100);
           // console.log(this.columnData)
         }
         if (next && next.index < this.column.index) {
@@ -66,53 +70,57 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy {
   }
   selected(selection: any) {
     // console.log(selection.element.code, selection.isSelected)
-    this.column.children.map(col => {
+    // if(this.column.code==='medium'){
+    // console.log( this.column.children)
+    // }
+    this.column.children = this.column.children.map(col => {
       if (col.code === selection.element.code) {
         col.selected = true
       } else {
         col.selected = false
       }
+      return col
     })
   }
   get columnItems() {
-    // const selected = this.column.children.filter(f => { return f.selected })
-    // if (selected.length > 0) {
-    //   const data= this.columnData.map(cd => {
-    //     cd.selected = this.column.children.filter(f => { return cd.code === f.code }).map(s => s.selected)[0]
-    //     return cd
-    //   })
-    //   return data
-    // } else {
+    const selected = this.column.children.filter(f => { return f.selected })
+    if (selected.length > 0) {
+      const data = this.columnData.map(cd => {
+        cd.selected = this.column.children.filter(f => { return cd.code === f.code }).map(s => s.selected)[0]
+        return cd
+      })
+      return data
+    } else {
       return this.columnData
-    // }
+    }
   }
 
   setConnectors(elementClicked, columnItem, mode) {
-    console.log('cardElementClick', mode)
-    console.log('child ', columnItem)
-    console.log('elementClicked', elementClicked)
-    console.log('mapping', this.mapping)
-    if(mode === 'ALL'){
+    // console.log('cardElementClick', mode)
+    // console.log('child ', columnItem)
+    // console.log('elementClicked', elementClicked)
+    // console.log('mapping', this.mapping)
+    if (mode === 'ALL') {
       let tempmapping = {}
       this.connectorService.updateConnectorsMap(tempmapping)
       // {
       //   ['column' + (this.column.index- 1)]: ''
-        
+
       // }
       debugger
       const ids = columnItem.map((c, i) => {
-        return this.column.code+'Card'+ (i+1)
+        return this.column.code + 'Card' + (i + 1)
       })
-      this.mapping['box' + (this.column.index-1)] = {source: elementClicked, lines: (ids || []).map(id=> {return {target: id, line:''}})}
-      console.log('mapping:: ', this.mapping)
+      this.mapping['box' + (this.column.index - 1)] = { source: elementClicked, lines: (ids || []).map(id => { return { target: id, line: '' } }) }
+      // console.log('mapping:: ', this.mapping)
 
       // console.log('next', next)
       this.connectorService._drawLine(
-        this.mapping['box' + (this.column.index-1)].source,
-        this.mapping['box' + (this.column.index-1)].lines,
-        {startPlug: 'disc', endPlug: 'disc', color: 'black', path: 'grid'},
-        '#box'+(this.column.index- 1),
-        '#box'+this.column.index
+        this.mapping['box' + (this.column.index - 1)].source,
+        this.mapping['box' + (this.column.index - 1)].lines,
+        { startPlug: 'disc', endPlug: 'disc', color: 'black', path: 'grid' },
+        '#box' + (this.column.index - 1),
+        '#box' + this.column.index
       )
       // if (cat.code === 'board') {
       //   this.connectorService._drawLine('box0card0', this.mapping['board']['box0card0'], {
@@ -128,11 +136,11 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy {
       //   }, 'box0', 'box1')
     } else {
       const item = this.column.children.findIndex(c => c.selected) + 1
-      console.log('item :: ',item)
-      
-      
+      console.log('item :: ', item)
+
+
     }
-      
+
   }
   ngOnDestroy(): void {
     if (this.childSubscription) {
