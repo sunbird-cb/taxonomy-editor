@@ -2,7 +2,8 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FrameworkService } from '../../services/framework.service';
 import {startWith, map} from 'rxjs/operators';
-import { FormArray, FormControl, FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Observable } from 'rxjs/internal/Observable';
 
 @Component({
   selector: 'lib-create-term',
@@ -13,7 +14,10 @@ import { FormArray, FormControl, FormBuilder, FormGroup } from '@angular/forms';
 export class CreateTermComponent implements OnInit {
   name:string = ''
   termLists: any = []
+  filtedTermLists: Observable<any[]>;
   createTermForm: FormGroup 
+  disableCreate = false
+  isTermExist = false
    constructor(
     public dialogRef: MatDialogRef<CreateTermComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -32,21 +36,49 @@ export class CreateTermComponent implements OnInit {
     this.frameWorkService.readTerms(this.data.frameworkId, this.data.categoryId, requestBody).subscribe(data => {
        this.termLists = data.terms
     })
+   
     this.initTermForm()
   }
+
   initTermForm(){
     this.createTermForm = this.fb.group({
-      name:[''],
+      name:['', [Validators.required]],
       description:['']
     })
+    this.filtedTermLists =  this.createTermForm.get('name').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value || '')),
+    );
   }
 
+  private _filter(searchTxt: any): string[] {
+    let isExist;
+    this.disableCreate = false
+    this.isTermExist = false
+    this.createTermForm.get('description').enable()
+    this.createTermForm.get('description').patchValue('')
+    const filterValue = typeof(searchTxt)==='object'? this._normalizeValue(searchTxt.name):this._normalizeValue(searchTxt);
+    isExist = this.termLists.filter(term => this._normalizeValue(term.name).includes(filterValue));
+    return isExist
+  }
 
- onSelect(name){
-  console.log(name)
+  private _normalizeValue(value: string): string {
+    return value.toLowerCase().replace(/\s/g, '');
+  }
+
+ onSelect(term){
+    this.createTermForm.get('name').patchValue(term.value.name)
+    this.createTermForm.get('description').patchValue(term.value.description)
+    this.createTermForm.get('description').disable()
+    this.disableCreate = true
  }
 
-  saveTerm(){
+ saveTerm(){
+  if(this._filter(this.createTermForm.value.name).length>0){
+    this.isTermExist = true
+    console.log('Already exist')
+    return
+  }
       if(this.createTermForm.valid){
         const requestBody =  {
           request: {
@@ -69,6 +101,8 @@ export class CreateTermComponent implements OnInit {
         })
       }
   }
+
+  
 
 dialogClose(){
   this.dialogRef.close()
