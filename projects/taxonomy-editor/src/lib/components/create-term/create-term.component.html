@@ -3,20 +3,22 @@
     <form [formGroup]="createTermForm" novalidate (ngSubmit)="saveTerm()">
         <mat-form-field appearance="none">
             <!-- <mat-label>Enter {{data.name}} name</mat-label> -->
-            <input matInput formControlName="name" placeholder="Enter name" (keyup.enter)="onSelect($event)" [matAutocomplete]="auto">
-            <mat-autocomplete #auto="matAutocomplete">
-                <mat-option *ngFor="let option of termLists"  [value]="option.name">
+            <input matInput formControlName="name" placeholder="Enter name" [matAutocomplete]="auto">
+            
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelect($event.option)">
+                <mat-option *ngFor="let option of filtedTermLists | async"  [value]="option">
                   {{option.name}}
                 </mat-option>
               </mat-autocomplete>
         </mat-form-field>
+        <mat-error *ngIf="isTermExist">Already Exist.</mat-error>
         <mat-form-field appearance="none">
             <!-- <mat-label>Enter {{data.name}} name</mat-label> -->
             <textarea matInput formControlName="description" placeholder="Enter description"></textarea>
         </mat-form-field>
          <footer class="actions">
-            <button mat-raised-button color="default" (click)="dialogClose()">Cancel</button>
-            <button mat-raised-button color="primary" cdkFocusInitial>Create</button>
+            <button mat-raised-button color="default" type="reset" (click)="dialogClose()">Cancel</button>
+            <button mat-raised-button color="primary" type="submit" cdkFocusInitial [disabled]="disableCreate">Create</button>
         </footer>
     </form>
 </div>
