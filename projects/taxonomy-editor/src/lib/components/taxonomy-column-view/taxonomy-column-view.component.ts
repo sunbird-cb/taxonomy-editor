@@ -96,7 +96,7 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy {
   }
 
   setConnectors(elementClicked, columnItem, mode) {
-    this.removeConnectors(elementClicked, 'box' + (this.column.index-1))
+    this.removeConnectors(elementClicked, 'box' + (this.column.index-1), this.column.index-1)
     console.log('mode', mode)
     console.log('child ', columnItem)
     console.log('elementClicked', elementClicked)
@@ -108,7 +108,6 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy {
       //   ['column' + (this.column.index- 1)]: ''
 
       // }
-      debugger
       const ids = columnItem.map((c, i) => {
         return this.column.code + 'Card' + (i + 1)
       })
@@ -158,10 +157,11 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy {
     }
 
   }
-  removeConnectors(currentElement, prevCol) {
+  removeConnectors(currentElement, prevCol, currentIndex) {
     console.log('prevCol ------------', prevCol)
     if(this.mapping) {
       for (const key in this.mapping) {
+        // Remove all n-1 lines and keep only current selection, also clear n+1 lines
         if(this.mapping[key] && this.mapping[key].lines && this.mapping[key].lines.length > 0) {
           const lines = this.mapping[key].lines
           lines.forEach(async (element, index) => {
@@ -172,7 +172,19 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy {
             }
           });
         }
+
+        // remove all n+2 lines, if clicks previous columns and tree was already drilled down
+        let count = currentIndex+2;
+        let nextCol = `box${count}`
+        if (this.mapping[nextCol] && this.mapping[nextCol].lines && this.mapping[nextCol].lines.length > 0) {
+          const lines = this.mapping[nextCol].lines
+          lines.forEach(async (element, index) => {
+              await element.line.remove();
+              lines.splice(index, 1);
+          })
+        }
       }
+     
     }
   }
 
