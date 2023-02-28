@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators'
+import { catchError, map, tap } from 'rxjs/operators'
 import { FRAMEWORK } from '../constants/data'
 import { NSFramework } from '../models/framework.model';
 import { HttpClient } from '@angular/common/http';
@@ -25,12 +25,16 @@ export class FrameworkService {
     public localConfig: LocalConnectionService
     // @Inject(LibConnectionService) private config
   ) {
-    this.fillCategories()
+    // this.fillCategories()
   }
 
   getFrameworkInfo(): Observable<any> {
     // return of(FRAMEWORK)
-    return this.http.get(`${this.localConfig.apiUrl}/api/framework/v1/read/devmvp1`)
+    return this.http.get(`${this.localConfig.apiUrl}/api/framework/v1/read/devmvp1`).pipe(
+      tap(),
+      catchError((err) => {
+          throw 'Error in source. Details: ' + err; // Use console.log(err) for detail
+      }))
   }
 
   readTerms(frameworkId, categoryId, requestBody) {
@@ -87,6 +91,9 @@ export class FrameworkService {
           translations: a.translations,
         } as NSFramework.ICategory
       }))
+    }, () => {
+      this.list = []
+      this.categoriesHash.next([])
     })
   }
   getNextCategory(currentCategory: string) {
@@ -103,7 +110,7 @@ export class FrameworkService {
   isLastColumn(colCode) {
     return this.categoriesHash.value && (this.categoriesHash.value.findIndex((a: NSFramework.ICategory) => {
       return a.code === colCode
-    })) === (this.categoriesHash.value.length-1)
+    })) === (this.categoriesHash.value.length - 1)
   }
 
   removeItemFromArray(array, item) {

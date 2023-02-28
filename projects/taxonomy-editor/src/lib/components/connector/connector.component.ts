@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { LocalConnectionService } from '../../services/local-connection.service';
 import { FrameworkService } from '../../services/framework.service';
 
 
@@ -16,6 +17,7 @@ export class ConnectorComponent implements OnInit {
     public dialogRef: MatDialogRef<ConnectorComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private frameWorkService: FrameworkService,
+    private localScv: LocalConnectionService,
     private fb: FormBuilder
   ) { }
 
@@ -35,15 +37,21 @@ export class ConnectorComponent implements OnInit {
 
   initConnectorForm() {
     this.connectorForm = this.fb.group({
-      endpoint: ['', [Validators.required]],
-      token: ['', [Validators.required]],
+      endpoint: [this.localScv.localStorage.endpoint, [Validators.required]],
+      token: [this.localScv.localStorage.token, [Validators.required]],
     })
   }
   saveConnection() {
-
+    if (this.connectorForm.valid) {
+      this.dialogRef.close(this.connectorForm.value)
+    }
+  }
+  clear(){
+    this.connectorForm.reset()
+    this.dialogRef.close(this.connectorForm.value)
   }
   dialogClose() {
-    this.dialogRef.close()
+    this.dialogRef.close(null)
   }
 
 }

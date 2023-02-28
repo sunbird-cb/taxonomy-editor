@@ -1,51 +1,37 @@
 .dialog {
-    
-    .mat-dialog-title{
-        padding:10px 20px;
+
+    .mat-dialog-title {
+        padding: 10px 20px;
         margin-bottom: 0;
         background: #dfdfdf;
     }
 
     .mat-form-field {
         width: 90%;
-        padding:0;
-        background:#fff;
-        margin:20px;
+        padding: 0;
+        background: #fff;
+        margin: 20px;
         border-radius: 2px;
-        ::ng-deep .mat-form-field-wrapper{
-            padding-bottom:0;
-            .mat-form-field-infix{
-                padding:15px;
-                margin-top: 0;
-                border-top: 0;
-                textarea {
-                    resize: none;
-                }
-            }
-        }
-        &-disabled{
-            background:#e7e7e7;
-        }
     }
 
-    .actions{
+    .actions {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        padding:0 20px 20px 20px;
+        padding: 0 20px 20px 20px;
     }
 
-    .mat-error{
-        padding:0 25px;
-        margin-top:-10px;
+    .mat-error {
+        padding: 0 25px;
+        margin-top: -10px;
     }
 }
 
-::ng-deep .custom-dialog-container {
-.mat-dialog-container {
-    width:500px;
-    padding:0px;
-    border-radius: 0;
-    background: #f1f1f1;
-}
-}
+// ::ng-deep .custom-dialog-container {
+//     .mat-dialog-container {
+//         width: 800px;
+//         padding: 0;
+//         border-radius: 4px;
+//         background: #f1f1f1;
+//     }
+// }

@@ -1,10 +1,16 @@
-<div class="flex heightFix ">
+<div class="flex flex-1" style="flex-direction: row-reverse;">
+    <button mat-raised-button color="accent" (click)="newConnection()">
+        <mat-icon>build</mat-icon>
+    </button>
+</div>
+<div *ngIf="list && list.length > 0 " class="flex heightFix ">
     <ng-container *ngFor="let column of list; let i = index;">
         <div class="flex-1 felx-col padding-x2 cat-columns container" id="box{{i+1}}">
             <div class="category-heading">
                 <h3>{{column.name}}</h3>
                 <div class="mb1">
-                    <button class="w-full" mat-stroked-button color="primary" (click)="openCreateTermDialog(column.code,column.name)">Create New
+                    <button class="w-full" mat-stroked-button color="primary"
+                        (click)="openCreateTermDialog(column.code,column.name)">Create New
                         {{column.name}}</button>
                 </div>
             </div>
@@ -15,4 +21,7 @@
             </div>
         </div>
     </ng-container>
+</div>
+<div *ngIf="!(list && list.length > 0 )" class="flex heightFix ">
+    <h1 i18n>No Data Available</h1>
 </div>

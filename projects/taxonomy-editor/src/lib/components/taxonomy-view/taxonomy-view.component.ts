@@ -1,8 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FrameworkService } from '../../services/framework.service';
-import { ConnectorService } from '../../services/connector.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateTermComponent } from '../create-term/create-term.component';
+import { ConnectorComponent } from '../connector/connector.component';
+import { LocalConnectionService } from '../../services/local-connection.service';
+import { IConnection } from '../../models/connection.model';
+import { inherits } from 'util';
 
 @Component({
   selector: 'lib-taxonomy-view',
@@ -12,14 +15,19 @@ import { CreateTermComponent } from '../create-term/create-term.component';
 export class TaxonomyViewComponent implements OnInit {
   @Input() frameworkData: any
   mapping = {};
-  frameworkCode:string;
-  constructor(private frameworkService: FrameworkService, private connectorService: ConnectorService, public dialog: MatDialog) { }
+  frameworkCode: string;
+  constructor(private frameworkService: FrameworkService, private localSvc: LocalConnectionService, public dialog: MatDialog) { }
 
   ngOnInit() {
-    this.frameworkService.getFrameworkInfo().subscribe(res => {
-      this.frameworkData = res.result.framework.categories
-      this.frameworkCode = res.result.framework.code
-    })
+    this.init()
+
+  }
+  init() {
+    // this.frameworkService.getFrameworkInfo().subscribe(res => {
+    //   this.frameworkData = res.result.framework.categories
+    //   this.frameworkCode = res.result.framework.code
+    // })
+    this.frameworkService.fillCategories()
     this.mapping = {
       board: {
         box0card0: ['asd', 'box1card2', 'box1card3']
@@ -34,15 +42,13 @@ export class TaxonomyViewComponent implements OnInit {
 
       }
     }
-
   }
-  
-  openCreateTermDialog(categoryId,name){
+  openCreateTermDialog(categoryId, name) {
     const dialog = this.dialog.open(CreateTermComponent, {
-       data: { name:name, frameworkId: this.frameworkCode, categoryId},
-       width: '400px',
-       panelClass: 'custom-dialog-container' 
-      })
+      data: { name: name, frameworkId: this.frameworkCode, categoryId },
+      width: '400px',
+      panelClass: 'custom-dialog-container'
+    })
     dialog.afterClosed().subscribe(res => {
       console.log(`Dialog result: ${res}`)
     })
@@ -51,5 +57,19 @@ export class TaxonomyViewComponent implements OnInit {
     // console.log('this.frameworkService.list :: ',this.frameworkService.list)
     return this.frameworkService.list
 
+  }
+  newConnection() {
+    const dialog = this.dialog.open(ConnectorComponent, {
+      data: {},
+      width: '400px',
+      // panelClass: 'custom-dialog-container' 
+    })
+    dialog.afterClosed().subscribe(res => {
+      if (res) {
+        this.localSvc.localStorage = res
+        this.init()
+      }
+
+    })
   }
 }
