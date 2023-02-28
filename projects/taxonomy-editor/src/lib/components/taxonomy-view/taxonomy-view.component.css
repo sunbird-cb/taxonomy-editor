@@ -38,6 +38,10 @@ flex-center {
     overflow: hidden;
 }
 
+.cat-columns {
+    position: relative;
+}
+
 .cat-columns:hover {
     overflow-y: scroll;
 }
@@ -55,3 +59,8 @@ flex-center {
     width: 0;
     height: 0;
   }
+
+.category-heading {
+    position: sticky;
+    top: 15px;
+}

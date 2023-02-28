@@ -3,7 +3,8 @@
     padding: 1em;
     margin: 0 0 1em 0;
     background-color: #f0f0f0;
-    border-radius: 4px;
+    border-radius: 8px;
+    font-size: 14px;
 }
 
 .term-card.selected {

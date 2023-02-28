@@ -31,6 +31,9 @@ export class TermCardComponent implements OnInit {
 
   cardClicked(data: any, cardRef: any) {
     // this.data.selected = true
+    if(this.frameworkService.isLastColumn(this.data.category)){
+      return 
+    }
     this.isSelected.emit({ element: this.data.children, isSelected: !data.selected })
     this.frameworkService.currentSelection.next({ type: this.data.category, data: data.children, cardRef })
   }
