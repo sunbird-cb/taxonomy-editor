@@ -24,11 +24,11 @@ export interface LLOptions {
 const defaultConfig = {
   startPlug: 'disc',
   startPlugColor: 'white',
-  startPlugOutlineColor: 'rgb(255, 0, 0)',
+  startPlugOutlineColor: '#515151',
   endPlug: 'disc',
   endPlugColor: 'white',
-  endPlugOutlineColor: 'rgb(255, 0, 0)',
-  color: 'black',
+  endPlugOutlineColor: '#515151',
+  color: '#515151',
   size: 4,
   path: 'grid'
 }

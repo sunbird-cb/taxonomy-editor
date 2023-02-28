@@ -84,6 +84,12 @@ export class FrameworkService {
     this.currentSelection.next(event)
   }
 
+  isLastColumn(colCode) {
+    return this.categoriesHash.value && (this.categoriesHash.value.findIndex((a: NSFramework.ICategory) => {
+      return a.code === colCode
+    })) === (this.categoriesHash.value.length-1)
+  }
+
   removeItemFromArray(array, item) {
     /* assign a empty array */
     var tmp = [];
