@@ -1,10 +1,13 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators'
 import { FRAMEWORK } from '../constants/data'
 import { NSFramework } from '../models/framework.model';
 import { HttpClient } from '@angular/common/http';
 import { v4 as uuidv4 } from 'uuid';
+import { IConnection } from '../models/connection.model';
+// import { LibConnectionService } from 'taxonomy-editor/lib/services/connection.service';
+import { LocalConnectionService } from './local-connection.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +16,21 @@ export class FrameworkService {
   categoriesHash: BehaviorSubject<NSFramework.ICategory[] | []> = new BehaviorSubject<NSFramework.ICategory[] | []>([])
   // termsByCategory: BehaviorSubject<NSFramework.ITermsByCategory[] | []> = new BehaviorSubject<NSFramework.ITermsByCategory[] | []>([])
   selectedCategoryHash: BehaviorSubject<NSFramework.ISelectedCategory[]> = new BehaviorSubject<NSFramework.ISelectedCategory[]>([])
-  currentSelection: BehaviorSubject<{ type: string, data: any , cardRef?: any} | null> = new BehaviorSubject<{ type: string, data: any, cardRef?: any } | null>(null)
+  currentSelection: BehaviorSubject<{ type: string, data: any, cardRef?: any } | null> = new BehaviorSubject<{ type: string, data: any, cardRef?: any } | null>(null)
   list: any[] = []
   environment
-  constructor(private http: HttpClient) { this.fillCategories() }
+  libConfig:IConnection
+  constructor(private http: HttpClient, 
+    localConnectionService:LocalConnectionService
+    // @Inject(LibConnectionService) private config
+    ) {
+    // this.libConfig = config;
+    console.log('libConfig===>',localConnectionService.apiUrl)
+    this.fillCategories()
+  }
+  public getConfig(): IConnection {
+    return this.libConfig;
+  }
 
   getFrameworkInfo(): Observable<any> {
     // return of(FRAMEWORK)

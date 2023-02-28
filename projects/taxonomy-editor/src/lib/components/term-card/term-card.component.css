@@ -5,6 +5,10 @@
     background-color: #f0f0f0;
     border-radius: 8px;
     font-size: 14px;
+    border-radius: 4px;
+    /* width: 80%;
+    min-height: 70px; */
+    overflow: hidden;
 }
 
 .term-card.selected {

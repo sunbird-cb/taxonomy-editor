@@ -1,17 +1,17 @@
-import { NgModule } from '@angular/core'
+import { InjectionToken, ModuleWithProviders, NgModule } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
 import { TaxonomyEditorComponent } from './taxonomy-editor.component'
-import { ReactiveFormsModule, FormsModule} from '@angular/forms'
+import { ReactiveFormsModule, FormsModule } from '@angular/forms'
 import { TaxonomyEditorRoutingModule } from './taxonomy-editor-routing.module'
 
 import { MatFormFieldModule, MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field'
 import { MatButtonModule } from '@angular/material/button'
 import { MatInputModule, MatSelect, MatSelectModule } from '@angular/material'
 import { MatIconModule } from '@angular/material/icon'
-import {MatCardModule} from '@angular/material/card';
-import {MatDialogModule} from '@angular/material/dialog'
-import {DragDropModule} from '@angular/cdk/drag-drop';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog'
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 
 import { DashboardComponent } from './containers/dashboard/dashboard.component'
@@ -25,9 +25,13 @@ import { CategoriesPreviewComponent } from './components/categories-preview/cate
 import { ConnectorService } from './services/connector.service'
 import { CreateTermComponent } from './components/create-term/create-term.component';
 import { TaxonomyColumnViewComponent } from './components/taxonomy-column-view/taxonomy-column-view.component'
-import { HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http'
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http'
 import { TokenInterceptorService } from './services/token-interceptor.service'
-
+import { ConnectorComponent } from './components/connector/connector.component'
+import { IConnection } from './models/connection.model'
+import { LocalConnectionService } from './services/local-connection.service'
+import { ENVIRONMENT } from './services/connection.service'
+// export const LIB_OPTIONS = new InjectionToken<IConnection>('env')
 @NgModule({
   declarations: [
     TaxonomyEditorComponent,
@@ -41,6 +45,7 @@ import { TokenInterceptorService } from './services/token-interceptor.service'
     CategoriesPreviewComponent,
     CategoriesPreviewComponent,
     CreateTermComponent,
+    ConnectorComponent,
   ],
   imports: [
     BrowserModule,
@@ -62,7 +67,8 @@ import { TokenInterceptorService } from './services/token-interceptor.service'
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },
     FrameworkService,
-    ConnectorService
+    ConnectorService,
+    LocalConnectionService,
   ],
   exports: [
     TaxonomyEditorComponent,
@@ -72,8 +78,22 @@ import { TokenInterceptorService } from './services/token-interceptor.service'
     TermCardComponent,
     CategoriesPreviewComponent
   ],
-  entryComponents:[
-    CreateTermComponent
+  entryComponents: [
+    CreateTermComponent,
+    ConnectorComponent,
   ]
 })
-export class TaxonomyEditorModule { }
+export class TaxonomyEditorModule {
+  static forRoot(config: IConnection): ModuleWithProviders {
+    return {
+      ngModule: TaxonomyEditorModule,
+      providers: [
+        // LocalConnectionService,
+        {
+          provide: ENVIRONMENT,
+          useValue: config
+        }
+      ]
+    };
+  }
+}

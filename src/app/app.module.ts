@@ -5,8 +5,9 @@ import { AppComponent } from './app.component'
 import { TaxonomyEditorModule } from 'taxonomy-editor'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
-import {MatButtonModule} from '@angular/material/button'
+import { MatButtonModule } from '@angular/material/button'
 import { AppRoutingModule } from './app-routing.module'
+import { environment } from 'src/environments/environment'
 
 
 @NgModule({
@@ -16,7 +17,7 @@ import { AppRoutingModule } from './app-routing.module'
   imports: [
     BrowserModule,
     AppRoutingModule,
-    TaxonomyEditorModule,
+    TaxonomyEditorModule.forRoot({ endpoint: environment.url, token: environment.token }),
     BrowserAnimationsModule,
     MatButtonModule
   ],
