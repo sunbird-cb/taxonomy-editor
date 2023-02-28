@@ -4,6 +4,9 @@
     margin: 0 0 1em 0;
     background-color: #f0f0f0;
     border-radius: 4px;
+    /* width: 80%;
+    min-height: 70px; */
+    overflow: hidden;
 }
 
 .term-card.selected {

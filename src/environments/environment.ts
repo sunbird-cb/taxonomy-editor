@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  url: 'https://portal.igot-dev.in'
+  url: 'https://portal.igot-dev.in',
+  token: '',
 };
 
 /*

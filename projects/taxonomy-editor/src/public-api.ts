@@ -7,4 +7,4 @@ export * from './lib/taxonomy-editor.component'
 export * from './lib/taxonomy-editor.module'
 export * from './lib/components/taxonomy-view/taxonomy-view.component'
 export * from './lib/components/term-card/term-card.component'
-
+// export * from './lib/services/connection.service'

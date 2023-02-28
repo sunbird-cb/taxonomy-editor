@@ -1,0 +1,17 @@
+<div class="dialog">
+    <h1 mat-dialog-title>Create New Connection</h1>
+    <form [formGroup]="connectorForm" novalidate (ngSubmit)="saveConnection()">
+        <mat-form-field appearance="none">
+            <!-- <mat-label>Enter {{data.name}} name</mat-label> -->
+            <input matInput formControlName="endpoint" placeholder="Enter End point">
+        </mat-form-field>
+        <mat-form-field appearance="none">
+            <!-- <mat-label>Enter {{data.name}} name</mat-label> -->
+            <textarea matInput formControlName="token" placeholder="Enter description"></textarea>
+        </mat-form-field>
+         <footer class="actions">
+            <button mat-raised-button color="default" type="reset" (click)="dialogClose()">Cancel</button>
+            <button mat-raised-button color="primary" type="submit" cdkFocusInitial>Create</button>
+        </footer>
+    </form>
+</div>
