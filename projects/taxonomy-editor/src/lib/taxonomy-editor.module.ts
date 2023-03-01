@@ -32,6 +32,8 @@ import { IConnection } from './models/connection.model'
 import { LocalConnectionService } from './services/local-connection.service'
 import { ENVIRONMENT } from './services/connection.service'
 // export const LIB_OPTIONS = new InjectionToken<IConnection>('env')
+import { ActionBarComponent } from './components/action-bar/action-bar.component'
+
 @NgModule({
   declarations: [
     TaxonomyEditorComponent,
@@ -46,6 +48,7 @@ import { ENVIRONMENT } from './services/connection.service'
     CategoriesPreviewComponent,
     CreateTermComponent,
     ConnectorComponent,
+    ActionBarComponent
   ],
   imports: [
     BrowserModule,

@@ -1,10 +1,9 @@
 <div class="dialog">
     <h1 mat-dialog-title>Create New {{data.name}}</h1>
-    <form [formGroup]="createTermForm" novalidate (ngSubmit)="saveTerm()">
+    <form [formGroup]="createTermForm" novalidate (ngSubmit)="disableCreate?updateTerm():saveTerm()">
         <mat-form-field appearance="none">
             <!-- <mat-label>Enter {{data.name}} name</mat-label> -->
             <input matInput formControlName="name" placeholder="Enter name" [matAutocomplete]="auto">
-            
             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelect($event.option)">
                 <mat-option *ngFor="let option of filtedTermLists | async"  [value]="option">
                   {{option.name}}
@@ -17,8 +16,9 @@
             <textarea matInput formControlName="description" placeholder="Enter description"></textarea>
         </mat-form-field>
          <footer class="actions">
-            <button mat-raised-button color="default" type="reset" (click)="dialogClose()">Cancel</button>
-            <button mat-raised-button color="primary" type="submit" cdkFocusInitial [disabled]="disableCreate">Create</button>
+            <button mat-raised-button color="default" type="reset" (click)="dialogClose('',false)">Cancel</button>
+            <button mat-raised-button color="primary" type="submit" cdkFocusInitial *ngIf="!disableCreate">Create</button>
+            <button mat-raised-button color="primary" type="submit" cdkFocusInitial *ngIf="disableCreate">update</button>
         </footer>
     </form>
 </div>
