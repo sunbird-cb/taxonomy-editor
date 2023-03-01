@@ -20,7 +20,7 @@
             </div>
         </div>
     </ng-container>
-    <lib-action-bar></lib-action-bar>
+    <lib-action-bar *ngIf="showPublish"></lib-action-bar>
 </div>
 <div *ngIf="!(list && list.length > 0 )" class="flex heightFix ">
     <h1 i18n>No Data Available</h1>

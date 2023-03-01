@@ -91,7 +91,7 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy {
       const data = this.columnData.map(cd => {
         cd.selected = this.column.children.filter(f => { return cd.code === f.code }).map(s => s.selected)[0]
         return cd
-      })
+      })    
       return data
     } else {
       return this.columnData

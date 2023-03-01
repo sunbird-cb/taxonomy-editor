@@ -16,7 +16,7 @@
             <textarea matInput formControlName="description" placeholder="Enter description"></textarea>
         </mat-form-field>
          <footer class="actions">
-            <button mat-raised-button color="default" type="reset" (click)="dialogClose()">Cancel</button>
+            <button mat-raised-button color="default" type="reset" (click)="dialogClose('',false)">Cancel</button>
             <button mat-raised-button color="primary" type="submit" cdkFocusInitial *ngIf="!disableCreate">Create</button>
             <button mat-raised-button color="primary" type="submit" cdkFocusInitial *ngIf="disableCreate">update</button>
         </footer>

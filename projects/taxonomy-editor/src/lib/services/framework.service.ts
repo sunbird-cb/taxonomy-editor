@@ -20,6 +20,7 @@ export class FrameworkService {
   list: any[] = []
   environment
   libConfig: IConnection
+  frameworkId:string;
   constructor(
     private http: HttpClient,
     public localConfig: LocalConnectionService
@@ -61,11 +62,18 @@ export class FrameworkService {
   updateEnvironment(env) {
     this.environment = env
   }
+  
   getEnviroment(){
     return this.environment
   }
+
+  getFrameworkId(){
+    return this.frameworkId
+  }
+
   fillCategories() {
     this.getFrameworkInfo().subscribe(response => {
+      this.frameworkId = response.result.framework.code;
       console.log('response', response);
       // const obj = FRAMEWORK;
       // const columns: NSFramework.IColumnView[] = [];

@@ -99,8 +99,8 @@ export class CreateTermComponent implements OnInit {
             }
           }
         }
-        this.frameWorkService.createTerm(this.data.frameworkId, this.data.columnInfo.code, requestBody).subscribe(data => {
-          this.dialogClose()
+        this.frameWorkService.createTerm(this.data.frameworkId, this.data.columnInfo.code, requestBody).subscribe((res:any) => {
+          this.dialogClose(res.result.node_id[0], true)
         })
       }
   }
@@ -122,14 +122,23 @@ export class CreateTermComponent implements OnInit {
                 }
               }
           }
-          this.frameWorkService.updateTerm(this.data.frameworkId, parent.element.category, parent.element.code, reguestBody).subscribe(res => {
-            console.log(res)
+          this.frameWorkService.updateTerm(this.data.frameworkId, parent.element.category, parent.element.code, reguestBody).subscribe((res:any) => {
+            this.dialogClose(res.result.node_id, false)
           })
       }
     })
   }
 
-  dialogClose(){
+  dialogClose(id:string, created:boolean){
+    if(id){
+    this.dialogRef.close({
+      name:this.createTermForm.value.name,
+      description:this.createTermForm.value.description,
+      identifier:id,
+      created:created
+    })
+  } else {
     this.dialogRef.close()
+  }
   }
 }

@@ -15,8 +15,8 @@ import { inherits } from 'util';
 export class TaxonomyViewComponent implements OnInit {
   @Input() frameworkData: any
   mapping = {};
-  frameworkCode: string;
   heightLighted = []
+  showPublish=false
   constructor(private frameworkService: FrameworkService, private localSvc: LocalConnectionService, public dialog: MatDialog) { }
 
   ngOnInit() {
@@ -63,12 +63,15 @@ export class TaxonomyViewComponent implements OnInit {
 
   openCreateTermDialog(column, colIndex){
     const dialog = this.dialog.open(CreateTermComponent, {
-       data: { columnInfo:column, frameworkId:this.frameworkCode, selectedparents:this.heightLighted, colIndex:colIndex},
+       data: { columnInfo:column, frameworkId: this.frameworkService.getFrameworkId(), selectedparents:this.heightLighted, colIndex:colIndex},
        width: '400px',
        panelClass: 'custom-dialog-container' 
     })
     dialog.afterClosed().subscribe(res => {
-      console.log(`Dialog result: ${res}`)
+      if(res&&res.created){
+        this.showPublish = true
+      }
+      console.log(`Dialog result:`, res)
     })
   }
 
