@@ -9,6 +9,7 @@
     /* width: 80%;
     min-height: 70px; */
     overflow: hidden;
+    border: 1px solid #e6e6e6;
 }
 
 .term-card.selected {

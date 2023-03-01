@@ -167,10 +167,11 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy {
           lines.forEach(async (element, index) => {
             if (element != currentElement && prevCol  == key)
             {
-              await element.line.remove();
+              await element.line && element.line.remove();
               lines.splice(index, 1);
             }
           });
+          this.mapping[key].lines = lines
         }
 
         // remove all n+2 lines, if clicks previous columns and tree was already drilled down
@@ -179,9 +180,10 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy {
         if (this.mapping[nextCol] && this.mapping[nextCol].lines && this.mapping[nextCol].lines.length > 0) {
           const lines = this.mapping[nextCol].lines
           lines.forEach(async (element, index) => {
-              await element.line.remove();
+              await element.line && element.line.remove();
               lines.splice(index, 1);
           })
+          this.mapping[nextCol].lines = null
         }
       }
      

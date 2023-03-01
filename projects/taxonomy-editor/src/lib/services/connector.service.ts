@@ -30,12 +30,14 @@ const defaultConfig = {
   endPlugOutlineColor: '#515151',
   color: '#515151',
   size: 4,
-  path: 'grid'
+  path: 'grid',
+  startSocket: 'right', endSocket: 'left'
 }
 
 @Injectable()
 export class ConnectorService {
   connectorMap: any = {}
+  elmWrapper: any
   // assuming following structure
   // {
   //   'box1': {
@@ -54,6 +56,7 @@ export class ConnectorService {
       this.connectorMap['box'+list.index]= {}
     })
     console.log('connectorMap -------', this.connectorMap)
+    // this.elmWrapper = document.getElementsByClassName('heightFix');
   }
 
   _drawLine(source, target, options: LLOptions, sourceContainerId = undefined, targetContainerId = undefined) {
@@ -103,8 +106,10 @@ export class ConnectorService {
 
   private renderLine(source, target, options: LLOptions) {
     let _options = {
-      animOptions: { duration: 3000, timing: 'linear' },
+      animOptions: { duration: 2000, timing: 'linear' },
       hide: true,
+      // startSocketGravity: 50,
+      // endSocketGravity: [-30, 50]
     };
     let _line
     if(target.targetType === 'id'){
@@ -118,10 +123,22 @@ export class ConnectorService {
     _line.startPlugOutline = true;
     _line.setOptions(options);
     _line.show('draw');
+    // this.elmWrapper.appendChild(document.querySelector('.leader-line:last-of-type'));
+    // this.position(_line)
     return _line;
   }
 
   updateConnectorsMap(map){
     this.connectorMap = map
+  }
+
+  position(line) {
+    this.elmWrapper.style.transform = 'none';
+    var rectWrapper = this.elmWrapper.getBoundingClientRect();
+    // Move to the origin of coordinates as the document
+    this.elmWrapper.style.transform = 'translate(' +
+      ((rectWrapper.left + pageXOffset) * -1) + 'px, ' +
+      ((rectWrapper.top + pageYOffset) * -1) + 'px)';
+    line.position();
   }
 }

@@ -1,4 +1,4 @@
-<ng-container *ngIf="columnItems && columnItems.length > 0">
+<ng-container *ngIf="columnItems && columnItems.length > 0; else noDataTemplate;">
     <ng-container *ngFor="let child of columnItems; let j = index">
         <div #cardEle id="{{column.code}}Card{{j+1}}" >
             <lib-term-card
@@ -8,3 +8,6 @@
         </div>
     </ng-container>
 </ng-container>
+<ng-template #noDataTemplate>
+    <!-- <div>No {{column.name}} associated</div> -->
+</ng-template>
