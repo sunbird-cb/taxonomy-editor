@@ -6,6 +6,10 @@ export const environment = {
   production: false,
   url: 'https://portal.igot-dev.in',
   token: '',
+  frameworkName: 'devmvp1',
+  channelId: '0131397178949058560',
+  authToken: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJSSXZtaHRpTkxRT1lKT3dYR2xnRElReFp4bHdyZmVTZCJ9.onjwk3QTql0oZYvM-xOPuCDcBJKGTVa65J64j2hy8H0',
+  
 };
 
 /*

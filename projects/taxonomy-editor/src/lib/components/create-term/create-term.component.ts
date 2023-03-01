@@ -4,6 +4,7 @@ import { FrameworkService } from '../../services/framework.service';
 import {startWith, map} from 'rxjs/operators';
 import { FormArray, FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/internal/Observable';
+import { Identifiers } from '@angular/compiler';
 
 @Component({
   selector: 'lib-create-term',
@@ -18,6 +19,7 @@ export class CreateTermComponent implements OnInit {
   createTermForm: FormGroup 
   disableCreate = false
   isTermExist = false
+  selectedTerm
    constructor(
     public dialogRef: MatDialogRef<CreateTermComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -26,17 +28,18 @@ export class CreateTermComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    const requestBody = {
-      request: {
-        search: {
-            status: "Draft"
-        }
-    }
-    } 
-    this.frameWorkService.readTerms(this.data.frameworkId, this.data.categoryId, requestBody).subscribe(data => {
-       this.termLists = data.terms
-    })
-   
+    // const requestBody = {
+    //   request: {
+    //     search: {
+    //         status: "Draft"
+    //     }
+    // }
+    // } 
+    // debugger
+    // this.frameWorkService.readTerms(this.data.frameworkId, this.data.categoryId, requestBody).subscribe(data => {
+    //    this.termLists = data.terms
+    // })
+   this.termLists = this.data.columnInfo.children
     this.initTermForm()
   }
 
@@ -66,46 +69,67 @@ export class CreateTermComponent implements OnInit {
     return value.toLowerCase().replace(/\s/g, '');
   }
 
- onSelect(term){
+ onSelect(term) {
+    this.selectedTerm = term.value
     this.createTermForm.get('name').patchValue(term.value.name)
     this.createTermForm.get('description').patchValue(term.value.description)
     this.createTermForm.get('description').disable()
     this.disableCreate = true
  }
 
- saveTerm(){
-  if(this._filter(this.createTermForm.value.name).length>0){
-    this.isTermExist = true
-    console.log('Already exist')
-    return
-  }
-      if(this.createTermForm.valid){
+ saveTerm() {
+      if(this._filter(this.createTermForm.value.name).length>0){
+        this.isTermExist = true
+        console.log('Already exist')
+        return
+      }
+      if(this.createTermForm.valid) {
         const requestBody =  {
           request: {
             term: {
               code:this.frameWorkService.getUuid(),
               name:this.createTermForm.value.name,
               description:this.createTermForm.value.description,
-              category:this.data.name,
-              status:'Draft',
+              category:this.data.columnInfo.code,
+              status:'Live',
               parents:[
-                {identifier:`${this.data.frameworkId}_${this.data.categoryId}`}
+                {identifier:`${this.data.frameworkId}_${this.data.columnInfo.code}`}
               ],
               additionalProperties:{}
             }
           }
         }
-        this.frameWorkService.createTerm(this.data.frameworkId, this.data.categoryId, requestBody).subscribe(data => {
-          console.log(data);
+        this.frameWorkService.createTerm(this.data.frameworkId, this.data.columnInfo.code, requestBody).subscribe(data => {
           this.dialogClose()
         })
       }
   }
 
-  
+  updateTerm() {
+    this.data.selectedparents.forEach((parent,i) => {
+        const temp = parent.element.children.filter(child => child.identifier === this.selectedTerm.identifier)
+        if(!temp.length && i<this.data.colIndex){
+          let associations = parent.element.children.map(c => {
+            return { identifier:c.identifier }
+          })
+          associations.push({identifier:this.selectedTerm.identifier})
+          const reguestBody = {
+              request:{
+                term:{
+                  associations: [
+                    ...associations
+                  ]
+                }
+              }
+          }
+          this.frameWorkService.updateTerm(this.data.frameworkId, parent.element.category, parent.element.code, reguestBody).subscribe(res => {
+            console.log(res)
+          })
+      }
+    })
+  }
 
-dialogClose(){
-  this.dialogRef.close()
-}
-
+  dialogClose(){
+    this.dialogRef.close()
+  }
 }

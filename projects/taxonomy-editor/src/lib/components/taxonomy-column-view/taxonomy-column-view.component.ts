@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FrameworkService } from '../../services/framework.service';
 import { Subscription } from 'rxjs';
 import { ConnectorService } from '../../services/connector.service';
@@ -11,6 +11,7 @@ import { ConnectorService } from '../../services/connector.service';
 export class TaxonomyColumnViewComponent implements OnInit, OnDestroy {
   @Input() column: any
   @Input() containerId: string
+  @Output() updateTaxonomyTerm = new EventEmitter() ;
   mapping: any = {}
   columnData = []
   childSubscription: Subscription = null
@@ -76,6 +77,8 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy {
     this.column.children = this.column.children.map(col => {
       if (col.code === selection.element.code) {
         col.selected = true
+        this.updateTaxonomyTerm.emit(selection)
+        debugger
       } else {
         col.selected = false
       }

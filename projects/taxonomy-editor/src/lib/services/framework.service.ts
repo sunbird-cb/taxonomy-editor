@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators'
 import { FRAMEWORK } from '../constants/data'
 import { NSFramework } from '../models/framework.model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { v4 as uuidv4 } from 'uuid';
 import { IConnection } from '../models/connection.model';
 // import { LibConnectionService } from 'taxonomy-editor/lib/services/connection.service';
@@ -45,6 +45,14 @@ export class FrameworkService {
   createTerm(frameworkId, categoryId, requestBody) {
     return this.http.post(`${this.environment.url}/api/framework/v1/term/create?framework=${frameworkId}&category=${categoryId}`, requestBody)
   }
+  
+  updateTerm(frameworkId, categoryId, categoryTermCode, reguestBody) {
+    return this.http.patch(`${this.environment.url}/api/framework/v1/term/update/${categoryTermCode}?framework=${frameworkId}&category=${categoryId}`, reguestBody)
+  }
+
+  publishFramework() {
+      return this.http.post(`${this.environment.url}/api/framework/v1/publish/${this.environment.frameworkName}`,{}, {headers:{'X-Channel-Id':this.environment.channelId}})
+  }
 
   getUuid() {
     return uuidv4()
@@ -53,7 +61,9 @@ export class FrameworkService {
   updateEnvironment(env) {
     this.environment = env
   }
-
+  getEnviroment(){
+    return this.environment
+  }
   fillCategories() {
     this.getFrameworkInfo().subscribe(response => {
       console.log('response', response);
