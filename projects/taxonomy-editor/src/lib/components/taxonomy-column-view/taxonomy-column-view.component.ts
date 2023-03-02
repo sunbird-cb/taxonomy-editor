@@ -11,7 +11,7 @@ import { ConnectorService } from '../../services/connector.service';
 export class TaxonomyColumnViewComponent implements OnInit, OnDestroy {
   @Input() column: any
   @Input() containerId: string
-  mapping: any = {}
+  connectorMapping: any = {}
   columnData = []
   childSubscription: Subscription = null
   constructor(
@@ -26,7 +26,7 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy {
     if (this.column.index === 1) {
       this.columnData = this.column.children
     }
-    this.mapping = this.connectorService.connectorMap
+    this.connectorMapping = this.connectorService.connectorMap
   }
 
   subscribeEvents() {
@@ -100,10 +100,10 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy {
     console.log('mode', mode)
     console.log('child ', columnItem)
     console.log('elementClicked', elementClicked)
-    console.log('mapping', this.mapping)
+    console.log('connectorMapping', this.connectorMapping)
     if(mode === 'ALL'){
-      // let tempmapping = {}
-      // this.connectorService.updateConnectorsMap(tempmapping)
+      // let tempconnectorMapping = {}
+      // this.connectorService.updateConnectorsMap(tempconnectorMapping)
       // {
       //   ['column' + (this.column.index- 1)]: ''
 
@@ -111,28 +111,28 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy {
       const ids = columnItem.map((c, i) => {
         return this.column.code + 'Card' + (i + 1)
       })
-      this.mapping['box' + (this.column.index-1)] = {source: elementClicked, lines: (ids || []).map(id=> {return {target: id, line:'', targetType: 'id'}})}
-      this.connectorService.updateConnectorsMap(this.mapping)
+      this.connectorMapping['box' + (this.column.index-1)] = {source: elementClicked, lines: (ids || []).map(id=> {return {target: id, line:'', targetType: 'id'}})}
+      this.connectorService.updateConnectorsMap(this.connectorMapping)
       // console.log('next', next)
       const connectionLines = this.connectorService._drawLine(
-        this.mapping['box' + (this.column.index-1)].source,
-        this.mapping['box' + (this.column.index-1)].lines,
+        this.connectorMapping['box' + (this.column.index-1)].source,
+        this.connectorMapping['box' + (this.column.index-1)].lines,
         {startPlug: 'disc', endPlug: 'disc', color: 'black', path: 'grid'},
         '#box'+(this.column.index- 1),
         '#box'+this.column.index
       )
-      this.mapping['box' + (this.column.index-1)].lines = connectionLines
-      console.log('this.mapping :: ----------------------', this.mapping)
+      this.connectorMapping['box' + (this.column.index-1)].lines = connectionLines
+      console.log('this.connectorMapping :: ----------------------', this.connectorMapping)
       // if (cat.code === 'board') {
-      //   this.connectorService._drawLine('box0card0', this.mapping['board']['box0card0'], {
+      //   this.connectorService._drawLine('box0card0', this.connectorMapping['board']['box0card0'], {
       //     startPlug: 'disc', endPlug: 'disc', color: 'black'
       //   }, 'box0', 'box1')
       // } else if (cat.code === 'medium') {
-      //   this.connectorService._drawLine('box1card1', this.mapping['medium']['box1card1'], {
+      //   this.connectorService._drawLine('box1card1', this.connectorMapping['medium']['box1card1'], {
       //     startPlug: 'disc', endPlug: 'disc', color: 'black'
       //   }, 'box0', 'box1')
       // } else if (cat.code === 'gradeLevel') {
-      //   this.connectorService._drawLine('box2card7', this.mapping['grade']['box2card7'], {
+      //   this.connectorService._drawLine('box2card7', this.connectorMapping['grade']['box2card7'], {
       //     startPlug: 'disc', endPlug: 'disc', color: 'black'
       //   }, 'box0', 'box1')
     } else {
@@ -140,18 +140,18 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy {
       console.log('this.column', this.column)
       const item = this.column.children.findIndex(c => c.selected) + 1
       if (this.column.index > 1) {
-        this.mapping['box' + (this.column.index-1)].lines = [{target: elementClicked, line: '', targetType: 'element'}]
+        this.connectorMapping['box' + (this.column.index-1)].lines = [{target: elementClicked, line: '', targetType: 'element'}]
       
-        this.connectorService.updateConnectorsMap(this.mapping)
+        this.connectorService.updateConnectorsMap(this.connectorMapping)
         const connectionLines = this.connectorService._drawLine(
-          this.mapping['box' + (this.column.index-1)].source,
-          this.mapping['box' + (this.column.index-1)].lines,
+          this.connectorMapping['box' + (this.column.index-1)].source,
+          this.connectorMapping['box' + (this.column.index-1)].lines,
           {startPlug: 'disc', endPlug: 'disc', color: 'black', path: 'grid'},
           '#box'+(this.column.index- 1),
           '#box'+this.column.index
         )
-        this.mapping['box' + (this.column.index-1)].lines = connectionLines
-        console.log('this.mapping :: ----------------------', this.mapping)
+        this.connectorMapping['box' + (this.column.index-1)].lines = connectionLines
+        console.log('this.connectorMapping :: ----------------------', this.connectorMapping)
       }
 
     }
@@ -159,11 +159,11 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy {
   }
   removeConnectors(currentElement, prevCol, currentIndex) {
     console.log('prevCol ------------', prevCol)
-    if(this.mapping) {
-      for (const key in this.mapping) {
+    if(this.connectorMapping) {
+      for (const key in this.connectorMapping) {
         // Remove all n-1 lines and keep only current selection, also clear n+1 lines
-        if(this.mapping[key] && this.mapping[key].lines && this.mapping[key].lines.length > 0) {
-          const lines = this.mapping[key].lines
+        if(this.connectorMapping[key] && this.connectorMapping[key].lines && this.connectorMapping[key].lines.length > 0) {
+          const lines = this.connectorMapping[key].lines
           lines.forEach(async (element, index) => {
             if (element != currentElement && prevCol  == key)
             {
@@ -171,19 +171,19 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy {
               lines.splice(index, 1);
             }
           });
-          this.mapping[key].lines = lines
+          this.connectorMapping[key].lines = lines
         }
 
         // remove all n+2 lines, if clicks previous columns and tree was already drilled down
         let count = currentIndex+2;
         let nextCol = `box${count}`
-        if (this.mapping[nextCol] && this.mapping[nextCol].lines && this.mapping[nextCol].lines.length > 0) {
-          const lines = this.mapping[nextCol].lines
+        if (this.connectorMapping[nextCol] && this.connectorMapping[nextCol].lines && this.connectorMapping[nextCol].lines.length > 0) {
+          const lines = this.connectorMapping[nextCol].lines
           lines.forEach(async (element, index) => {
               await element.line && element.line.remove();
               lines.splice(index, 1);
           })
-          this.mapping[nextCol].lines = null
+          this.connectorMapping[nextCol].lines = null
         }
       }
      
