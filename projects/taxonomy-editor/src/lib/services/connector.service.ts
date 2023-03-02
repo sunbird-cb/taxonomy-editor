@@ -78,12 +78,12 @@ export class ConnectorService {
         })
         if(sourceContainerId) {
           document.querySelector(sourceContainerId).addEventListener('scroll', () => {
-            tempLine.position();
+            tempLine && tempLine.position();
           }, false);
         }
         if (targetContainerId) {
           document.querySelector(targetContainerId).addEventListener('scroll', () => {
-            tempLine.position();
+            tempLine && tempLine.position();
           }, false);
         }
 
@@ -107,7 +107,7 @@ export class ConnectorService {
   private renderLine(source, target, options: LLOptions) {
     let _options = {
       animOptions: { duration: 2000, timing: 'linear' },
-      hide: true,
+      // hide: true,
       // startSocketGravity: 50,
       // endSocketGravity: [-30, 50]
     };

@@ -40,11 +40,38 @@ flex-center {
 
 .cat-columns {
     position: relative;
+    height: inherit;
+    /* z-index: 9; */
+}
+
+.col-container {
+    height: inherit;
+}
+
+.category-heading-sticky {
+    top: 0;
+    position: sticky;
+    width: 100%;
+    background: #fff;
+    margin-bottom: 5px;
+    z-index: 10;
+}
+
+.category-heading-container {
+    box-sizing: content-box;
+    position: relative;
+    display: block;
+    padding: 1px 2.5em;
 }
 
 .cat-columns:hover {
     overflow-y: scroll;
 }
+
+
+/* .cat-columns:hover .category-heading-sticky {
+    position: sticky;
+} */
 
 .container {
     overflow-y: scroll;
@@ -60,7 +87,3 @@ flex-center {
     height: 0;
   }
 
-.category-heading {
-    position: sticky;
-    top: 15px;
-}
