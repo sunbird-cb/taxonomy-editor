@@ -9,18 +9,18 @@
             <div class="category-heading">
                 <h3>{{column.name}}</h3>
                 <div class="mb1">
-                    <button class="w-full" mat-stroked-button color="primary"
-                        (click)="openCreateTermDialog(column.code,column.name)">Create New
+                    <button class="w-full" mat-stroked-button color="primary" (click)="openCreateTermDialog(column, i)">Create New
                         {{column.name}}</button>
                 </div>
             </div>
             <!-- {{column.code}} -->
             <div class="">
-                <lib-taxonomy-column-view [column]="column" [containerId]="'box'+(i+1)">
+                <lib-taxonomy-column-view #selectedTaxonomyTerm [column]="column" [containerId]="'box'+(i+1)" (updateTaxonomyTerm)="updateTaxonomyTerm($event)">
                 </lib-taxonomy-column-view>
             </div>
         </div>
     </ng-container>
+    <lib-action-bar *ngIf="showPublish"></lib-action-bar>
 </div>
 <div *ngIf="!(list && list.length > 0 )" class="flex heightFix ">
     <h1 i18n>No Data Available</h1>

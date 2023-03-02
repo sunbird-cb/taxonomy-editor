@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FrameworkService } from '../../services/framework.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateTermComponent } from '../create-term/create-term.component';
@@ -15,7 +15,8 @@ import { inherits } from 'util';
 export class TaxonomyViewComponent implements OnInit {
   @Input() frameworkData: any
   mapping = {};
-  frameworkCode: string;
+  heightLighted = []
+  showPublish=false
   constructor(private frameworkService: FrameworkService, private localSvc: LocalConnectionService, public dialog: MatDialog) { }
 
   ngOnInit() {
@@ -43,16 +44,37 @@ export class TaxonomyViewComponent implements OnInit {
       }
     }
   }
-  openCreateTermDialog(categoryId, name) {
-    const dialog = this.dialog.open(CreateTermComponent, {
-      data: { name: name, frameworkId: this.frameworkCode, categoryId },
-      width: '400px',
-      panelClass: 'custom-dialog-container'
-    })
-    dialog.afterClosed().subscribe(res => {
-      console.log(`Dialog result: ${res}`)
+
+  updateTaxonomyTerm(selected:any){
+    if(this.heightLighted.length===0){
+      this.heightLighted.push(selected);
+      return   
+    }
+    this.heightLighted.every((cat, i) => {
+        if(cat.element.category.toLowerCase() === selected.element.category.toLowerCase()){
+          this.heightLighted[i]=selected
+          return false
+         } else {
+          this.heightLighted.push(selected);
+          return false
+        }
     })
   }
+
+  openCreateTermDialog(column, colIndex){
+    const dialog = this.dialog.open(CreateTermComponent, {
+       data: { columnInfo:column, frameworkId: this.frameworkService.getFrameworkId(), selectedparents:this.heightLighted, colIndex:colIndex},
+       width: '400px',
+       panelClass: 'custom-dialog-container' 
+    })
+    dialog.afterClosed().subscribe(res => {
+      if(res&&res.created){
+        this.showPublish = true
+      }
+      console.log(`Dialog result:`, res)
+    })
+  }
+
   get list() {
     // console.log('this.frameworkService.list :: ',this.frameworkService.list)
     return this.frameworkService.list
