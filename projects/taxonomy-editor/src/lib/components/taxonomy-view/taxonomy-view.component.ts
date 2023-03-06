@@ -4,8 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CreateTermComponent } from '../create-term/create-term.component';
 import { ConnectorComponent } from '../connector/connector.component';
 import { LocalConnectionService } from '../../services/local-connection.service';
-import { IConnection } from '../../models/connection.model';
-import { inherits } from 'util';
+import { IConnectionType } from '../../models/connection-type.model';
 
 @Component({
   selector: 'lib-taxonomy-view',
@@ -16,7 +15,7 @@ export class TaxonomyViewComponent implements OnInit {
   @Input() frameworkData: any
   mapping = {};
   heightLighted = []
-  showPublish=false
+  showPublish = false
   constructor(private frameworkService: FrameworkService, private localSvc: LocalConnectionService, public dialog: MatDialog) { }
 
   ngOnInit() {
@@ -45,30 +44,30 @@ export class TaxonomyViewComponent implements OnInit {
     }
   }
 
-  updateTaxonomyTerm(selected:any){
-    if(this.heightLighted.length===0){
+  updateTaxonomyTerm(selected: any) {
+    if (this.heightLighted.length === 0) {
       this.heightLighted.push(selected);
-      return   
+      return
     }
     this.heightLighted.every((cat, i) => {
-        if(cat.element.category.toLowerCase() === selected.element.category.toLowerCase()){
-          this.heightLighted[i]=selected
-          return false
-         } else {
-          this.heightLighted.push(selected);
-          return false
-        }
+      if (cat.element.category.toLowerCase() === selected.element.category.toLowerCase()) {
+        this.heightLighted[i] = selected
+        return false
+      } else {
+        this.heightLighted.push(selected);
+        return false
+      }
     })
   }
 
-  openCreateTermDialog(column, colIndex){
+  openCreateTermDialog(column, colIndex) {
     const dialog = this.dialog.open(CreateTermComponent, {
-       data: { columnInfo:column, frameworkId: this.frameworkService.getFrameworkId(), selectedparents:this.heightLighted, colIndex:colIndex},
-       width: '400px',
-       panelClass: 'custom-dialog-container' 
+      data: { columnInfo: column, frameworkId: this.frameworkService.getFrameworkId(), selectedparents: this.heightLighted, colIndex: colIndex },
+      width: '400px',
+      panelClass: 'custom-dialog-container'
     })
     dialog.afterClosed().subscribe(res => {
-      if(res&&res.created){
+      if (res && res.created) {
         this.showPublish = true
       }
       console.log(`Dialog result:`, res)
@@ -83,15 +82,17 @@ export class TaxonomyViewComponent implements OnInit {
   newConnection() {
     const dialog = this.dialog.open(ConnectorComponent, {
       data: {},
-      width: '400px',
+      width: '90%',
       // panelClass: 'custom-dialog-container' 
     })
-    dialog.afterClosed().subscribe(res => {
-      if (res) {
+    dialog.afterClosed().subscribe((res: IConnectionType) => {
+      if ((res.source === 'online' && res.data.endpoint) || (res.source === 'offline')) {
+        this.localSvc.localStorage = res
+        this.init()
+      } else if (res.source === 'online' && !res.data.endpoint) {
         this.localSvc.localStorage = res
         this.init()
       }
-
     })
   }
 }

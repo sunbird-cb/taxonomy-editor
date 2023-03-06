@@ -20,7 +20,7 @@ export class FrameworkService {
   list: any[] = []
   environment
   libConfig: IConnection
-  frameworkId:string;
+  frameworkId: string;
   constructor(
     private http: HttpClient,
     public localConfig: LocalConnectionService
@@ -30,12 +30,15 @@ export class FrameworkService {
   }
 
   getFrameworkInfo(): Observable<any> {
-    // return of(FRAMEWORK)
-    return this.http.get(`${this.localConfig.apiUrl}/api/framework/v1/read/devmvp1`).pipe(
-      tap(),
-      catchError((err) => {
+    if (this.localConfig.connectionType === 'online') {
+      return this.http.get(`${this.localConfig.apiUrl}/api/framework/v1/read/${this.localConfig.frameworkName}`).pipe(
+        tap(),
+        catchError((err) => {
           throw 'Error in source. Details: ' + err; // Use console.log(err) for detail
-      }))
+        }))
+    } else {
+      return of(FRAMEWORK)
+    }
   }
 
   readTerms(frameworkId, categoryId, requestBody) {
@@ -46,13 +49,13 @@ export class FrameworkService {
   createTerm(frameworkId, categoryId, requestBody) {
     return this.http.post(`${this.environment.url}/api/framework/v1/term/create?framework=${frameworkId}&category=${categoryId}`, requestBody)
   }
-  
+
   updateTerm(frameworkId, categoryId, categoryTermCode, reguestBody) {
     return this.http.patch(`${this.environment.url}/api/framework/v1/term/update/${categoryTermCode}?framework=${frameworkId}&category=${categoryId}`, reguestBody)
   }
 
   publishFramework() {
-      return this.http.post(`${this.environment.url}/api/framework/v1/publish/${this.environment.frameworkName}`,{}, {headers:{'X-Channel-Id':this.environment.channelId}})
+    return this.http.post(`${this.environment.url}/api/framework/v1/publish/${this.environment.frameworkName}`, {}, { headers: { 'X-Channel-Id': this.environment.channelId } })
   }
 
   getUuid() {
@@ -62,16 +65,17 @@ export class FrameworkService {
   updateEnvironment(env) {
     this.environment = env
   }
-  
-  getEnviroment(){
+
+  getEnviroment() {
     return this.environment
   }
 
-  getFrameworkId(){
+  getFrameworkId() {
     return this.frameworkId
   }
 
   fillCategories() {
+    this.resetAll()
     this.getFrameworkInfo().subscribe(response => {
       this.frameworkId = response.result.framework.code;
       console.log('response', response);
@@ -124,7 +128,11 @@ export class FrameworkService {
   childClick(event: { type: string, data: any }) {
     this.currentSelection.next(event)
   }
-
+  resetAll() {
+    this.categoriesHash.next([])
+    this.currentSelection.next(null)
+    this.list = []
+  }
   isLastColumn(colCode) {
     return this.categoriesHash.value && (this.categoriesHash.value.findIndex((a: NSFramework.ICategory) => {
       return a.code === colCode

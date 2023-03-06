@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ConnectorComponent } from './connector.component';
 
-import { CreateTermComponent } from './create-term.component';
 
-describe('CreateTermComponent', () => {
-  let component: CreateTermComponent;
-  let fixture: ComponentFixture<CreateTermComponent>;
+describe('ConnectorComponent', () => {
+  let component: ConnectorComponent;
+  let fixture: ComponentFixture<ConnectorComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CreateTermComponent ]
+      declarations: [ ConnectorComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CreateTermComponent);
+    fixture = TestBed.createComponent(ConnectorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
