@@ -92,16 +92,16 @@ export class ConnectorService {
     } else {
       _line = this.renderLine(source, target, _options);
     }
-    if(sourceContainerId) {
-      document.querySelector(sourceContainerId).addEventListener('scroll', () => {
-        _line.position();
-      }, false);
-    }
-    if (targetContainerId) {
-      document.querySelector(targetContainerId).addEventListener('scroll', () => {
-        _line.position();
-      }, false);
-    }
+    //  if(sourceContainerId) {
+    //   document.querySelector(sourceContainerId).addEventListener('scroll', () => {
+    //     _line.position();
+    //   }, false);
+    // }
+    // if (targetContainerId) {
+    //   document.querySelector(targetContainerId).addEventListener('scroll', () => {
+    //     _line.position();
+    //   }, false);
+    // }
   }
 
   private renderLine(source, target, options: LLOptions) {
