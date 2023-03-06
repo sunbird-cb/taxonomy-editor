@@ -78,7 +78,6 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy {
       if (col.code === selection.element.code) {
         col.selected = true
         this.updateTaxonomyTerm.emit(selection)
-        debugger
       } else {
         col.selected = false
       }

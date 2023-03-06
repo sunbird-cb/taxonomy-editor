@@ -70,7 +70,9 @@ export class TaxonomyViewComponent implements OnInit {
       if (res && res.created) {
         this.showPublish = true
       }
-      console.log(`Dialog result:`, res)
+      res.columnInfo = column,
+      res.parentTerms = this.heightLighted
+      this.frameworkService.setTerm(res);
     })
   }
 
