@@ -27,6 +27,80 @@
     }
 }
 
+.flex-column {
+    flex-direction: column;
+}
+
+.flex-row {
+    flex-direction: row;
+}
+
+.flex-row-reverse {
+    flex-direction: row-reverse;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.flex-2 {
+    flex: 2;
+}
+
+.flex {
+    display: flex;
+}
+
+.padding-s {
+    padding: 8px
+}
+
+.container {
+    padding: 1em;
+}
+
+.side,
+.or {
+    float: left;
+    // height: 6em;
+    text-align: center;
+}
+
+.side {
+    width: 40%;
+}
+
+.or {
+    position: relative;
+    width: 20%;
+}
+
+.or-line {
+    float: left;
+    width: 50%;
+    border-right: 1px solid rgb(68, 50, 50);
+    height: 100%;
+}
+
+.or-label {
+    background: #fff;
+    color: #000;
+    height: 1em;
+    left: 50%;
+    margin-left: -1.25em;
+    margin-top: 2em;
+    padding: .5em;
+    position: absolute;
+    text-transform: uppercase;
+    width: 1em;
+}
+
+.play {
+    padding: 20px;
+    margin: 20% auto auto auto;
+    display: flex;
+}
+
 // ::ng-deep .custom-dialog-container {
 //     .mat-dialog-container {
 //         width: 800px;

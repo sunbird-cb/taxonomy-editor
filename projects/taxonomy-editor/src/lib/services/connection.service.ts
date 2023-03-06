@@ -1,3 +1,3 @@
 import { InjectionToken } from '@angular/core';
-import { IConnection } from '../models/connection.model';
-export const ENVIRONMENT: InjectionToken<IConnection> = new InjectionToken('ENVIRONMENT');
+import { IConnectionType } from '../models/connection-type.model';
+export const ENVIRONMENT: InjectionToken<IConnectionType> = new InjectionToken('ENVIRONMENT');

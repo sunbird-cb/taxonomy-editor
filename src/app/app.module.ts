@@ -17,7 +17,10 @@ import { environment } from 'src/environments/environment'
   imports: [
     BrowserModule,
     AppRoutingModule,
-    TaxonomyEditorModule.forRoot({ endpoint: environment.url, token: environment.token }),
+    TaxonomyEditorModule.forRoot({
+      source: 'online', data:
+        { endpoint: environment.url, token: environment.token, frameworkName: 'devmvp1' }
+    }),
     BrowserAnimationsModule,
     MatButtonModule
   ],

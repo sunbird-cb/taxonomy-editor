@@ -33,6 +33,7 @@ import { LocalConnectionService } from './services/local-connection.service'
 import { ENVIRONMENT } from './services/connection.service'
 // export const LIB_OPTIONS = new InjectionToken<IConnection>('env')
 import { ActionBarComponent } from './components/action-bar/action-bar.component'
+import { IConnectionType } from './models/connection-type.model'
 
 @NgModule({
   declarations: [
@@ -87,7 +88,7 @@ import { ActionBarComponent } from './components/action-bar/action-bar.component
   ]
 })
 export class TaxonomyEditorModule {
-  static forRoot(config: IConnection): ModuleWithProviders {
+  static forRoot(config: IConnectionType): ModuleWithProviders {
     return {
       ngModule: TaxonomyEditorModule,
       providers: [
