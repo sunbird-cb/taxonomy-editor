@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators'
 import { FRAMEWORK } from '../constants/data'
 import { NSFramework } from '../models/framework.model';
@@ -17,6 +17,7 @@ export class FrameworkService {
   // termsByCategory: BehaviorSubject<NSFramework.ITermsByCategory[] | []> = new BehaviorSubject<NSFramework.ITermsByCategory[] | []>([])
   selectedCategoryHash: BehaviorSubject<NSFramework.ISelectedCategory[]> = new BehaviorSubject<NSFramework.ISelectedCategory[]>([])
   currentSelection: BehaviorSubject<{ type: string, data: any, cardRef?: any } | null> = new BehaviorSubject<{ type: string, data: any, cardRef?: any } | null>(null)
+  termSubject: Subject<any>
   list: any[] = []
   environment
   libConfig: IConnection
@@ -27,6 +28,7 @@ export class FrameworkService {
     // @Inject(LibConnectionService) private config
   ) {
     // this.fillCategories()
+  
   }
 
   getFrameworkInfo(): Observable<any> {
@@ -152,4 +154,14 @@ export class FrameworkService {
     /* return the temporary array */
     return tmp;
   }
+
+ setTerm(res){
+    this.termSubject.next(res)
+    localStorage.setItem('term', JSON.stringify(res))
+  }
+
+  getTerm() {
+    return JSON.parse(localStorage.getItem('term')) || ''
+  }
+
 }

@@ -106,39 +106,45 @@ export class CreateTermComponent implements OnInit {
   }
 
   updateTerm() {
+    let associations = []
     this.data.selectedparents.forEach((parent,i) => {
-        const temp = parent.element.children.filter(child => child.identifier === this.selectedTerm.identifier)
-        if(!temp.length && i<this.data.colIndex){
-          let associations = parent.element.children.map(c => {
-            return { identifier:c.identifier }
+        const temp = parent.element.children ? parent.element.children.filter(child => child.identifier === this.selectedTerm.identifier) : null
+        if(temp && !temp.length && i < this.data.colIndex) {
+          associations = parent.element.children.map(c => {
+              return { identifier:c.identifier }
           })
-          associations.push({identifier:this.selectedTerm.identifier})
-          const reguestBody = {
-              request:{
-                term:{
-                  associations: [
-                    ...associations
-                  ]
-                }
+        }
+        associations.push({identifier:this.selectedTerm.identifier})
+        const reguestBody = {
+            request:{
+              term:{
+                associations: [
+                  ...associations
+                ]
               }
-          }
-          this.frameWorkService.updateTerm(this.data.frameworkId, parent.element.category, parent.element.code, reguestBody).subscribe((res:any) => {
-            this.dialogClose(res.result.node_id, false)
-          })
-      }
+            }
+        }
+        this.frameWorkService.updateTerm(this.data.frameworkId, parent.element.category, parent.element.code, reguestBody).subscribe((res:any) => {
+          this.dialogClose(res.result.node_id, false)
+        })
     })
   }
 
   dialogClose(id:string, created:boolean){
     if(id){
-    this.dialogRef.close({
-      name:this.createTermForm.value.name,
-      description:this.createTermForm.value.description,
-      identifier:id,
-      created:created
-    })
-  } else {
-    this.dialogRef.close()
-  }
+      this.frameWorkService.publishFramework().subscribe(res => {
+        console.log('Published!')
+      });
+      this.dialogRef.close({
+        name:this.createTermForm.value.name,
+        description:this.createTermForm.value.description,
+        identifier:id,
+        created:created,
+        status:'Draft'
+      })
+      
+    } else {
+      this.dialogRef.close()
+    }
   }
 }
