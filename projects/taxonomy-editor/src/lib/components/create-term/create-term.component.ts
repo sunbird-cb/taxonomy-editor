@@ -92,6 +92,7 @@ export class CreateTermComponent implements OnInit {
               description:this.createTermForm.value.description,
               category:this.data.columnInfo.code,
               status:'Live',
+              approvalStatus:'Draft',
               parents:[
                 {identifier:`${this.data.frameworkId}_${this.data.columnInfo.code}`}
               ],
@@ -132,9 +133,9 @@ export class CreateTermComponent implements OnInit {
 
   dialogClose(id:string, created:boolean){
     if(id){
-      this.frameWorkService.publishFramework().subscribe(res => {
-        console.log('Published!')
-      });
+      // this.frameWorkService.publishFramework().subscribe(res => {
+      //   console.log('Published!')
+      // });
       this.dialogRef.close({
         name:this.createTermForm.value.name,
         description:this.createTermForm.value.description,
