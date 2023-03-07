@@ -1,0 +1,11 @@
+{
+    "/api/*": {
+      "target": "https://portal.igot-dev.in",
+      "secure": false,
+      "logLevel": "debug",
+      "changeOrigin": true,
+      "pathRewrite": {
+        "/api": "/api"
+      }
+    }
+}

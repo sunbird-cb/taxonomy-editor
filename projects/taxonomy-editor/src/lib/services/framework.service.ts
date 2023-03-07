@@ -33,7 +33,7 @@ export class FrameworkService {
 
   getFrameworkInfo(): Observable<any> {
     if (this.localConfig.connectionType === 'online') {
-      return this.http.get(`${this.localConfig.apiUrl}/api/framework/v1/read/${this.localConfig.frameworkName}`).pipe(
+      return this.http.get(`/api/framework/v1/read/${this.localConfig.frameworkName}`).pipe(
         tap(),
         catchError((err) => {
           throw 'Error in source. Details: ' + err; // Use console.log(err) for detail
@@ -44,20 +44,20 @@ export class FrameworkService {
   }
 
   readTerms(frameworkId, categoryId, requestBody) {
-    return this.http.post(`${this.environment.url}/api/framework/v1/term/search?framework=${frameworkId}&category=${categoryId}`, requestBody).pipe(
+    return this.http.post(`/api/framework/v1/term/search?framework=${frameworkId}&category=${categoryId}`, requestBody).pipe(
       map((res: any) => res.result))
   }
 
   createTerm(frameworkId, categoryId, requestBody) {
-    return this.http.post(`${this.environment.url}/api/framework/v1/term/create?framework=${frameworkId}&category=${categoryId}`, requestBody)
+    return this.http.post(`/api/framework/v1/term/create?framework=${frameworkId}&category=${categoryId}`, requestBody)
   }
 
   updateTerm(frameworkId, categoryId, categoryTermCode, reguestBody) {
-    return this.http.patch(`${this.environment.url}/api/framework/v1/term/update/${categoryTermCode}?framework=${frameworkId}&category=${categoryId}`, reguestBody)
+    return this.http.patch(`/api/framework/v1/term/update/${categoryTermCode}?framework=${frameworkId}&category=${categoryId}`, reguestBody)
   }
 
   publishFramework() {
-    return this.http.post(`${this.environment.url}/api/framework/v1/publish/${this.environment.frameworkName}`, {}, { headers: { 'X-Channel-Id': this.environment.channelId } })
+    return this.http.post(`/api/framework/v1/publish/${this.environment.frameworkName}`, {}, { headers: { 'X-Channel-Id': this.environment.channelId } })
   }
 
   getUuid() {

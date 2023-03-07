@@ -45,19 +45,28 @@ export class TaxonomyViewComponent implements OnInit {
   }
 
   updateTaxonomyTerm(selected: any) {
+    let pos;
     if (this.heightLighted.length === 0) {
       this.heightLighted.push(selected);
       return
     }
-    this.heightLighted.every((cat, i) => {
+    this.heightLighted.forEach((cat, i) => {
       if (cat.element.category.toLowerCase() === selected.element.category.toLowerCase()) {
-        this.heightLighted[i] = selected
-        return false
+        pos = i
+        return
+      } 
+     })
+     if(pos === 0){
+      this.heightLighted[pos] = selected
+      this.heightLighted.splice(pos+1, this.heightLighted.length-pos)
+      return
+     }
+     if(!pos){
+      this.heightLighted.push(selected)
       } else {
-        this.heightLighted.push(selected);
-        return false
+        this.heightLighted.splice(pos+1, this.heightLighted.length-pos)
+        this.heightLighted[pos] = selected
       }
-    })
   }
 
   openCreateTermDialog(column, colIndex) {
