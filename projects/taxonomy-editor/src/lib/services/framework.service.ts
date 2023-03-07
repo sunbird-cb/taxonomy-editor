@@ -53,7 +53,7 @@ export class FrameworkService {
   }
 
   readTerms(frameworkId, categoryId, requestBody) {
-    return this.http.post(`${this.environment.url}/api/framework/v1/term/search?framework=${frameworkId}&category=${categoryId}`, requestBody).pipe(
+    return this.http.post(`/api/framework/v1/term/search?framework=${frameworkId}&category=${categoryId}`, requestBody).pipe(
       map((res: any) => res.result))
   }
 
@@ -62,7 +62,7 @@ export class FrameworkService {
   }
 
   updateTerm(frameworkId, categoryId, categoryTermCode, reguestBody) {
-    return this.http.patch(`${this.environment.url}/api/framework/v1/term/update/${categoryTermCode}?framework=${frameworkId}&category=${categoryId}`, reguestBody)
+    return this.http.patch(`/api/framework/v1/term/update/${categoryTermCode}?framework=${frameworkId}&category=${categoryId}`, reguestBody)
   }
 
   publishFramework() {

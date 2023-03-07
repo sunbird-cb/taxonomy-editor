@@ -66,36 +66,37 @@ export class CreateTermComponent implements OnInit {
     this.disableCreate = true
   }
 
-  saveTerm() {
-    if (this._filter(this.createTermForm.value.name).length > 0) {
-      this.isTermExist = true
-      console.log('Already exist')
-      return
-    }
-    if (this.createTermForm.valid) {
-      const requestBody = {
-        request: {
-          term: {
-            code: this.frameWorkService.getUuid(),
-            name: this.createTermForm.value.name,
-            description: this.createTermForm.value.description,
-            category: this.data.columnInfo.code,
-            status: 'Draft',
-            approvalStatus: 'Draft',
-            parents: [
-              { identifier: `${this.data.frameworkId}_${this.data.columnInfo.code}` }
-            ],
-            additionalProperties: {}
+ saveTerm() {
+      if(this._filter(this.createTermForm.value.name).length>0){
+        this.isTermExist = true
+        console.log('Already exist')
+        return
+      }
+      if(this.createTermForm.valid) {
+        const requestBody =  {
+          request: {
+            term: {
+              code:this.frameWorkService.getUuid(),
+              name:this.createTermForm.value.name,
+              description:this.createTermForm.value.description,
+              category:this.data.columnInfo.code,
+              status:'Live',
+              approvalStatus:'Draft',
+              parents:[
+                {identifier:`${this.data.frameworkId}_${this.data.columnInfo.code}`}
+              ],
+              additionalProperties:{}
+            }
           }
         }
-      }
+      
       this.frameWorkService.createTerm(this.data.frameworkId, this.data.columnInfo.code, requestBody).subscribe((res:any) => {
         requestBody.request.term['identifier'] = res.result.node_id[0]
         this.dialogClose({ term: requestBody.request.term, created: true })
       })
-      
     }
-  }
+    }
+  
 
   updateTerm() {
     let associations = []
