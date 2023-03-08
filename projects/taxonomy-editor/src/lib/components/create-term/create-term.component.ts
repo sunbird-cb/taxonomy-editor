@@ -19,7 +19,7 @@ export class CreateTermComponent implements OnInit {
   createTermForm: FormGroup 
   disableCreate = false
   isTermExist = false
-  selectedTerm
+  selectedTerm:any = {}
    constructor(
     public dialogRef: MatDialogRef<CreateTermComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -28,18 +28,7 @@ export class CreateTermComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // const requestBody = {
-    //   request: {
-    //     search: {
-    //         status: "Draft"
-    //     }
-    // }
-    // } 
-    // debugger
-    // this.frameWorkService.readTerms(this.data.frameworkId, this.data.categoryId, requestBody).subscribe(data => {
-    //    this.termLists = data.terms
-    // })
-   this.termLists = this.data.columnInfo.children
+    this.termLists = this.data.columnInfo.children
     this.initTermForm()
   }
 
@@ -59,7 +48,7 @@ export class CreateTermComponent implements OnInit {
     this.disableCreate = false
     this.isTermExist = false
     this.createTermForm.get('description').enable()
-    this.createTermForm.get('description').patchValue('')
+    // this.createTermForm.get('description').patchValue('')
     const filterValue = typeof(searchTxt)==='object'? this._normalizeValue(searchTxt.name):this._normalizeValue(searchTxt);
     isExist = this.termLists.filter(term => this._normalizeValue(term.name).includes(filterValue));
     return isExist
@@ -101,7 +90,9 @@ export class CreateTermComponent implements OnInit {
           }
         }
         this.frameWorkService.createTerm(this.data.frameworkId, this.data.columnInfo.code, requestBody).subscribe((res:any) => {
-          this.dialogClose(res.result.node_id[0], true)
+          // this.publisheFramework(res.result.node_id[0], true)
+          this.selectedTerm['identifier'] = res.result.node_id[0];
+          this.updateTerm()
         })
       }
   }
@@ -126,16 +117,15 @@ export class CreateTermComponent implements OnInit {
             }
         }
         this.frameWorkService.updateTerm(this.data.frameworkId, parent.element.category, parent.element.code, reguestBody).subscribe((res:any) => {
-          this.dialogClose(res.result.node_id, false)
+          if( this.data.selectedparents.length - 1  === i){
+            this.publisheFramework(res.result.node_id, false)
+          }
         })
     })
   }
 
   dialogClose(id:string, created:boolean){
     if(id){
-      // this.frameWorkService.publishFramework().subscribe(res => {
-      //   console.log('Published!')
-      // });
       this.dialogRef.close({
         name:this.createTermForm.value.name,
         description:this.createTermForm.value.description,
@@ -143,9 +133,13 @@ export class CreateTermComponent implements OnInit {
         created:created,
         status:'Draft'
       })
-      
     } else {
       this.dialogRef.close()
     }
+  }
+  publisheFramework(id:string, created:boolean){
+      this.frameWorkService.publishFramework().subscribe(res => {
+        this.dialogClose(id, created)
+      });
   }
 }

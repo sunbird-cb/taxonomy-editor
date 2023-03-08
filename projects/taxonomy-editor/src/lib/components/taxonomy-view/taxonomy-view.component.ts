@@ -28,20 +28,20 @@ export class TaxonomyViewComponent implements OnInit {
     //   this.frameworkCode = res.result.framework.code
     // })
     this.frameworkService.fillCategories()
-    this.mapping = {
-      board: {
-        box0card0: ['asd', 'box1card2', 'box1card3']
-      },
-      medium: {
-        box1card1: ['box2card5', 'box2card7', 'box2card9']
-      },
-      grade: {
-        box2card7: ['box3card2', 'box3card3', 'box3card10']
-      },
-      subject: {
+    // this.mapping = {
+    //   board: {
+    //     box0card0: ['asd', 'box1card2', 'box1card3']
+    //   },
+    //   medium: {
+    //     box1card1: ['box2card5', 'box2card7', 'box2card9']
+    //   },
+    //   grade: {
+    //     box2card7: ['box3card2', 'box3card3', 'box3card10']
+    //   },
+    //   subject: {
 
-      }
-    }
+    //   }
+    // }
   }
 
   updateTaxonomyTerm(selected: any) {
@@ -76,12 +76,13 @@ export class TaxonomyViewComponent implements OnInit {
       panelClass: 'custom-dialog-container'
     })
     dialog.afterClosed().subscribe(res => {
-      if (res && res.created) {
-        this.showPublish = true
-      }
+      // if (res && res.created) {
+      //   this.showPublish = true
+      // }
       res.columnInfo = column,
       res.parentTerms = this.heightLighted
       this.frameworkService.setTerm(res);
+      this.init()
     })
   }
 
