@@ -17,7 +17,7 @@ export class FrameworkService {
   // termsByCategory: BehaviorSubject<NSFramework.ITermsByCategory[] | []> = new BehaviorSubject<NSFramework.ITermsByCategory[] | []>([])
   selectedCategoryHash: BehaviorSubject<NSFramework.ISelectedCategory[]> = new BehaviorSubject<NSFramework.ISelectedCategory[]>([])
   currentSelection: BehaviorSubject<{ type: string, data: any, cardRef?: any } | null> = new BehaviorSubject<{ type: string, data: any, cardRef?: any } | null>(null)
-  termSubject: Subject<any>
+  // termSubject: Subject<any>
   list: any[] = []
   environment
   libConfig: IConnection
@@ -156,7 +156,7 @@ export class FrameworkService {
   }
 
  setTerm(res){
-    this.termSubject.next(res)
+    // this.termSubject.next(res)
     localStorage.setItem('term', JSON.stringify(res))
   }
 
