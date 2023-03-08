@@ -19,8 +19,8 @@ export class CreateTermComponent implements OnInit {
   createTermForm: FormGroup
   disableCreate = false
   isTermExist = false
-  selectedTerm
-  constructor(
+  selectedTerm:any = {}
+   constructor(
     public dialogRef: MatDialogRef<CreateTermComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private frameWorkService: FrameworkService,
@@ -49,7 +49,7 @@ export class CreateTermComponent implements OnInit {
     this.isTermExist = false
     this.createTermForm.get('description').enable()
     // this.createTermForm.get('description').patchValue('')
-    const filterValue = typeof (searchTxt) === 'object' ? this._normalizeValue(searchTxt.name) : this._normalizeValue(searchTxt);
+    const filterValue = typeof(searchTxt)==='object'? this._normalizeValue(searchTxt.name):this._normalizeValue(searchTxt);
     isExist = this.termLists.filter(term => this._normalizeValue(term.name).includes(filterValue));
     return isExist
   }
