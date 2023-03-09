@@ -15,10 +15,11 @@ import { LocalConnectionService } from './local-connection.service';
 export class FrameworkService {
   categoriesHash: BehaviorSubject<NSFramework.ICategory[] | []> = new BehaviorSubject<NSFramework.ICategory[] | []>([])
   // termsByCategory: BehaviorSubject<NSFramework.ITermsByCategory[] | []> = new BehaviorSubject<NSFramework.ITermsByCategory[] | []>([])
-  selectedCategoryHash: BehaviorSubject<NSFramework.ISelectedCategory[]> = new BehaviorSubject<NSFramework.ISelectedCategory[]>([])
+  isDataUpdated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false)
   currentSelection: BehaviorSubject<{ type: string, data: any, cardRef?: any } | null> = new BehaviorSubject<{ type: string, data: any, cardRef?: any } | null>(null)
-  termSubject: Subject<any>
-  list: any[] = []
+  termSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null)
+  list = new Map<string, NSFramework.IColumnView>();
+  selectionList = new Map<string, NSFramework.IColumnView>();
   environment
   libConfig: IConnection
   frameworkId: string;
@@ -28,7 +29,7 @@ export class FrameworkService {
     // @Inject(LibConnectionService) private config
   ) {
     // this.fillCategories()
-  
+
   }
 
   getFrameworkInfo(): Observable<any> {
@@ -80,32 +81,35 @@ export class FrameworkService {
     this.resetAll()
     this.getFrameworkInfo().subscribe(response => {
       this.frameworkId = response.result.framework.code;
-      console.log('response', response);
-      // const obj = FRAMEWORK;
-      // const columns: NSFramework.IColumnView[] = [];
-      // const obj = response
-      (response.result.framework.categories).forEach(a => {
-        this.list.push({
-          code: a.code,
-          identifier: a.identifier,
-          index: a.index,
-          name: a.name,
-          status: a.status as NSFramework.TNodeStatus,
-          description: a.description,
-          translations: a.translations,
-          children: (a.terms || []).map(c => {
-            const associations = c.associations || []
-            if (associations.length > 0) {
-              Object.assign(c, { children: associations })
-              delete c.associations
-            }
-            return c
-          }),
-        })
-
+      // console.log('response', response);
+      // // const obj = FRAMEWORK;
+      // // const columns: NSFramework.IColumnView[] = [];
+      // // const obj = response
+      (response.result.framework.categories).forEach((a, idx) => {
+        if (idx <= 4) {
+          this.list.set(a.code, {
+            code: a.code,
+            identifier: a.identifier,
+            index: a.index,
+            name: a.name,
+            selected: a.selected,
+            status: a.status as NSFramework.TNodeStatus,
+            description: a.description,
+            translations: a.translations,
+            children: (a.terms || []).map(c => {
+              const associations = c.associations || []
+              if (associations.length > 0) {
+                Object.assign(c, { children: associations })
+                delete c.associations
+              }
+              return c
+            }),
+          })
+        }
       })
-      this.categoriesHash.next(this.list.map(a => {
-        return {
+      const allCategories = []
+      this.list.forEach(a => {
+        allCategories.push({
           code: a.code,
           identifier: a.identifier,
           index: a.index,
@@ -113,10 +117,11 @@ export class FrameworkService {
           status: a.status as NSFramework.TNodeStatus,
           description: a.description,
           translations: a.translations,
-        } as NSFramework.ICategory
-      }))
+        } as NSFramework.ICategory)
+      })
+      this.categoriesHash.next(allCategories)
     }, () => {
-      this.list = []
+      this.list.clear()
       this.categoriesHash.next([])
     })
   }
@@ -127,13 +132,23 @@ export class FrameworkService {
     let categoryLength = this.categoriesHash.getValue().length
     return (currentIndex + 1) <= categoryLength ? this.categoriesHash.getValue()[currentIndex + 1] : null
   }
+  getPreviousCategory(currentCategory: string) {
+    const currentIndex = this.categoriesHash.value.findIndex((a: NSFramework.ICategory) => {
+      return a.code === currentCategory
+    })
+    return (currentIndex - 1) >= 0 ? this.categoriesHash.getValue()[currentIndex - 1] : null
+  }
+  getParentTerm(currentCategory: string) {
+    const parent = this.getPreviousCategory(currentCategory) || null
+    return parent ? this.selectionList.get(parent.code) : null
+  }
   childClick(event: { type: string, data: any }) {
     this.currentSelection.next(event)
   }
   resetAll() {
     this.categoriesHash.next([])
     this.currentSelection.next(null)
-    this.list = []
+    this.list.clear()
   }
   isLastColumn(colCode) {
     return this.categoriesHash.value && (this.categoriesHash.value.findIndex((a: NSFramework.ICategory) => {
@@ -154,14 +169,24 @@ export class FrameworkService {
     /* return the temporary array */
     return tmp;
   }
-
- setTerm(res){
+  set setTerm(res: any) {
     this.termSubject.next(res)
-    localStorage.setItem('term', JSON.stringify(res))
+    let oldTerms = ([...this.getTerm] || [])
+    oldTerms.push(res)
+    localStorage.setItem('terms', JSON.stringify(oldTerms))
   }
 
-  getTerm() {
-    return JSON.parse(localStorage.getItem('term')) || ''
+  get getTerm(): any[] {
+    return JSON.parse(localStorage.getItem('terms')) || []
+  }
+  getLocalTermsByParent(parentCode: string): any[] {
+    const filteredData = this.getTerm.filter(x => {
+      return x.parent && x.parent.category === parentCode
+    }) || [];
+
+    return filteredData.map(x => {
+      return x.term
+    })
   }
 
 }

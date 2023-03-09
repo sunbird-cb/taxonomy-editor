@@ -52,10 +52,12 @@ export class ConnectorService {
   // }
 
   constructor(private frameworkService: FrameworkService) { 
-    this.frameworkService.list.map(list => {
+    // need to uncomment
+    this.frameworkService.list.forEach(list => {
       this.connectorMap['box'+list.index]= {}
     })
-    console.log('connectorMap -------', this.connectorMap)
+
+    // console.log('connectorMap -------', this.connectorMap)
     // this.elmWrapper = document.getElementsByClassName('heightFix');
   }
 
