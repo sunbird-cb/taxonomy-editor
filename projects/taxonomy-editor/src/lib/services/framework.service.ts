@@ -237,4 +237,11 @@ export class FrameworkService {
 
   }
 
+  removeOldLine() {
+    const eles = Array.from(document.getElementsByClassName('leader-line') || [])
+    if(eles.length>0){
+        eles.forEach(ele => ele.remove());
+    }
+  }
+
 }

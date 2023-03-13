@@ -5,7 +5,7 @@
 </ng-container>
 
 <ng-template #cardMinimal>
-    <div #cardRef class="term-card clickable" (click)="cardClicked(data, cardRef)" [ngClass]="{'selected': data.children.selected}" id="{{data.children.name}}">
+    <div #cardRef class="term-card clickable" (click)="cardClicked(data, cardRef)" [ngClass]="[data.children.selected?'selected':'', data.children.approvalStatus === 'Draft'? 'inDraft':'']" id="{{data.children.name}}">
         <!-- (click)="data.selected=!data.selected" -->
         <span>{{data.children.name}}</span>
         <!-- <span>++{{data.children.selected}}+++</span>

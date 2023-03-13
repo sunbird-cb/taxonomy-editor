@@ -1,0 +1,61 @@
+@import "projects/taxonomy-editor/src/styles/variable";
+
+.pending-approval {
+    padding:0 15px;
+    h2 {
+        font-weight:400;
+    }
+    .mat-tab-group {
+        ::ng-deep .mat-tab-header {
+            background-color:$white;
+            .mat-tab-label {
+            padding: 0 10px;
+                .mat-tab-label-content{
+                    color:$black;
+                }
+                &-active{
+                    background: $white;
+                    .mat-tab-label-content{
+                        color:$black
+                    }
+                }
+            }
+        }
+    }
+
+    .mat-card {
+        background: $light-grey;
+        margin-top: 10px;
+    }
+    .mat-card-content{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+        h4 {
+            text-transform: capitalize;
+        }
+    }
+    .col {
+        display: flex;
+        flex-direction: column;
+        padding-right: 100px;
+        div {
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+    }
+
+}
+
+    ::ng-deep .custom-tooltip {
+        font-size: 18px;
+        background: $white !important;
+        color:$black !important;
+        padding:10px 0;
+    }
+    ::ng-deep .mat-icon{
+        font-size: 40px;
+        color:$dark-grey;
+        cursor: pointer;
+    }

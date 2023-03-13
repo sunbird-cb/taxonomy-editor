@@ -1,0 +1,22 @@
+@import "projects/taxonomy-editor/src/styles/variable";
+
+.approval-container {
+    padding: 0;
+    .mat-tab-group {
+        ::ng-deep .mat-tab-header {
+            background-color: $light-grey;
+            .mat-tab-label {
+                padding:30px 0;
+                .mat-tab-label-content{
+                    color:$black;
+                }
+                &-active{
+                    background: $grey;
+                    .mat-tab-label-content{
+                        color:$white
+                    }
+                }
+            }
+        }
+    }
+}

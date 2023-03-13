@@ -21,3 +21,8 @@
 .clickable {
     cursor: pointer;
 }
+
+.inDraft{
+    border-color: #1ed11e;
+    background: #d9f7db;
+}

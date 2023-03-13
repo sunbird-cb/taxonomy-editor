@@ -7,6 +7,9 @@ import { LocalConnectionService } from '../../services/local-connection.service'
 import { IConnectionType } from '../../models/connection-type.model';
 import { Subscription } from 'rxjs';
 import { ConnectorService } from '../../services/connector.service';
+import { ApprovalService } from '../../services/approval.service';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'lib-taxonomy-view',
   templateUrl: './taxonomy-view.component.html',
@@ -20,12 +23,15 @@ export class TaxonomyViewComponent implements OnInit {
   showPublish = false
   newTermSubscription: Subscription = null
   loaded: any = {}
-  constructor(
-    private frameworkService: FrameworkService, 
-    private localSvc: LocalConnectionService,
-    public dialog: MatDialog,
-    private connectorSvc: ConnectorService,
-  ) { }
+  showActionBar = false
+  approvalRequiredTerms = []
+  constructor(private frameworkService: FrameworkService, 
+    private localSvc: LocalConnectionService, 
+    public dialog: MatDialog, 
+    private approvalService: ApprovalService,
+    private router: Router,
+    private _snackBar: MatSnackBar,
+    private connectorSvc: ConnectorService) { }
 
   ngOnInit() {
     this.init()
@@ -45,21 +51,6 @@ export class TaxonomyViewComponent implements OnInit {
         this.loaded[cat.code] = true
       })
     })
-
-    this.mapping = {
-      board: {
-        box0card0: ['asd', 'box1card2', 'box1card3']
-      },
-      medium: {
-        box1card1: ['box2card5', 'box2card7', 'box2card9']
-      },
-      grade: {
-        box2card7: ['box3card2', 'box3card3', 'box3card10']
-      },
-      subject: {
-
-      }
-    }
     // this.newTermSubscription = this.frameworkService.termSubject.subscribe((term: any) => {
     //   // if (term)
     //   this.updateTerms()
@@ -239,6 +230,26 @@ export class TaxonomyViewComponent implements OnInit {
         this.localSvc.localStorage = res
         this.init()
       }
+    })
+  }
+
+  updateDraftStatusTerms(draftTerms){
+    draftTerms.forEach((dt,i) => {
+      let temp = this.approvalRequiredTerms.filter(t => t.identifier === dt.identifier )
+      if(!temp.length){
+        this.approvalRequiredTerms.push(dt)
+      }
+    })
+  }
+
+  sendForApproval(){
+    console.log(this.approvalRequiredTerms)
+    const req = {
+      updateFieldValues:this.approvalRequiredTerms
+    }
+    this.approvalService.createApproval(req).subscribe(res => {
+      this._snackBar.open('Terms successfully sent for Approval.', 'cancel')
+      this.router.navigate(['/approval'])
     })
   }
 }

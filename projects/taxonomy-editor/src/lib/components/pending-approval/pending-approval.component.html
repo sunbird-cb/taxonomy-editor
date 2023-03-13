@@ -1,0 +1,20 @@
+<div class="pending-approval">
+    <header class="mat-header">
+        <h2>Pending For approval</h2>
+    </header>
+    <mat-tab-group mat-align-tabs="center" animationDuration="0ms">
+        <mat-tab label="Sent for approval" active> 
+            <mat-card>
+                <mat-card-content>
+                   <div *ngFor="let p of approvalList" class="col">
+                        <h4>{{p.name}}</h4>
+                        <div  matTooltip="{{getTerms(p.terms)}}" matTooltipPosition="above" matTooltipClass="custom-tooltip">{{p.terms[0].name}} & {{p.terms.length-1}} more...</div>
+                    </div> 
+                    <mat-icon>keyboard_arrow_right</mat-icon>
+                </mat-card-content>
+            </mat-card>
+        </mat-tab>
+        <mat-tab label="Approved"> Approved </mat-tab>
+        <mat-tab label="Rejected"> Rejected </mat-tab>
+    </mat-tab-group>
+</div>

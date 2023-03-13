@@ -16,6 +16,7 @@ export class TokenInterceptorService {
       setHeaders: {  
         Authorization: env.authToken,  
         // channelId: env.channelId
+        userToken:env.userToken
       }  
     }); 
     return next.handle(request)

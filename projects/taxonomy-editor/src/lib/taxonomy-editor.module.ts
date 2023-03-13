@@ -12,7 +12,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog'
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-
+import { MatTabsModule, MAT_TABS_CONFIG } from '@angular/material/tabs';
+import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { DashboardComponent } from './containers/dashboard/dashboard.component'
 import { FrameworkService } from './services/framework.service'
@@ -34,6 +36,8 @@ import { ENVIRONMENT } from './services/connection.service'
 // export const LIB_OPTIONS = new InjectionToken<IConnection>('env')
 import { ActionBarComponent } from './components/action-bar/action-bar.component'
 import { IConnectionType } from './models/connection-type.model'
+import { ApprovalComponent } from './components/approval/approval.component';
+import { PendingApprovalComponent } from './components/pending-approval/pending-approval.component'
 
 @NgModule({
   declarations: [
@@ -49,7 +53,9 @@ import { IConnectionType } from './models/connection-type.model'
     CategoriesPreviewComponent,
     CreateTermComponent,
     ConnectorComponent,
-    ActionBarComponent
+    ActionBarComponent,
+    ApprovalComponent,
+    PendingApprovalComponent
   ],
   imports: [
     BrowserModule,
@@ -65,11 +71,16 @@ import { IConnectionType } from './models/connection-type.model'
     DragDropModule,
     MatAutocompleteModule,
     MatSelectModule,
-    HttpClientModule
+    HttpClientModule,
+    MatTabsModule,
+    MatSnackBarModule,
+    MatTooltipModule
   ],
   providers: [
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },
+    {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2000}},
+    { provide: MAT_TABS_CONFIG, useValue: { animationDuration: '0ms' }},
     FrameworkService,
     ConnectorService,
     LocalConnectionService,
