@@ -157,7 +157,7 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy {
       }
 
     }
-
+    this.connectorService.updateConnectorsMap(this.connectorMapping)
   }
   removeConnectors(currentElement, prevCol, currentIndex) {
     console.log('prevCol ------------', prevCol)
@@ -170,6 +170,8 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy {
             if (element != currentElement && prevCol  == key)
             {
               await element.line && element.line.remove();
+              // await element.line && element.line.hide()
+              // element.line = null;
               lines.splice(index, 1);
             }
           });
@@ -182,10 +184,12 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy {
         if (this.connectorMapping[nextCol] && this.connectorMapping[nextCol].lines && this.connectorMapping[nextCol].lines.length > 0) {
           const lines = this.connectorMapping[nextCol].lines
           lines.forEach(async (element, index) => {
-              await element.line && element.line.remove();
-              lines.splice(index, 1);
+            await element.line && element.line.remove()
+            // await element.line && element.line.hide()
+            // element.line = null;
+            lines.splice(index, 1);
           })
-          this.connectorMapping[nextCol].lines = null
+          this.connectorMapping[nextCol].lines = []
         }
       }
      

@@ -5,6 +5,7 @@ import { CreateTermComponent } from '../create-term/create-term.component';
 import { ConnectorComponent } from '../connector/connector.component';
 import { LocalConnectionService } from '../../services/local-connection.service';
 import { IConnectionType } from '../../models/connection-type.model';
+import { ConnectorService } from '../../services/connector.service';
 
 @Component({
   selector: 'lib-taxonomy-view',
@@ -16,7 +17,12 @@ export class TaxonomyViewComponent implements OnInit {
   mapping = {};
   heightLighted = []
   showPublish = false
-  constructor(private frameworkService: FrameworkService, private localSvc: LocalConnectionService, public dialog: MatDialog) { }
+  constructor(
+    private frameworkService: FrameworkService,
+    private localSvc: LocalConnectionService,
+    public dialog: MatDialog,
+    private connectorSvc : ConnectorService
+  ) { }
 
   ngOnInit() {
     this.init()
@@ -27,6 +33,7 @@ export class TaxonomyViewComponent implements OnInit {
     //   this.frameworkData = res.result.framework.categories
     //   this.frameworkCode = res.result.framework.code
     // })
+    this.connectorSvc.removeAllLines()
     this.frameworkService.fillCategories()
     // this.mapping = {
     //   board: {
