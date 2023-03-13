@@ -129,7 +129,6 @@ export class CreateTermComponent implements OnInit {
       // this.frameWorkService.updateTerm(this.data.frameworkId, parent.element.category, parent.element.code, reguestBody).subscribe((res: any) => {
       //   this.dialogClose(res.result.node_id, false)
       // })
-      debugger
       this.dialogRef.close({ term: this.selectedTerm, created: true })
     // })
   }

@@ -132,7 +132,6 @@ export class TaxonomyViewComponent implements OnInit {
         panelClass: 'custom-dialog-container'
       })
       dialog.afterClosed().subscribe(res => {
-        debugger
         if (res && res.created) {
           this.showPublish = true
         }
@@ -145,7 +144,6 @@ export class TaxonomyViewComponent implements OnInit {
         }
         this.frameworkService.setTerm = res;
         this.updateFinalList({ selectedTerm: res.term, isSelected: false, parentData: res.parent })
-        debugger
         // this.frameworkService.insertUpdateDeleteNotifier.next({ type: 'insert', action: res.parent.code, data: res.term })
       })
     }
