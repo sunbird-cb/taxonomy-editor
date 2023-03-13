@@ -26,7 +26,7 @@ export class TermCardComponent implements OnInit {
   constructor(private frameworkService: FrameworkService) { }
 
   ngOnInit() {
-    // console.log(this._data)
+    console.log(this._data)
   }
 
   cardClicked(data: any, cardRef: any) {

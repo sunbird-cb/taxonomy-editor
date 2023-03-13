@@ -4,7 +4,7 @@
     </button>
 </div>
 
-<div *ngIf="list && list.length > 0 && !loading" class="flex heightFix ">
+<div *ngIf="list && list.length > 0" class="flex heightFix ">
     <ng-container *ngFor="let column of list; let i = index;">
         <div class="flex-1 felx-col  col-container" id="box{{i+1}}Container">
             <div class="category-heading-sticky">
@@ -18,7 +18,7 @@
             </div>
             <!-- {{column.code}} -->
             <div class="padding-x2 cat-columns container" id="box{{i+1}}">
-                <lib-taxonomy-column-view #selectedTaxonomyTerm [column]="column" [containerId]="'box'+(i+1)" (updateTaxonomyTerm)="updateTaxonomyTerm($event)">
+                <lib-taxonomy-column-view *ngIf="loaded[column.code]" #selectedTaxonomyTerm [column]="column" [containerId]="'box'+(i+1)" (updateTaxonomyTerm)="updateTaxonomyTerm($event)">
                 </lib-taxonomy-column-view>
             </div>
         </div>

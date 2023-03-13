@@ -18,7 +18,7 @@ export class TaxonomyViewComponent implements OnInit {
   localList = []
   showPublish = false
   newTermSubscription: Subscription = null
-  loading = false
+  loaded: any = {}
   constructor(private frameworkService: FrameworkService, private localSvc: LocalConnectionService, public dialog: MatDialog) { }
 
   ngOnInit() {
@@ -32,8 +32,13 @@ export class TaxonomyViewComponent implements OnInit {
     //   this.frameworkData = res.result.framework.categories
     //   this.frameworkCode = res.result.framework.code
     // })
-    this.frameworkService.fillCategories()
-    
+    this.frameworkService.getFrameworkInfo().subscribe(res => {
+      this.updateLocalData()
+      this.frameworkService.categoriesHash.value.forEach(cat => {
+        this.loaded[cat.code] = true
+      })
+    })
+
     this.mapping = {
       board: {
         box0card0: ['asd', 'box1card2', 'box1card3']
@@ -55,7 +60,10 @@ export class TaxonomyViewComponent implements OnInit {
   }
 
   updateTaxonomyTerm(data: { selectedTerm: any, isSelected: boolean }) {
+
     this.updateFinalList(data)
+    this.updateSelection(data.selectedTerm.category, data.selectedTerm.code)
+
     // if (this.heightLighted.length === 0) {
     //   this.heightLighted.push(data.selectedTerm);
     //   return
@@ -70,31 +78,47 @@ export class TaxonomyViewComponent implements OnInit {
     //   }
     // })
   }
+  updateSelection(category: string, selectedTermCode: string) {
+    this.frameworkService.list.get(category).children.map(item => {
+      item.selected = selectedTermCode === item.code ? true : false
+      return item
+    })
+  }
+
+  //need to refactor at heigh level
   updateFinalList(data: { selectedTerm: any, isSelected: boolean, parentData?: any }) {
     if (data.isSelected) {
+      // data.selectedTerm.selected = data.isSelected
       this.frameworkService.selectionList.set(data.selectedTerm.category, data.selectedTerm)
       const next = this.frameworkService.getNextCategory(data.selectedTerm.category)
       if (next && next.code) {
         this.frameworkService.selectionList.delete(next.code)
       }
+      // notify next
+      this.frameworkService.insertUpdateDeleteNotifier.next({ action: data.selectedTerm.category, type: 'select', data: data.selectedTerm })
     }
     // insert in colum 
-    if (data.parentData) {
-      this.frameworkService.list.get(data.selectedTerm.category).children.push(data.selectedTerm)
-      const parent = this.frameworkService.getPreviousCategory(data.selectedTerm.category)
-      if (parent && parent.code) {
-        // insert in parent 
-        this.frameworkService.list.get(parent.code).children.map(a => {
-          if (data.parentData && a.identifier === data.parentData.identifier) {
-            if (!a.children) {
-              a.children = []
-            }
-            a.children.push(data.selectedTerm)
-          }
-        })
-        this.frameworkService.isDataUpdated.next(true)
-      }
-    }
+    // if (data.parentData) {
+    //   this.frameworkService.list.get(data.selectedTerm.category).children.push(data.selectedTerm)
+    //   const parent = this.frameworkService.getPreviousCategory(data.selectedTerm.category)
+    //   if (parent && parent.code) {
+    //     // insert in parent 
+    //     this.frameworkService.list.get(parent.code).children.map(a => {
+    //       if (data.parentData && a.code === data.parentData.code) {
+    //         if (!a.children) {
+    //           a.children = []
+    //         }
+    //         a.children.push(data.selectedTerm)
+    //       }
+    //     })
+    //     this.frameworkService.isDataUpdated.next(true)
+    //   }
+    // } else if (!data.parentData && !data.isSelected) {
+    //   this.frameworkService.list.get(data.selectedTerm.category).children.push(data.selectedTerm)
+    // }
+    setTimeout(() => {
+      this.loaded[data.selectedTerm.category] = true
+    }, 100);
 
   }
   isEnabled(columnCode: string): boolean {
@@ -112,30 +136,39 @@ export class TaxonomyViewComponent implements OnInit {
         if (res && res.created) {
           this.showPublish = true
         }
+        this.loaded[res.term.category] = false
         // wait
         const parentColumn = this.frameworkService.getPreviousCategory(res.term.category)
-        res.parent = this.frameworkService.selectionList.get(parentColumn.code)
+        res.parent = null
+        if (parentColumn) {
+          res.parent = this.frameworkService.selectionList.get(parentColumn.code)
+        }
         this.frameworkService.setTerm = res;
         this.updateFinalList({ selectedTerm: res.term, isSelected: false, parentData: res.parent })
-
+        debugger
+        // this.frameworkService.insertUpdateDeleteNotifier.next({ type: 'insert', action: res.parent.code, data: res.term })
       })
     }
   }
 
   get list(): any[] {
     // console.log('this.frameworkService.list :: ',this.frameworkService.list)
-    if (this.localList.length === 0) {
-      this.updateLocalData()
-    }
-    return this.localList
+    // if (this.localList.length === 0) {
+    //   this.updateLocalData()
+    // }
+    // return this.localList
+    return Array.from(this.frameworkService.list.values())
   }
 
+  getColumn(columnCode: string) {
+    return this.frameworkService.list.get(columnCode)
+  }
   updateLocalData() {
-    this.localList = Array.from(this.frameworkService.list.values()).map(lst => {
-      const selectedTerm = this.frameworkService.selectionList.get(lst.code)
-      lst.children.map(ch => { ch.selected = selectedTerm && ch.identifier === selectedTerm.identifier })
-      return lst
-    })
+    // this.localList = Array.from(this.frameworkService.list.values()).map(lst => {
+    //   const selectedTerm = this.frameworkService.selectionList.get(lst.code)
+    //   lst.children.map(ch => { ch.selected = selectedTerm && ch.identifier === selectedTerm.identifier })
+    //   return lst
+    // })
 
   }
 

@@ -8,7 +8,7 @@ import { ConnectorService } from '../../services/connector.service';
   templateUrl: './taxonomy-column-view.component.html',
   styleUrls: ['./taxonomy-column-view.component.scss']
 })
-export class TaxonomyColumnViewComponent implements OnInit, OnDestroy,OnChanges {
+export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges {
   @Input() column: any
   @Input() containerId: string
   connectorMapping: any = {}
@@ -22,7 +22,7 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy,OnChanges 
   ) {
   }
   ngOnChanges(changes: SimpleChanges): void {
-   console.log(changes)
+    console.log(changes)
   }
 
 
@@ -45,31 +45,41 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy,OnChanges 
       if (!e) {
         return
       } else if (e.type === this.column.code) {
-        debugger
+        // debugger
         this.updateTaxonomyTerm.emit({ isSelected: true, selectedTerm: e.data })
         this.setConnectors(e.cardRef, this.columnData, 'SINGLE')
         return
         // console.log("SKIP: from subscription===>", "FOR " + this.category, e)
       } else {
-        const next = this.frameworkService.getNextCategory(e.type)
-
-        // console.log("ADD: from subscription===>", "FOR " + this.category, next, this.children)
+        const next = this.frameworkService.getNextCategory(e.type);
+        // // console.log("ADD: from subscription===>", "FOR " + this.category, next, this.children)
         if (next && next.code === this.column.code) {
-          // console.log('matched===========>', this.column.code)
-          this.columnData = (e.data.children || [])
-            .filter(x => {
-              return x.category == this.column.code
-            }).map(mer => {
-              //**read local children for next */
-              const nextChildren = this.frameworkService.getLocalTermsByParent(this.column.code)
-              console.log("Saved ======================+>", nextChildren)
-              /**reset Next level children */
-              this.column.children = this.column.children.map(col => { col.selected = false; return col })
-              mer.selected = false
-              mer.children = ([...this.column.children.filter(x => { return x.code === mer.code }).map(a => a.children)].shift() || [])
-              return mer
-            })
-          // this.updateTerms()
+          //   const back = this.frameworkService.getPreviousCategory(this.column.code)
+          //   console.log('current Saved ===========>', this.frameworkService.getLocalTermsByCategory(this.column.code))
+          //   const localTerms = []
+          //   this.frameworkService.getLocalTermsByCategory(this.column.code).forEach(f => {
+          // debugger
+          //     const lst = back ? this.frameworkService.selectionList.get(back.code) : null; //can use current
+          //     if (lst && f.parent.identifier === lst.identifier) {
+          //       localTerms.push(f.term)
+          //     }
+          //   })
+          //   // get last parent and filter Above
+
+          //   this.columnData = [...localTerms, ...(e.data.children || [])]
+          //     .filter(x => {
+          //       return x.category == this.column.code
+          //     }).map(mer => {
+          //       //**read local children for next */
+          //       // const nextChildren = this.frameworkService.getLocalTermsByParent(this.column.code)
+          //       // console.log("Saved ======================+>", nextChildren)
+          //       /**reset Next level children */
+          //       // this.column.children = this.column.children.map(col => { col.selected = false; return col })
+          //       // mer.selected = false
+          //       mer.children = ([...this.column.children.filter(x => { return x.code === mer.code }).map(a => a.children)].shift() || [])
+          //       return mer
+          //     })
+          //   // this.updateTerms()
           setTimeout(() => {
             this.setConnectors(e.cardRef, next && next.index < this.column.index ? [] : this.columnData, 'ALL')
           }, 100);
@@ -81,7 +91,50 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy,OnChanges 
         }
       }
     })
- 
+    if (this.newTermSubscription) {
+      this.newTermSubscription.unsubscribe()
+    }
+    this.newTermSubscription = this.frameworkService.insertUpdateDeleteNotifier.subscribe(e => {
+      if (e && e.action) {
+        const next = this.frameworkService.getNextCategory(e.action);
+        if (this.column.code === next.code && e.type === 'select') {
+          this.insertUpdateHandler(e, next)
+        }
+      }
+    })
+  }
+  insertUpdateHandler(e, next) {
+    debugger
+    const back = this.frameworkService.getPreviousCategory(this.column.code)
+    console.log('current Saved ===========>', this.frameworkService.getLocalTermsByCategory(this.column.code))
+    const localTerms = []
+    this.frameworkService.getLocalTermsByCategory(this.column.code).forEach(f => {
+      const selectedParent = back ? this.frameworkService.selectionList.get(back.code) : null; //can use current
+      if (selectedParent && ((f.parent.code === selectedParent.code) || (f.parent.identifier && (f.parent.identifier === selectedParent.identifier)))) {
+        localTerms.push(f.term)
+      }
+    })
+    // get last parent and filter Above
+
+    this.columnData = [...localTerms, ...(e.data.children || [])]
+      .filter(x => {
+        return x.category == this.column.code
+      }).map(mer => {
+        //**read local children for next */
+        // const nextChildren = this.frameworkService.getLocalTermsByParent(this.column.code)
+        // console.log("Saved ======================+>", nextChildren)
+        /**reset Next level children */
+        // this.column.children = this.column.children.map(col => { col.selected = false; return col })
+        // mer.selected = false
+        mer.children = ([...this.column.children.filter(x => { return x.code === mer.code }).map(a => a.children)].shift() || [])
+        return mer
+      })
+    // this.updateTerms()
+
+    // console.log(this.columnData)
+
+
+
   }
   updateSelection1(data: any) { }
   updateSelection(selection: any) {
@@ -100,6 +153,7 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy,OnChanges 
     //   }
     //   return col
     // })
+    console.log(selection)
   }
 
   get columnItems() {
