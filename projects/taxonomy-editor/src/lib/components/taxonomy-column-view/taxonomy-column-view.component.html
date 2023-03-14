@@ -3,7 +3,7 @@
         <div #cardEle id="{{column.code}}Card{{j+1}}" >
             <lib-term-card
                 [data]="{'children': child, 'selected' : false, 'category':column.code, cardSubType: 'minimal'}"
-                (isSelected)="updateSelection1($event)">
+                (isSelected)="selected($event)">
             </lib-term-card>
         </div>
     </ng-container>

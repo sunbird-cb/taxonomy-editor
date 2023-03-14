@@ -8,8 +8,6 @@
     <div #cardRef class="term-card clickable" (click)="cardClicked(data, cardRef)" [ngClass]="{'selected': data.children.selected}" id="{{data.children.name}}">
         <!-- (click)="data.selected=!data.selected" -->
         <span>{{data.children.name}}</span>
-        <span>++{{data.children.selected}}+++</span>
-        <span>=={{data.children.status}}==</span> 
         <p>{{data.children.description}}</p>
     </div>
 </ng-template>

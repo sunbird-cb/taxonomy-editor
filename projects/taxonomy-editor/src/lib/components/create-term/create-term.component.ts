@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FrameworkService } from '../../services/framework.service';
-import { startWith, map } from 'rxjs/operators';
+import {startWith, map} from 'rxjs/operators';
 import { FormArray, FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/internal/Observable';
 import { Identifiers } from '@angular/compiler';
@@ -13,14 +13,14 @@ import { Identifiers } from '@angular/compiler';
 })
 
 export class CreateTermComponent implements OnInit {
-  name: string = ''
+  name:string = ''
   termLists: any = []
   filtedTermLists: Observable<any[]>;
-  createTermForm: FormGroup
+  createTermForm: FormGroup 
   disableCreate = false
   isTermExist = false
-  selectedTerm
-  constructor(
+  selectedTerm:any = {}
+   constructor(
     public dialogRef: MatDialogRef<CreateTermComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private frameWorkService: FrameworkService,
@@ -28,27 +28,16 @@ export class CreateTermComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // const requestBody = {
-    //   request: {
-    //     search: {
-    //         status: "Draft"
-    //     }
-    // }
-    // } 
-    // debugger
-    // this.frameWorkService.readTerms(this.data.frameworkId, this.data.categoryId, requestBody).subscribe(data => {
-    //    this.termLists = data.terms
-    // })
     this.termLists = this.data.columnInfo.children
     this.initTermForm()
   }
 
-  initTermForm() {
+  initTermForm(){
     this.createTermForm = this.fb.group({
-      name: ['', [Validators.required]],
-      description: ['']
+      name:['', [Validators.required]],
+      description:['']
     })
-    this.filtedTermLists = this.createTermForm.get('name').valueChanges.pipe(
+    this.filtedTermLists =  this.createTermForm.get('name').valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value || '')),
     );
@@ -59,8 +48,8 @@ export class CreateTermComponent implements OnInit {
     this.disableCreate = false
     this.isTermExist = false
     this.createTermForm.get('description').enable()
-    this.createTermForm.get('description').patchValue('')
-    const filterValue = typeof (searchTxt) === 'object' ? this._normalizeValue(searchTxt.name) : this._normalizeValue(searchTxt);
+    // this.createTermForm.get('description').patchValue('')
+    const filterValue = typeof(searchTxt)==='object'? this._normalizeValue(searchTxt.name):this._normalizeValue(searchTxt);
     isExist = this.termLists.filter(term => this._normalizeValue(term.name).includes(filterValue));
     return isExist
   }
@@ -69,85 +58,88 @@ export class CreateTermComponent implements OnInit {
     return value.toLowerCase().replace(/\s/g, '');
   }
 
-  onSelect(term) {
+ onSelect(term) {
     this.selectedTerm = term.value
     this.createTermForm.get('name').patchValue(term.value.name)
     this.createTermForm.get('description').patchValue(term.value.description)
     this.createTermForm.get('description').disable()
     this.disableCreate = true
-  }
+ }
 
-  saveTerm() {
-    if (this._filter(this.createTermForm.value.name).length > 0) {
-      this.isTermExist = true
-      console.log('Already exist')
-      return
-    }
-    if (this.createTermForm.valid) {
-      const requestBody = {
-        request: {
-          term: {
-            code: this.frameWorkService.getUuid(),
-            name: this.createTermForm.value.name,
-            description: this.createTermForm.value.description,
-            category: this.data.columnInfo.code,
-            status: 'Draft',
-            parents: [
-              { identifier: `${this.data.frameworkId}_${this.data.columnInfo.code}` }
-            ],
-            additionalProperties: {}
+ saveTerm() {
+      if(this._filter(this.createTermForm.value.name).length>0){
+        this.isTermExist = true
+        console.log('Already exist')
+        return
+      }
+      if(this.createTermForm.valid) {
+        const requestBody =  {
+          request: {
+            term: {
+              code:this.frameWorkService.getUuid(),
+              name:this.createTermForm.value.name,
+              description:this.createTermForm.value.description,
+              category:this.data.columnInfo.code,
+              status:'Live',
+              approvalStatus:'Draft',
+              parents:[
+                {identifier:`${this.data.frameworkId}_${this.data.columnInfo.code}`}
+              ],
+              additionalProperties:{}
+            }
           }
         }
+        this.frameWorkService.createTerm(this.data.frameworkId, this.data.columnInfo.code, requestBody).subscribe((res:any) => {
+          // this.publisheFramework(res.result.node_id[0], true)
+          this.selectedTerm['identifier'] = res.result.node_id[0];
+          this.updateTerm()
+        })
       }
-      // this.frameWorkService.createTerm(this.data.frameworkId, this.data.columnInfo.code, requestBody).subscribe((res:any) => {
-      //   this.dialogClose(res.result.node_id[0], true)
-      // })
-      this.dialogRef.close({ term: requestBody.request.term, created: true })
-    }
   }
 
   updateTerm() {
-    // let associations = []
-    // debugger
-    // this.data.selectedparents.forEach((parent, i) => {
-    //   const temp = parent.element.children ? parent.element.children.filter(child => child.identifier === this.selectedTerm.identifier) : null
-    //   if (temp && !temp.length && i < this.data.colIndex) {
-    //     associations = parent.element.children.map(c => {
-    //       return { identifier: c.identifier }
-    //     })
-    //   }
-    //   associations.push({ identifier: this.selectedTerm.identifier })
-    //   const reguestBody = {
-    //     request: {
-    //       term: {
-    //         associations: [
-    //           ...associations
-    //         ]
-    //       }
-    //     }
-    //   }
-      // this.frameWorkService.updateTerm(this.data.frameworkId, parent.element.category, parent.element.code, reguestBody).subscribe((res: any) => {
-      //   this.dialogClose(res.result.node_id, false)
-      // })
-      this.dialogRef.close({ term: this.selectedTerm, created: true })
-    // })
+    let associations = []
+    this.data.selectedparents.forEach((parent,i) => {
+        const temp = parent.element.children ? parent.element.children.filter(child => child.identifier === this.selectedTerm.identifier) : null
+        if(temp && !temp.length && i < this.data.colIndex) {
+          associations = parent.element.children.map(c => {
+              return { identifier:c.identifier }
+          })
+        }
+        associations.push({identifier:this.selectedTerm.identifier})
+        const reguestBody = {
+            request:{
+              term:{
+                associations: [
+                  ...associations
+                ]
+              }
+            }
+        }
+        this.frameWorkService.updateTerm(this.data.frameworkId, parent.element.category, parent.element.code, reguestBody).subscribe((res:any) => {
+          if( this.data.selectedparents.length - 1  === i){
+            this.publisheFramework(res.result.node_id, false)
+          }
+        })
+    })
   }
 
-  dialogClose(id: string, created: boolean) {
-    if (id) {
-      this.frameWorkService.publishFramework().subscribe(res => {
-        console.log('Published!')
-      });
+  dialogClose(id:string, created:boolean){
+    if(id){
       this.dialogRef.close({
-        name: this.createTermForm.value.name,
-        description: this.createTermForm.value.description,
-        identifier: id,
-        created: created,
-        status: 'Draft'
+        name:this.createTermForm.value.name,
+        description:this.createTermForm.value.description,
+        identifier:id,
+        created:created,
+        status:'Draft'
       })
-
     } else {
       this.dialogRef.close()
     }
+  }
+  publisheFramework(id:string, created:boolean){
+      this.frameWorkService.publishFramework().subscribe(res => {
+        this.dialogClose(id, created)
+      });
   }
 }
