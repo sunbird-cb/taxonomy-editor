@@ -62,5 +62,6 @@ export class LocalConnectionService {
     }
     clearLocalStorage() {
         localStorage.removeItem('env')
+        localStorage.removeItem('terms')
     }
 }

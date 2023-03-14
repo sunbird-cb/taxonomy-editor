@@ -15,10 +15,12 @@ import { LocalConnectionService } from './local-connection.service';
 export class FrameworkService {
   categoriesHash: BehaviorSubject<NSFramework.ICategory[] | []> = new BehaviorSubject<NSFramework.ICategory[] | []>([])
   // termsByCategory: BehaviorSubject<NSFramework.ITermsByCategory[] | []> = new BehaviorSubject<NSFramework.ITermsByCategory[] | []>([])
-  selectedCategoryHash: BehaviorSubject<NSFramework.ISelectedCategory[]> = new BehaviorSubject<NSFramework.ISelectedCategory[]>([])
+  isDataUpdated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false)
   currentSelection: BehaviorSubject<{ type: string, data: any, cardRef?: any } | null> = new BehaviorSubject<{ type: string, data: any, cardRef?: any } | null>(null)
-  // termSubject: Subject<any>
-  list: any[] = []
+  termSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null)
+  list = new Map<string, NSFramework.IColumnView>();
+  selectionList = new Map<string, NSFramework.IColumnView>();
+  insertUpdateDeleteNotifier: BehaviorSubject<{ type: 'select' | 'insert' | 'update' | 'delete', action: string, data: any }> = new BehaviorSubject<{ type: 'select' | 'insert' | 'update' | 'delete', action: string, data: any }>(null)
   environment
   libConfig: IConnection
   frameworkId: string;
@@ -28,18 +30,24 @@ export class FrameworkService {
     // @Inject(LibConnectionService) private config
   ) {
     // this.fillCategories()
-  
+
   }
 
-  getFrameworkInfo(): Observable<any> {
+ getFrameworkInfo(): Observable<any> {
     if (this.localConfig.connectionType === 'online') {
       return this.http.get(`/api/framework/v1/read/${this.localConfig.frameworkName}`).pipe(
-        tap(),
+        tap((response: any) => {
+          this.resetAll()
+          this.formateData(response)
+        }),
         catchError((err) => {
+          this.list.clear()
+          this.categoriesHash.next([])
           throw 'Error in source. Details: ' + err; // Use console.log(err) for detail
         }))
     } else {
-      return of(FRAMEWORK)
+      this.resetAll()
+      return of(this.formateData(FRAMEWORK))
     }
   }
 
@@ -76,50 +84,7 @@ export class FrameworkService {
     return this.frameworkId
   }
 
-  fillCategories() {
-    this.resetAll()
-    this.getFrameworkInfo().subscribe(response => {
-      this.frameworkId = response.result.framework.code;
-      console.log('response', response);
-      // const obj = FRAMEWORK;
-      // const columns: NSFramework.IColumnView[] = [];
-      // const obj = response
-      (response.result.framework.categories).forEach(a => {
-        this.list.push({
-          code: a.code,
-          identifier: a.identifier,
-          index: a.index,
-          name: a.name,
-          status: a.status as NSFramework.TNodeStatus,
-          description: a.description,
-          translations: a.translations,
-          children: (a.terms || []).map(c => {
-            const associations = c.associations || []
-            if (associations.length > 0) {
-              Object.assign(c, { children: associations })
-              delete c.associations
-            }
-            return c
-          }),
-        })
 
-      })
-      this.categoriesHash.next(this.list.map(a => {
-        return {
-          code: a.code,
-          identifier: a.identifier,
-          index: a.index,
-          name: a.name,
-          status: a.status as NSFramework.TNodeStatus,
-          description: a.description,
-          translations: a.translations,
-        } as NSFramework.ICategory
-      }))
-    }, () => {
-      this.list = []
-      this.categoriesHash.next([])
-    })
-  }
   getNextCategory(currentCategory: string) {
     const currentIndex = this.categoriesHash.value.findIndex((a: NSFramework.ICategory) => {
       return a.code === currentCategory
@@ -127,18 +92,29 @@ export class FrameworkService {
     let categoryLength = this.categoriesHash.getValue().length
     return (currentIndex + 1) <= categoryLength ? this.categoriesHash.getValue()[currentIndex + 1] : null
   }
+  getPreviousCategory(currentCategory: string) {
+    const currentIndex = this.categoriesHash.value.findIndex((a: NSFramework.ICategory) => {
+      return a.code === currentCategory
+    })
+    return (currentIndex - 1) >= 0 ? this.categoriesHash.getValue()[currentIndex - 1] : null
+  }
+  getParentTerm(currentCategory: string) {
+    const parent = this.getPreviousCategory(currentCategory) || null
+    return parent ? this.selectionList.get(parent.code) : null
+  }
   childClick(event: { type: string, data: any }) {
     this.currentSelection.next(event)
   }
   resetAll() {
     this.categoriesHash.next([])
     this.currentSelection.next(null)
-    this.list = []
+    this.list.clear()
   }
   isLastColumn(colCode) {
     return this.categoriesHash.value && (this.categoriesHash.value.findIndex((a: NSFramework.ICategory) => {
       return a.code === colCode
     })) === (this.categoriesHash.value.length - 1)
+    // return false
   }
 
   removeItemFromArray(array, item) {
@@ -154,14 +130,109 @@ export class FrameworkService {
     /* return the temporary array */
     return tmp;
   }
-
- setTerm(res){
-    // this.termSubject.next(res)
-    localStorage.setItem('term', JSON.stringify(res))
+  // set setTerm(res: any) {
+  //   this.termSubject.next(res)
+  //   let oldTerms = ([...this.getTerm] || [])
+  //   debugger
+  //   if (!res.parent && res.created) {
+  //     oldTerms.push(res.term)
+  //   } else {
+  //     if ((oldTerms.filter(ola => ola.code === res.parent.code) || []).length === 0) {
+  //       if (!res.parent.children) {
+  //         res.parent.children = []
+  //       }
+  //       res.parent.children.push(res.term)
+  //       oldTerms.push(res.parent)
+  //     } else {
+  //       oldTerms.map(ot => {
+  //         if (ot && ot.code === res.parent.code) {
+  //           if (!ot.children) {
+  //             ot.children = []
+  //           }
+  //           ot.children.push(res.term)
+  //         }
+  //       })
+  //     }
+  //   }
+  //   localStorage.setItem('terms', JSON.stringify(oldTerms))
+  // }
+  set setTerm(res: any) {
+    this.termSubject.next(res)
+    let oldTerms = ([...this.getTerm] || [])
+    oldTerms.push(res)
+    localStorage.setItem('terms', JSON.stringify(oldTerms))
   }
+  get getTerm(): any[] {
+    return JSON.parse(localStorage.getItem('terms')) || []
+  }
+  getLocalTermsByParent(parentCode: string): any[] {
+    const filteredData = this.getTerm.filter(x => {
+      return x.parent && x.parent.category === parentCode
+    }) || [];
 
-  getTerm() {
-    return JSON.parse(localStorage.getItem('term')) || ''
+    return filteredData.map(x => {
+      return x.term
+    })
+  }
+  getLocalTermsByCategory(parentCode: string): any[] {
+    const filteredData = this.getTerm.filter(x => {
+      return x.term && x.term.category === parentCode
+    }) || [];
+
+    return filteredData
+  }
+  getLocalTermsCategory(category: string): any[] {
+    const filteredData = this.getTerm.filter(x => {
+      return x.category === category
+    }) || [];
+
+    return filteredData
+  }
+  formateData(response: any) {
+    this.frameworkId = response.result.framework.code;
+    // console.log('response', response);
+    // // const obj = FRAMEWORK;
+    // // const columns: NSFramework.IColumnView[] = [];
+    // // const obj = response
+    (response.result.framework.categories).forEach((a, idx) => {
+      // if (idx <= 1) {
+      // const localData = this.getLocalTermsCategory(a.code)
+      // console.log("localData============>", localData)
+      this.list.set(a.code, {
+        code: a.code,
+        identifier: a.identifier,
+        index: a.index,
+        name: a.name,
+        selected: a.selected,
+        status: a.status as NSFramework.TNodeStatus,
+        description: a.description,
+        translations: a.translations,
+        // children: ([...a.terms, ...localData] || []).map(c => {
+        children: (a.terms || []).map(c => {
+          const associations = c.associations || []
+          if (associations.length > 0) {
+            Object.assign(c, { children: associations })
+            delete c.associations
+          }
+          return c
+        }),
+      })
+      // }
+    })
+    const allCategories = []
+    this.list.forEach(a => {
+      allCategories.push({
+        code: a.code,
+        identifier: a.identifier,
+        index: a.index,
+        name: a.name,
+        status: a.status as NSFramework.TNodeStatus,
+        description: a.description,
+        translations: a.translations,
+      } as NSFramework.ICategory)
+    })
+    this.categoriesHash.next(allCategories)
+
   }
 
 }
