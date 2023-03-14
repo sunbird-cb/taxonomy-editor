@@ -52,13 +52,10 @@ export class ConnectorService {
   // }
 
   constructor(private frameworkService: FrameworkService) { 
-    // need to uncomment
-    this.frameworkService.list.forEach(list => {
-      this.connectorMap['box'+list.index]= {}
-    })
-
-    // console.log('connectorMap -------', this.connectorMap)
-    // this.elmWrapper = document.getElementsByClassName('heightFix');
+    // this.frameworkService.list.forEach((list, index)=> {
+    //   this.connectorMap['box'+list.index]= {}
+    // })
+    console.log('connectorMap -------', this.connectorMap)
   }
 
   _drawLine(source, target, options: LLOptions, sourceContainerId = undefined, targetContainerId = undefined) {
@@ -79,37 +76,36 @@ export class ConnectorService {
           line: tempLine
         })
         if(sourceContainerId) {
-          document.querySelector(sourceContainerId).addEventListener('scroll', () => {
-            tempLine && tempLine.position();
-          }, false);
+          document.querySelector(sourceContainerId) && document.querySelector(sourceContainerId).addEventListener('scroll', () => {
+            try{
+              tempLine && tempLine.position();
+            } catch(e) {
+              // console.log('Error')
+            }
+          }, true);
         }
         if (targetContainerId) {
-          document.querySelector(targetContainerId).addEventListener('scroll', () => {
-            tempLine && tempLine.position();
-          }, false);
+          document.querySelector(targetContainerId) && document.querySelector(targetContainerId).addEventListener('scroll', () => {
+            try{
+              tempLine && tempLine.position();
+            } catch(e) {
+              // console.log('Error')
+            }
+          }, true);
         }
+        // tempLine.show('draw')
 
       });
     return connectedDots;
     } else {
       _line = this.renderLine(source, target, _options);
     }
-    //  if(sourceContainerId) {
-    //   document.querySelector(sourceContainerId).addEventListener('scroll', () => {
-    //     _line.position();
-    //   }, false);
-    // }
-    // if (targetContainerId) {
-    //   document.querySelector(targetContainerId).addEventListener('scroll', () => {
-    //     _line.position();
-    //   }, false);
-    // }
   }
 
   private renderLine(source, target, options: LLOptions) {
     let _options = {
       animOptions: { duration: 2000, timing: 'linear' },
-      // hide: true,
+      hide: true,
       // startSocketGravity: 50,
       // endSocketGravity: [-30, 50]
     };
@@ -123,6 +119,7 @@ export class ConnectorService {
 
     _line.endPlugOutline = true;
     _line.startPlugOutline = true;
+    // _line.positionByWindowResize = false;
     _line.setOptions(options);
     _line.show('draw');
     // this.elmWrapper.appendChild(document.querySelector('.leader-line:last-of-type'));
@@ -142,5 +139,23 @@ export class ConnectorService {
       ((rectWrapper.left + pageXOffset) * -1) + 'px, ' +
       ((rectWrapper.top + pageYOffset) * -1) + 'px)';
     line.position();
+  }
+
+  removeAllLines() {
+    if(this.connectorMap) {
+      for (const key in this.connectorMap) {
+        // Remove all n-1 lines and keep only current selection, also clear n+1 lines
+        if(this.connectorMap[key] && this.connectorMap[key].lines && this.connectorMap[key].lines.length > 0) {
+          const lines = this.connectorMap[key].lines
+          lines.forEach(async (element, index) => {
+              await element.line && element.line.remove();
+              lines.splice(index, 1);
+          });
+          this.connectorMap[key].lines = lines
+        }
+      }
+    }
+    // to reset connector map after clearing all the lines
+    this.updateConnectorsMap({})
   }
 }

@@ -236,6 +236,7 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
       }
 
     }
+    this.connectorService.updateConnectorsMap(this.connectorMapping)
 
   }
   removeConnectors(currentElement, prevCol, currentIndex) {

@@ -6,6 +6,7 @@ import { ConnectorComponent } from '../connector/connector.component';
 import { LocalConnectionService } from '../../services/local-connection.service';
 import { IConnectionType } from '../../models/connection-type.model';
 import { Subscription } from 'rxjs';
+import { ConnectorService } from '../../services/connector.service';
 @Component({
   selector: 'lib-taxonomy-view',
   templateUrl: './taxonomy-view.component.html',
@@ -19,7 +20,12 @@ export class TaxonomyViewComponent implements OnInit {
   showPublish = false
   newTermSubscription: Subscription = null
   loaded: any = {}
-  constructor(private frameworkService: FrameworkService, private localSvc: LocalConnectionService, public dialog: MatDialog) { }
+  constructor(
+    private frameworkService: FrameworkService, 
+    private localSvc: LocalConnectionService,
+    public dialog: MatDialog,
+    private connectorSvc: ConnectorService,
+  ) { }
 
   ngOnInit() {
     this.init()
@@ -33,6 +39,7 @@ export class TaxonomyViewComponent implements OnInit {
     //   this.frameworkCode = res.result.framework.code
     // })
     this.frameworkService.getFrameworkInfo().subscribe(res => {
+      this.connectorSvc.removeAllLines()
       this.updateLocalData()
       this.frameworkService.categoriesHash.value.forEach(cat => {
         this.loaded[cat.code] = true
