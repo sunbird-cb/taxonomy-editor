@@ -6,6 +6,8 @@ import { ConnectorComponent } from '../connector/connector.component';
 import { LocalConnectionService } from '../../services/local-connection.service';
 import { IConnectionType } from '../../models/connection-type.model';
 import { Subscription } from 'rxjs';
+import { ConnectorService } from '../../services/connector.service';
+
 @Component({
   selector: 'lib-taxonomy-view',
   templateUrl: './taxonomy-view.component.html',
@@ -19,7 +21,12 @@ export class TaxonomyViewComponent implements OnInit {
   showPublish = false
   newTermSubscription: Subscription = null
   loaded: any = {}
-  constructor(private frameworkService: FrameworkService, private localSvc: LocalConnectionService, public dialog: MatDialog) { }
+  constructor(
+    private frameworkService: FrameworkService,
+    private localSvc: LocalConnectionService,
+    public dialog: MatDialog,
+    private connectorSvc : ConnectorService
+  ) { }
 
   ngOnInit() {
     this.init()
@@ -147,6 +154,64 @@ export class TaxonomyViewComponent implements OnInit {
         // this.frameworkService.insertUpdateDeleteNotifier.next({ type: 'insert', action: res.parent.code, data: res.term })
       })
     }
+    this.connectorSvc.removeAllLines()
+    this.frameworkService.fillCategories()
+    // this.mapping = {
+    //   board: {
+    //     box0card0: ['asd', 'box1card2', 'box1card3']
+    //   },
+    //   medium: {
+    //     box1card1: ['box2card5', 'box2card7', 'box2card9']
+    //   },
+    //   grade: {
+    //     box2card7: ['box3card2', 'box3card3', 'box3card10']
+    //   },
+    //   subject: {
+
+    //   }
+    // }
+  }
+
+  updateTaxonomyTerm(selected: any) {
+    let pos;
+    if (this.heightLighted.length === 0) {
+      this.heightLighted.push(selected);
+      return
+    }
+    this.heightLighted.forEach((cat, i) => {
+      if (cat.element.category.toLowerCase() === selected.element.category.toLowerCase()) {
+        pos = i
+        return
+      } 
+     })
+     if(pos === 0){
+      this.heightLighted[pos] = selected
+      this.heightLighted.splice(pos+1, this.heightLighted.length-pos)
+      return
+     }
+     if(!pos){
+      this.heightLighted.push(selected)
+      } else {
+        this.heightLighted.splice(pos+1, this.heightLighted.length-pos)
+        this.heightLighted[pos] = selected
+      }
+  }
+
+  openCreateTermDialog(column, colIndex) {
+    const dialog = this.dialog.open(CreateTermComponent, {
+      data: { columnInfo: column, frameworkId: this.frameworkService.getFrameworkId(), selectedparents: this.heightLighted, colIndex: colIndex },
+      width: '400px',
+      panelClass: 'custom-dialog-container'
+    })
+    dialog.afterClosed().subscribe(res => {
+      // if (res && res.created) {
+      //   this.showPublish = true
+      // }
+      res.columnInfo = column,
+      res.parentTerms = this.heightLighted
+      this.frameworkService.setTerm(res);
+      this.init()
+    })
   }
 
   get list(): any[] {
