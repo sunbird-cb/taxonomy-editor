@@ -47,6 +47,14 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
       } else if (e.type === this.column.code) {
         // debugger
         this.updateTaxonomyTerm.emit({ isSelected: true, selectedTerm: e.data })
+        this.columnData = (this.columnData || []).map(item => {
+          if (item.code === e.data.code) {
+            item.selected = true
+          } else {
+            item.selected = false
+          }
+          return item
+        })
         this.setConnectors(e.cardRef, this.columnData, 'SINGLE')
         return
         // console.log("SKIP: from subscription===>", "FOR " + this.category, e)
