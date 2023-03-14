@@ -4,6 +4,7 @@ import { TaxonomyViewComponent } from './components/taxonomy-view/taxonomy-view.
 import { ApprovalComponent } from './components/approval/approval.component'
 import { ConfigFrameworkComponent } from './containers/config-framework/config-framework.component'
 import { DashboardComponent } from './containers/dashboard/dashboard.component'
+import { ApproveViewComponent } from './components/approve-view/approve-view.component'
 
 const routes: Routes = [
     {
@@ -19,6 +20,9 @@ const routes: Routes = [
     },
     {
         path:'approval',  component:ApprovalComponent
+    },
+    {
+        path:'approve',  component:ApproveViewComponent
     }
 ]
 @NgModule({

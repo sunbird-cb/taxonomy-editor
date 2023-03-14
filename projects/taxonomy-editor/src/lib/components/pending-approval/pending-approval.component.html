@@ -10,7 +10,7 @@
                         <h4>{{p.name}}</h4>
                         <div  matTooltip="{{getTerms(p.terms)}}" matTooltipPosition="above" matTooltipClass="custom-tooltip">{{p.terms[0].name}} & {{p.terms.length-1}} more...</div>
                     </div> 
-                    <mat-icon>keyboard_arrow_right</mat-icon>
+                    <a routerLink="/approve"><mat-icon>keyboard_arrow_right</mat-icon></a>
                 </mat-card-content>
             </mat-card>
         </mat-tab>

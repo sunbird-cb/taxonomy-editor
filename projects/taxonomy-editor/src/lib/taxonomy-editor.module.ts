@@ -37,7 +37,8 @@ import { ENVIRONMENT } from './services/connection.service'
 import { ActionBarComponent } from './components/action-bar/action-bar.component'
 import { IConnectionType } from './models/connection-type.model'
 import { ApprovalComponent } from './components/approval/approval.component';
-import { PendingApprovalComponent } from './components/pending-approval/pending-approval.component'
+import { PendingApprovalComponent } from './components/pending-approval/pending-approval.component';
+import { ApproveViewComponent } from './components/approve-view/approve-view.component'
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { PendingApprovalComponent } from './components/pending-approval/pending-
     ConnectorComponent,
     ActionBarComponent,
     ApprovalComponent,
-    PendingApprovalComponent
+    PendingApprovalComponent,
+    ApproveViewComponent
   ],
   imports: [
     BrowserModule,
