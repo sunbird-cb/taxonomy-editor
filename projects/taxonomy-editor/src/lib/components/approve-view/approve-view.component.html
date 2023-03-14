@@ -1,4 +1,23 @@
 <div class="approve-view">
-    <!-- <lib-taxonomy-view></lib-taxonomy-view> -->
-       
+    <div *ngIf="listItems && listItems.length > 0 " class="flex heightFix ">
+        <ng-container *ngFor="let column of listItems let i = index;">
+            <div class="flex-1 felx-col  col-container" id="box{{i+1}}Container">
+                <div class="category-heading-sticky">
+                    <div class="category-heading-container">
+                        <h3>{{column.name}}</h3>
+                        <!-- <div class="mb1">
+                            <button class="w-full" mat-stroked-button color="primary" (click)="openCreateTermDialog(column, i)">Create New
+                                {{column.name}}</button>
+                        </div> -->
+                    </div>
+                </div>
+                <!-- {{column.code}} -->
+                <div class="padding-x2 cat-columns container" id="box{{i+1}}">
+                    <lib-taxonomy-column-view #selectedTaxonomyTerm [column]="column" [containerId]="'box'+(i+1)" >
+                    </lib-taxonomy-column-view>
+                </div>
+            </div>
+        </ng-container>
+        <!-- <lib-action-bar *ngIf="showActionBar" (sendApproval)="sendForApproval()"></lib-action-bar> -->
+    </div>
 </div>

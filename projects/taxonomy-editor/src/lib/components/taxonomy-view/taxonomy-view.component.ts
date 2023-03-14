@@ -216,6 +216,17 @@ export class TaxonomyViewComponent implements OnInit {
   // this.column.children.push(...localTerms)
   // }
   // }
+  // get list() {
+  //   let termsWithDraftStatus = []
+  //   console.log('this.frameworkService.list :: ',this.frameworkService.list)
+  //   this.frameworkService.list.forEach((cat,i) => {
+  //       termsWithDraftStatus = cat.children.filter(t => t.approvalStatus === 'Draft')
+  //       this.updateDraftStatusTerms(termsWithDraftStatus)
+  //   })
+  //   this.showActionBar = this.approvalRequiredTerms.length > 1 ? true:false
+  //   return this.frameworkService.list
+  // }
+  
   newConnection() {
     const dialog = this.dialog.open(ConnectorComponent, {
       data: {},

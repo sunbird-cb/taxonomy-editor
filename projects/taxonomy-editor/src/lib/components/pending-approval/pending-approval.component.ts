@@ -35,9 +35,9 @@ export class PendingApprovalComponent implements OnInit {
 
   createApprovalList(categories, updateFileds){
     categories.forEach((c) => {
-      let temp = {name:'', terms:[]}
+      let temp = {name:'', terms:[], children: []}
       temp.name = c,
-      temp.terms = updateFileds.filter(term => term.category === c)
+      temp.children = updateFileds.filter(term => term.category === c)
       this.approvalList.push(temp)
     })
   }
