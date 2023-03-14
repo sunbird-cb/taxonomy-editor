@@ -132,8 +132,8 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
         // const nextChildren = this.frameworkService.getLocalTermsByParent(this.column.code)
         // console.log("Saved ======================+>", nextChildren)
         /**reset Next level children */
-        // this.column.children = this.column.children.map(col => { col.selected = false; return col })
-        // mer.selected = false
+        this.column.children = this.column.children.map(col => { col.selected = false; return col })
+        mer.selected = false
         mer.children = ([...this.column.children.filter(x => { return x.code === mer.code }).map(a => a.children)].shift() || [])
         return mer
       })
