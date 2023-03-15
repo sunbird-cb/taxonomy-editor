@@ -28,17 +28,6 @@ export class CreateTermComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // const requestBody = {
-    //   request: {
-    //     search: {
-    //         status: "Draft"
-    //     }
-    // }
-    // } 
-    // debugger
-    // this.frameWorkService.readTerms(this.data.frameworkId, this.data.categoryId, requestBody).subscribe(data => {
-    //    this.termLists = data.terms
-    // })
     this.termLists = this.data.columnInfo.children
     this.initTermForm()
   }
@@ -59,7 +48,7 @@ export class CreateTermComponent implements OnInit {
     this.disableCreate = false
     this.isTermExist = false
     this.createTermForm.get('description').enable()
-    this.createTermForm.get('description').patchValue('')
+    // this.createTermForm.get('description').patchValue('')
     const filterValue = typeof (searchTxt) === 'object' ? this._normalizeValue(searchTxt.name) : this._normalizeValue(searchTxt);
     isExist = this.termLists.filter(term => this._normalizeValue(term.name).includes(filterValue));
     return isExist
@@ -92,6 +81,7 @@ export class CreateTermComponent implements OnInit {
             description: this.createTermForm.value.description,
             category: this.data.columnInfo.code,
             status: 'Draft',
+            approvalStatus: 'Draft',
             parents: [
               { identifier: `${this.data.frameworkId}_${this.data.columnInfo.code}` }
             ],
@@ -99,55 +89,48 @@ export class CreateTermComponent implements OnInit {
           }
         }
       }
-      // this.frameWorkService.createTerm(this.data.frameworkId, this.data.columnInfo.code, requestBody).subscribe((res:any) => {
-      //   this.dialogClose(res.result.node_id[0], true)
-      // })
-      this.dialogRef.close({ term: requestBody.request.term, created: true })
+      this.frameWorkService.createTerm(this.data.frameworkId, this.data.columnInfo.code, requestBody).subscribe((res:any) => {
+        requestBody.request.term['identifier'] = res.result.node_id[0]
+        this.dialogClose({ term: requestBody.request.term, created: true })
+      })
+      
     }
   }
 
   updateTerm() {
-    // let associations = []
-    // debugger
-    // this.data.selectedparents.forEach((parent, i) => {
-    //   const temp = parent.element.children ? parent.element.children.filter(child => child.identifier === this.selectedTerm.identifier) : null
-    //   if (temp && !temp.length && i < this.data.colIndex) {
-    //     associations = parent.element.children.map(c => {
-    //       return { identifier: c.identifier }
-    //     })
-    //   }
-    //   associations.push({ identifier: this.selectedTerm.identifier })
-    //   const reguestBody = {
-    //     request: {
-    //       term: {
-    //         associations: [
-    //           ...associations
-    //         ]
-    //       }
-    //     }
-    //   }
-      // this.frameWorkService.updateTerm(this.data.frameworkId, parent.element.category, parent.element.code, reguestBody).subscribe((res: any) => {
-      //   this.dialogClose(res.result.node_id, false)
-      // })
-      this.dialogRef.close({ term: this.selectedTerm, created: true })
-    // })
+    let associations = []
+    let temp
+    let counter = 0
+    this.frameWorkService.selectionList.forEach((parent, i) => {
+      counter++
+      temp = parent.children ? parent.children.filter(child => child.identifier === this.selectedTerm.identifier) : null
+      if (temp && !temp.length )   {
+        associations = parent.children.map(c => {
+          return { identifier: c.identifier }
+        })
+      }
+      associations.push({ identifier: this.selectedTerm.identifier })
+      const reguestBody = {
+        request: {
+          term: {
+            associations: [
+              ...associations  
+            ]    
+          }
+        }
+      }
+      this.frameWorkService.updateTerm(this.data.frameworkId, parent.category, parent.code, reguestBody).subscribe((res: any) => {
+        if(counter === this.frameWorkService.selectionList.size ) {
+          this.dialogClose({ term: this.selectedTerm, created: true })
+        }
+      })
+      
+    })
   }
 
-  dialogClose(id: string, created: boolean) {
-    if (id) {
+  dialogClose(term) {
       this.frameWorkService.publishFramework().subscribe(res => {
-        console.log('Published!')
+        this.dialogRef.close(term)
       });
-      this.dialogRef.close({
-        name: this.createTermForm.value.name,
-        description: this.createTermForm.value.description,
-        identifier: id,
-        created: created,
-        status: 'Draft'
-      })
-
-    } else {
-      this.dialogRef.close()
-    }
   }
 }

@@ -112,9 +112,8 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
     })
   }
   insertUpdateHandler(e, next) {
-    debugger
     const back = this.frameworkService.getPreviousCategory(this.column.code)
-    console.log('current Saved ===========>', this.frameworkService.getLocalTermsByCategory(this.column.code))
+    // console.log('current Saved ===========>', this.frameworkService.getLocalTermsByCategory(this.column.code))
     const localTerms = []
     this.frameworkService.getLocalTermsByCategory(this.column.code).forEach(f => {
       const selectedParent = back ? this.frameworkService.selectionList.get(back.code) : null; //can use current
@@ -178,10 +177,10 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
   }
   setConnectors(elementClicked, columnItem, mode) {
     this.removeConnectors(elementClicked, 'box' + (this.column.index - 1), this.column.index - 1)
-    console.log('mode', mode)
-    console.log('child ', columnItem)
-    console.log('elementClicked', elementClicked)
-    console.log('connectorMapping', this.connectorMapping)
+    // console.log('mode', mode)
+    // console.log('child ', columnItem)
+    // console.log('elementClicked', elementClicked)
+    // console.log('connectorMapping', this.connectorMapping)
     if (mode === 'ALL') {
       // let tempconnectorMapping = {}
       // this.connectorService.updateConnectorsMap(tempconnectorMapping)
@@ -203,7 +202,7 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
         '#box' + this.column.index
       )
       this.connectorMapping['box' + (this.column.index - 1)].lines = connectionLines
-      console.log('this.connectorMapping :: ----------------------', this.connectorMapping)
+      // console.log('this.connectorMapping :: ----------------------', this.connectorMapping)
       // if (cat.code === 'board') {
       //   this.connectorService._drawLine('box0card0', this.connectorMapping['board']['box0card0'], {
       //     startPlug: 'disc', endPlug: 'disc', color: 'black'
@@ -217,8 +216,8 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
       //     startPlug: 'disc', endPlug: 'disc', color: 'black'
       //   }, 'box0', 'box1')
     } else {
-      console.log('inside else')
-      console.log('this.column', this.column)
+      // console.log('inside else')
+      // console.log('this.column', this.column)
       const item = this.column.children.findIndex(c => c.selected) + 1
       if (this.column.index > 1) {
         this.connectorMapping['box' + (this.column.index - 1)].lines = [{ target: elementClicked, line: '', targetType: 'element' }]
@@ -232,7 +231,7 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
           '#box' + this.column.index
         )
         this.connectorMapping['box' + (this.column.index - 1)].lines = connectionLines
-        console.log('this.connectorMapping :: ----------------------', this.connectorMapping)
+        // console.log('this.connectorMapping :: ----------------------', this.connectorMapping)
       }
 
     }

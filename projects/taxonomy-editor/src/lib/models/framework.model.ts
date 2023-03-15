@@ -90,7 +90,8 @@ export namespace NSFramework {
         code: string
         translations?: any
         index: number
-        children: any[]
+        children: any[],
+        category:string
     }
 
 }

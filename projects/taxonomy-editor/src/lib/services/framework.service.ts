@@ -34,6 +34,7 @@ export class FrameworkService {
   }
 
   getFrameworkInfo(): Observable<any> {
+    localStorage.removeItem('terms')
     if (this.localConfig.connectionType === 'online') {
       return this.http.get(`${this.localConfig.apiUrl}/api/framework/v1/read/${this.localConfig.frameworkName}`).pipe(
         tap((response: any) => {
@@ -57,7 +58,7 @@ export class FrameworkService {
   }
 
   createTerm(frameworkId, categoryId, requestBody) {
-    return this.http.post(`${this.environment.url}/api/framework/v1/term/create?framework=${frameworkId}&category=${categoryId}`, requestBody)
+    return this.http.post(`/api/framework/v1/term/create?framework=${frameworkId}&category=${categoryId}`, requestBody)
   }
 
   updateTerm(frameworkId, categoryId, categoryTermCode, reguestBody) {
@@ -65,7 +66,7 @@ export class FrameworkService {
   }
 
   publishFramework() {
-    return this.http.post(`${this.environment.url}/api/framework/v1/publish/${this.environment.frameworkName}`, {}, { headers: { 'X-Channel-Id': this.environment.channelId } })
+    return this.http.post(`/api/framework/v1/publish/${this.environment.frameworkName}`, {}, { headers: { 'X-Channel-Id': this.environment.channelId } })
   }
 
   getUuid() {
@@ -207,6 +208,7 @@ export class FrameworkService {
         status: a.status as NSFramework.TNodeStatus,
         description: a.description,
         translations: a.translations,
+        category:a.category,
         // children: ([...a.terms, ...localData] || []).map(c => {
         children: (a.terms || []).map(c => {
           const associations = c.associations || []

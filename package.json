@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --watch",
+    "start": "ng serve --watch --proxy-config proxy/localhost.proxy.json -o",
     "build": "./node_modules/@angular/cli/bin/ng build --watch",
     "test": "ng test",
     "lint": "ng lint",
