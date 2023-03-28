@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ApprovalService } from '../../services/approval.service';
-import * as API from '../../constants/api-list';
+import * as API from '../../constants/app-constant';
+import { FrameworkService } from '../../services/framework.service';
+import * as IApp from '../../models/approval.model'
 @Component({
   selector: 'lib-pending-approval',
   templateUrl: './pending-approval.component.html',
@@ -10,37 +12,42 @@ export class PendingApprovalComponent implements OnInit {
   pendingList = []
   approvalList = []
   categories = []
-  constructor(private approvalService: ApprovalService) { }
+  constructor(private approvalService: ApprovalService, private frameworkService: FrameworkService) { }
 
   ngOnInit() {
-    this.approvalService.getApprovalList({applicationStatus:API.APPROVAL.LEVEL1, serviceName:API.APPROVAL.SERVICE_NAME}).subscribe((res:any) => {
-         this.getListAndCategories(res.result.data);
-     })
+      this.getApprovalList()
+      this.frameworkService.getFrameworkInfo().subscribe(res => {
+        this.categories = res.result.framework.categories.map(d => d.code)
+      })
   }
 
-  getListAndCategories(list){
-    let updateFileds = []
-    let categories = []
-    list.forEach((data,i)=> {
-            updateFileds = JSON.parse(data.updateFieldValues);
-            categories =  updateFileds.map(fd => fd.category)
-            categories =  this.removeDuplicates(categories)
-            this.createApprovalList(categories, updateFileds)
-    }) 
+  getApprovalList() {
+    const payload: IApp.IApproval = { applicationStatus:API.APPROVAL.LEVEL1, serviceName:API.APPROVAL.SERVICE_NAME }
+    this.approvalService.getApprovalList(payload).subscribe((res:any) => {
+       this.approvalList = res.result.data
+    })
   }
 
   removeDuplicates(arr) {
     return [...new Set(arr)];
   }
 
-  createApprovalList(categories, updateFileds){
+  createApprovalList(updateFieldValues){
+    let updateFileds = []
+    let categories = []
+    let approvalList = []
+    updateFileds = JSON.parse(updateFieldValues);
+    categories =  updateFileds.map(fd => fd.category)
+    categories =  this.removeDuplicates(categories)
     categories.forEach((c) => {
       let temp = {name:'', terms:[], children: []}
       temp.name = c,
       temp.children = updateFileds.filter(term => term.category === c)
-      this.approvalList.push(temp)
-    })
+      approvalList.push(temp)
+      })
+      return approvalList
   }
+
   getTerms(terms: any){
       const temp = terms.map(t => t.name);
       const t = temp.shift()

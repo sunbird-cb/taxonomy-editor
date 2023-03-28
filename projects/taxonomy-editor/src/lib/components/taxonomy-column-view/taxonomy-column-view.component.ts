@@ -13,6 +13,7 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
   @Input() containerId: string
   connectorMapping: any = {}
   @Output() updateTaxonomyTerm = new EventEmitter<{ selectedTerm: any, isSelected: boolean }>(true)
+  @Output() updateTermList = new EventEmitter<any>()
   columnData = []
   childSubscription: Subscription = null
   newTermSubscription: Subscription = null
@@ -175,6 +176,7 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
     return this.columnData
     // }
   }
+
   setConnectors(elementClicked, columnItem, mode) {
     this.removeConnectors(elementClicked, 'box' + (this.column.index - 1), this.column.index - 1)
     // console.log('mode', mode)
@@ -197,7 +199,7 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
       const connectionLines = this.connectorService._drawLine(
         this.connectorMapping['box' + (this.column.index - 1)].source,
         this.connectorMapping['box' + (this.column.index - 1)].lines,
-        { startPlug: 'disc', endPlug: 'disc', color: 'black', path: 'grid' },
+        { startPlug: 'disc', endPlug: 'disc', color: '#7e7e7e', path: 'grid' },
         '#box' + (this.column.index - 1),
         '#box' + this.column.index
       )
@@ -226,7 +228,7 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
         const connectionLines = this.connectorService._drawLine(
           this.connectorMapping['box' + (this.column.index - 1)].source,
           this.connectorMapping['box' + (this.column.index - 1)].lines,
-          { startPlug: 'disc', endPlug: 'disc', color: 'black', path: 'grid' },
+          { startPlug: 'disc', endPlug: 'disc', color: '#7e7e7e', path: 'grid' },
           '#box' + (this.column.index - 1),
           '#box' + this.column.index
         )
@@ -268,6 +270,9 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
       }
 
     }
+  }
+  selectedCard(event){
+    this.updateTermList.emit(event)
   }
 
   ngOnDestroy(): void {

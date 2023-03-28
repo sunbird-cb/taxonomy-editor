@@ -209,12 +209,13 @@ export class FrameworkService {
         description: a.description,
         translations: a.translations,
         category:a.category,
+        associations: a.associations,
         // children: ([...a.terms, ...localData] || []).map(c => {
         children: (a.terms || []).map(c => {
           const associations = c.associations || []
           if (associations.length > 0) {
             Object.assign(c, { children: associations })
-            delete c.associations
+            // delete c.associations
           }
           return c
         }),

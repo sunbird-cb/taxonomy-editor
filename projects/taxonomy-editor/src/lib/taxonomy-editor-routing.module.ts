@@ -22,7 +22,7 @@ const routes: Routes = [
         path:'approval',  component:ApprovalComponent
     },
     {
-        path:'approve',  component:ApproveViewComponent
+        path:'approval/:id',  component:ApproveViewComponent
     }
 ]
 @NgModule({

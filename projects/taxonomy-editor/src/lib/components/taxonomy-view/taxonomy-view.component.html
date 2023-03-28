@@ -10,7 +10,7 @@
             <div class="category-heading-sticky">
                 <div class="category-heading-container">
                     <h3>{{column.name}}</h3>
-                    <div class="mb1">
+                    <div class="mb1" *ngIf="!isApprovalView">
                         <button [disabled]="isEnabled(column.code)" class="w-full" mat-stroked-button color="primary" (click)="openCreateTermDialog(column, i)">Create New
                             {{column.name}}</button>
                     </div>
@@ -18,12 +18,12 @@
             </div>
             <!-- {{column.code}} -->
             <div class="padding-x2 cat-columns container" id="box{{i+1}}">
-                <lib-taxonomy-column-view *ngIf="loaded[column.code]" #selectedTaxonomyTerm [column]="column" [containerId]="'box'+(i+1)" (updateTaxonomyTerm)="updateTaxonomyTerm($event)">
+                <lib-taxonomy-column-view *ngIf="loaded[column.code]" #selectedTaxonomyTerm [column]="column" [containerId]="'box'+(i+1)" (updateTaxonomyTerm)="updateTaxonomyTerm($event)" (updateTermList)="updateDraftStatusTerms($event)">
                 </lib-taxonomy-column-view>
             </div>
         </div>
     </ng-container>
-    <lib-action-bar *ngIf="showActionBar" (sendApproval)="sendForApproval()"></lib-action-bar>
+    <lib-action-bar *ngIf="showActionBar" [actionType]="isApprovalView" [configType]="workFlowStatus" (sendApproval)="sendForApproval()" (closeAction)="closeActionBar($event)"></lib-action-bar>
 </div>
 <div *ngIf="!(list && list.length > 0 )" class="flex heightFix ">
     <h1 i18n>No Data Available</h1>

@@ -39,6 +39,8 @@ export namespace NSFramework {
         stateData?: any
         selected?: boolean
         category: string
+        isViewOnly?: boolean,
+        highlight?:boolean
     }
 
     export interface ISelectedCategory {
@@ -91,7 +93,28 @@ export namespace NSFramework {
         translations?: any
         index: number
         children: any[],
-        category:string
+        category:string,
+        associations: string
     }
-
+    export interface ParentsElements {
+        identifier: string;
+    }
+    export interface AdditionalProperties {
+    }
+    export interface ICreateTerm {
+        code: string;
+        name: string;
+        description: string;
+        category: string;
+        status: string;
+        approvalStatus: string;
+        parents?: ParentsElements[] | null;
+        additionalProperties: AdditionalProperties;
+    }
 }
+
+
+
+ 
+ 
+  

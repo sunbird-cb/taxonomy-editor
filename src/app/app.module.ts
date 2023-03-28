@@ -19,7 +19,12 @@ import { environment } from 'src/environments/environment'
     AppRoutingModule,
     TaxonomyEditorModule.forRoot({
       source: 'online', data:
-        { endpoint: environment.url, token: environment.token, frameworkName: 'devmvp1' }
+        { 
+          endpoint: environment.url,
+          token: environment.token, 
+          frameworkName: 'devmvp3',
+          isApprovalRequired:environment.isApprovalRequired
+        }
     }),
     BrowserAnimationsModule,
     MatButtonModule

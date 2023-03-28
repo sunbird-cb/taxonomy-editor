@@ -30,7 +30,7 @@ const defaultConfig = {
   endPlugOutlineColor: '#515151',
   color: '#515151',
   size: 4,
-  path: 'grid',
+  path: 'arc',
   startSocket: 'right', endSocket: 'left'
 }
 

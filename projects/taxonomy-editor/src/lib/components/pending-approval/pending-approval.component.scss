@@ -25,15 +25,25 @@
 
     .mat-card {
         background: $light-grey;
-        margin-top: 10px;
+        margin-top: 25px;
+        padding:5px 0;
+        box-shadow:none;
     }
     .mat-card-content{
         display: flex;
         flex-direction: row;
-        justify-content: space-evenly;
+        justify-content: left;
         align-items: center;
+        padding-left: 4%;
+        position: relative;
         h4 {
             text-transform: capitalize;
+            padding:0;
+            margin: 10px 0;
+        }
+        .approve-view-link{
+            position: absolute;
+            right: 4%;
         }
     }
     .col {

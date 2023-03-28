@@ -2,8 +2,8 @@
     <ng-container *ngFor="let child of columnItems; let j = index">
         <div #cardEle id="{{column.code}}Card{{j+1}}" >
             <lib-term-card
-                [data]="{'children': child, 'selected' : false, 'category':column.code, cardSubType: 'minimal'}"
-                (isSelected)="updateSelection1($event)">
+                [data]="{'children': child, 'selected' : false, 'category':column.code, cardSubType: 'minimal', isViewOnly:false}"
+                (isSelected)="updateSelection1($event)" (selectedCard)="selectedCard($event)">
             </lib-term-card>
         </div>
     </ng-container>

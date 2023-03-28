@@ -10,13 +10,16 @@ import { ConnectorService } from '../../services/connector.service';
 import { ApprovalService } from '../../services/approval.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+
 @Component({
   selector: 'lib-taxonomy-view',
   templateUrl: './taxonomy-view.component.html',
   styleUrls: ['./taxonomy-view.component.scss']
 })
 export class TaxonomyViewComponent implements OnInit {
-  @Input() frameworkData: any
+  @Input() approvalList: any = []
+  @Input() isApprovalView: any = false;
+  @Input() workFlowStatus: string;
   mapping = {};
   heightLighted = []
   localList = []
@@ -25,6 +28,7 @@ export class TaxonomyViewComponent implements OnInit {
   loaded: any = {}
   showActionBar = false
   approvalRequiredTerms = []
+  draftTerms = []
   constructor(private frameworkService: FrameworkService, 
     private localSvc: LocalConnectionService, 
     public dialog: MatDialog, 
@@ -38,8 +42,11 @@ export class TaxonomyViewComponent implements OnInit {
     // this.frameworkService.isDataUpdated.subscribe(() => {
     //   this.updateLocalData()
     // })
+    // debugger
+   
   }
   init() {
+  
     // this.frameworkService.getFrameworkInfo().subscribe(res => {
     //   this.frameworkData = res.result.framework.categories
     //   this.frameworkCode = res.result.framework.code
@@ -153,6 +160,7 @@ export class TaxonomyViewComponent implements OnInit {
     //   this.updateLocalData()
     // }
     // return this.localList
+    // console.log(Array.from(this.frameworkService.list.values()))
     return Array.from(this.frameworkService.list.values())
   }
 
@@ -244,23 +252,27 @@ export class TaxonomyViewComponent implements OnInit {
     })
   }
 
-  updateDraftStatusTerms(draftTerms){
-    draftTerms.forEach((dt,i) => {
-      let temp = this.approvalRequiredTerms.filter(t => t.identifier === dt.identifier )
-      if(!temp.length){
-        this.approvalRequiredTerms.push(dt)
-      }
-    })
+  updateDraftStatusTerms(event){
+    if(event.checked) {
+      this.draftTerms.push(event.term)
+      } else {
+      this.draftTerms = this.draftTerms.filter(d => event.term.identifier !== d.identifier)
+    }
+    this.showActionBar = this.draftTerms.length>0?true:false
   }
 
+
   sendForApproval(){
-    console.log(this.approvalRequiredTerms)
     const req = {
-      updateFieldValues:this.approvalRequiredTerms
+      updateFieldValues:this.draftTerms
     }
     this.approvalService.createApproval(req).subscribe(res => {
+      this.frameworkService.removeOldLine()
       this._snackBar.open('Terms successfully sent for Approval.', 'cancel')
-      this.router.navigate(['/approval'])
+      // this.router.navigate(['/approval'])
     })
+  }
+  closeActionBar(e){
+    this.showActionBar = false;
   }
 }

@@ -10,6 +10,12 @@
     min-height: 70px; */
     overflow: hidden;
     border: 1px solid #e6e6e6;
+    position: relative;
+    .termSelection{
+        position: absolute;
+        right: 10px;
+        top: 10px;
+    }
 }
 
 .term-card.selected {
@@ -25,4 +31,19 @@
 .inDraft{
     border-color: #1ed11e;
     background: #d9f7db;
+}
+.inAssociationDraft{
+    border-color: #6b1cd3;
+    background: #d8c1f7;
+}
+.highlight{
+    border-color: #6b1cd3;
+    background: #aa2caa;
+}
+
+.approve-flag{
+    position: absolute;
+    right: 5px;
+    top: 35px;
+    font-size: 24px;
 }

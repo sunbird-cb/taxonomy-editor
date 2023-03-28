@@ -5,7 +5,8 @@ import { startWith, map } from 'rxjs/operators';
 import { FormArray, FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/internal/Observable';
 import { Identifiers } from '@angular/compiler';
-
+import { NSFramework } from '../../models/framework.model'
+import * as appConstants from '../../constants/app-constant'
 @Component({
   selector: 'lib-create-term',
   templateUrl: './create-term.component.html',
@@ -73,59 +74,68 @@ export class CreateTermComponent implements OnInit {
         return
       }
       if(this.createTermForm.valid) {
+        const term:NSFramework.ICreateTerm =   {
+          code:this.frameWorkService.getUuid(),
+          name:this.createTermForm.value.name,
+          description:this.createTermForm.value.description,
+          category:this.data.columnInfo.code,
+          status: appConstants.LIVE,
+          approvalStatus:appConstants.DRAFT,
+          parents:[
+            {identifier:`${this.data.frameworkId}_${this.data.columnInfo.code}`}
+          ],
+          additionalProperties:{}
+        }
         const requestBody =  {
           request: {
-            term: {
-              code:this.frameWorkService.getUuid(),
-              name:this.createTermForm.value.name,
-              description:this.createTermForm.value.description,
-              category:this.data.columnInfo.code,
-              status:'Live',
-              approvalStatus:'Draft',
-              parents:[
-                {identifier:`${this.data.frameworkId}_${this.data.columnInfo.code}`}
-              ],
-              additionalProperties:{}
-            }
+            term: term
           }
         }
       
       this.frameWorkService.createTerm(this.data.frameworkId, this.data.columnInfo.code, requestBody).subscribe((res:any) => {
         requestBody.request.term['identifier'] = res.result.node_id[0]
         this.dialogClose({ term: requestBody.request.term, created: true })
+        this.selectedTerm = requestBody.request.term
+        this.updateTerm()
       })
     }
     }
   
-
+  
   updateTerm() {
     let associations = []
     let temp
     let counter = 0
+    let localIsExist = false
     this.frameWorkService.selectionList.forEach((parent, i) => {
       counter++
       temp = parent.children ? parent.children.filter(child => child.identifier === this.selectedTerm.identifier) : null
-      if (temp && !temp.length )   {
-        associations = parent.children.map(c => {
-          return { identifier: c.identifier }
-        })
-      }
-      associations.push({ identifier: this.selectedTerm.identifier })
-      const reguestBody = {
-        request: {
-          term: {
-            associations: [
-              ...associations  
-            ]    
+      associations = parent.children ? parent.children.map(c => {
+        return { identifier: c.identifier, approvalStatus: c.associationProperties?c.associationProperties.approvalStatus: 'Draft' }
+      }) : [] 
+      if(temp && temp.length) {
+        this.isTermExist = true
+        return
+        } else { 
+          associations.push({ identifier: this.selectedTerm.identifier, approvalStatus: appConstants.DRAFT })
+          this.isTermExist = false
+          const reguestBody = {
+          request: {
+              term: {
+                associations: [
+                  ...associations  
+                ]    
+              }
+            } 
           }
+          // console.log('***************************',associations)
+          // this.dialogClose({ term: this.selectedTerm, created: true })
+          this.frameWorkService.updateTerm(this.data.frameworkId, parent.category, parent.code, reguestBody).subscribe((res: any) => {
+            if(counter === this.frameWorkService.selectionList.size ) {
+              this.dialogClose({ term: this.selectedTerm, created: true })
+            }
+          })
         }
-      }
-      this.frameWorkService.updateTerm(this.data.frameworkId, parent.category, parent.code, reguestBody).subscribe((res: any) => {
-        if(counter === this.frameWorkService.selectionList.size ) {
-          this.dialogClose({ term: this.selectedTerm, created: true })
-        }
-      })
-      
     })
   }
 
@@ -134,4 +144,5 @@ export class CreateTermComponent implements OnInit {
         this.dialogRef.close(term)
       });
   }
+
 }

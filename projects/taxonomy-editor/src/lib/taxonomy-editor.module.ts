@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser'
 import { TaxonomyEditorComponent } from './taxonomy-editor.component'
 import { ReactiveFormsModule, FormsModule } from '@angular/forms'
 import { TaxonomyEditorRoutingModule } from './taxonomy-editor-routing.module'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatFormFieldModule, MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field'
 import { MatButtonModule } from '@angular/material/button'
@@ -15,6 +16,9 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatTabsModule, MAT_TABS_CONFIG } from '@angular/material/tabs';
 import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import {MatTableModule} from '@angular/material/table';
+
 
 import { DashboardComponent } from './containers/dashboard/dashboard.component'
 import { FrameworkService } from './services/framework.service'
@@ -61,6 +65,7 @@ import { ApproveViewComponent } from './components/approve-view/approve-view.com
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     TaxonomyEditorRoutingModule,
     ReactiveFormsModule,
     FormsModule,
@@ -76,7 +81,9 @@ import { ApproveViewComponent } from './components/approve-view/approve-view.com
     HttpClientModule,
     MatTabsModule,
     MatSnackBarModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatCheckboxModule,
+    MatTableModule
   ],
   providers: [
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },

@@ -1,5 +1,9 @@
 <mat-card class="action-bar">
-    <button mat-raised-button color="default">Cancel</button>
-    <!-- <button mat-raised-button color="primary" (click)="publishFramwork()">Publish</button> -->
-    <button mat-raised-button color="primary" (click)="SendForApproval()">Send for Approval</button>
+    <button mat-raised-button color="default" (click)="closeActionBar()">Cancel</button>
+        <!-- <button mat-raised-button color="primary" (click)="publishFramwork()">Publish</button> -->
+    <div>
+    <button mat-raised-button color="primary" (click)="SendForApproval()">
+        {{actionType? 'Approve':'Send for Approval'}}  
+   </button>
+   </div>
 </mat-card>

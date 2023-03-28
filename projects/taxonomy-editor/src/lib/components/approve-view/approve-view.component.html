@@ -1,23 +1,25 @@
-<div class="approve-view">
-    <div *ngIf="listItems && listItems.length > 0 " class="flex heightFix ">
-        <ng-container *ngFor="let column of listItems let i = index;">
-            <div class="flex-1 felx-col  col-container" id="box{{i+1}}Container">
-                <div class="category-heading-sticky">
-                    <div class="category-heading-container">
-                        <h3>{{column.name}}</h3>
-                        <!-- <div class="mb1">
-                            <button class="w-full" mat-stroked-button color="primary" (click)="openCreateTermDialog(column, i)">Create New
-                                {{column.name}}</button>
-                        </div> -->
-                    </div>
-                </div>
-                <!-- {{column.code}} -->
-                <div class="padding-x2 cat-columns container" id="box{{i+1}}">
-                    <lib-taxonomy-column-view #selectedTaxonomyTerm [column]="column" [containerId]="'box'+(i+1)" >
-                    </lib-taxonomy-column-view>
-                </div>
+<!-- <div class="approve-view__container" *ngIf="listItems && listItems.length > 0 ">
+        <ng-container *ngFor="let column of categories let i = index;">
+            <div class="approve-view__columns">
+                   <h4 class="approve-view__columns-title">{{column}}</h4> 
+                <section>
+                    <ng-container *ngFor="let term of listItems">
+                        <div *ngIf="column === term.category" >
+                            <lib-term-card
+                                [data]="{'children': term, 'selected' : false, 'category':column, cardSubType: 'minimal', isViewOnly:true}">
+                            </lib-term-card>
+                        </div>
+                        
+                    </ng-container>
+                </section>
             </div>
         </ng-container>
-        <!-- <lib-action-bar *ngIf="showActionBar" (sendApproval)="sendForApproval()"></lib-action-bar> -->
-    </div>
-</div>
+        <lib-action-bar *ngIf="showAction" [configType]="workflowDetails.currentStatus" [actionType]="'approve'" (sendApproval)="approvalRequest()" (closeAction)="closeActionBar($event)"></lib-action-bar> 
+</div> -->
+<ng-container *ngIf="listItems">
+    <lib-taxonomy-view 
+        [isApprovalView]="true" 
+        [approvalList]="listItems" 
+        [workFlowStatus]="workflowDetails?.currentStatus">
+    </lib-taxonomy-view>
+</ng-container>

@@ -11,7 +11,8 @@ export class LocalConnectionService {
         data: {
             endpoint: '',
             frameworkName: '',
-            token: ''
+            token: '',
+            isApprovalRequired: false
         },
         source: 'online'
     }
@@ -21,6 +22,7 @@ export class LocalConnectionService {
             this._vars.data.endpoint = env.data.endpoint;
             this._vars.data.token = env.data.token;
             this._vars.data.frameworkName = env.data.frameworkName;
+            this._vars.data.isApprovalRequired = env.data.isApprovalRequired;
         }
     }
     get apiUrl() {
@@ -63,5 +65,8 @@ export class LocalConnectionService {
     clearLocalStorage() {
         localStorage.removeItem('env')
         localStorage.removeItem('terms')
+    }
+    getConfigInfo(){
+        return this._vars.data
     }
 }
