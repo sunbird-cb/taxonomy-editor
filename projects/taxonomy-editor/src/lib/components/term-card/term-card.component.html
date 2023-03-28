@@ -15,7 +15,8 @@
         <p>{{data.children.description}}</p>
         <!-- *ngIf="!data.isViewOnly && data.children.approvalStatus === 'Draft' && isApprovalRequired" -->
         <mat-checkbox  color="primary" *ngIf="data.children.approvalStatus === 'Draft' && isApprovalRequired
-        || data.children.associationProperties?.approvalStatus === 'Draft' && isApprovalRequired || data.children.highlight && isApprovalRequired" [checked]="data.children.highlight" class="termSelection" (change)="handleProductClick(data.children, $event)" (click)="$event.stopPropagation()"></mat-checkbox>
+        || data.children.associationProperties?.approvalStatus === 'Draft' && isApprovalRequired || data.children.highlight && isApprovalRequired" 
+        [checked]="data.children.highlight" class="termSelection" (change)="handleProductClick(data.children, $event)" (click)="$event.stopPropagation()"></mat-checkbox>
         <!-- data.children.highlight?'highlight':'' -->
         <mat-icon color="primary" class="approve-flag" *ngIf="data.children.highlight && isApprovalRequired">flag</mat-icon>
       </div>

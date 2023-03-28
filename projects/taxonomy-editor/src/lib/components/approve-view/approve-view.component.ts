@@ -81,6 +81,6 @@ export class ApproveViewComponent implements OnInit {
   //   return count.length;
   // }
   ngOnDestroy() {
-    // this.frameworkService.removeOldLine()
+    this.frameworkService.removeOldLine()
   }
 }
