@@ -12,7 +12,9 @@
                     <h3>{{column.name}}</h3>
                     <div class="mb1" *ngIf="!isApprovalView">
                         <button [disabled]="isEnabled(column.code)" class="w-full" mat-stroked-button color="primary" (click)="openCreateTermDialog(column, i)">Create New
-                            {{column.name}}</button>
+                            {{column.name}}
+                            <mat-icon>add</mat-icon>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -27,4 +29,7 @@
 </div>
 <div *ngIf="!(list && list.length > 0 )" class="flex heightFix ">
     <h1 i18n>No Data Available</h1>
+<div>
+<div *ngIf="isLoading" class="spinner">
+    <mat-spinner></mat-spinner>
 </div>

@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators'
 import { ApprovalService } from '../../services/approval.service';
 import { FrameworkService } from '../../services/framework.service';
 import * as API from '../../constants/app-constant'
+import { MatSnackBar } from '@angular/material/snack-bar';
 declare var LeaderLine: any;
 @Component({
   selector: 'lib-approve-view',
@@ -18,7 +19,10 @@ export class ApproveViewComponent implements OnInit {
   categories: string[] = []
   showAction = true
   lineRef = []
-  constructor(private activatedRoute: ActivatedRoute, private approvalService: ApprovalService, private frameworkService: FrameworkService) { }
+  constructor(private activatedRoute: ActivatedRoute, 
+    private approvalService: ApprovalService, 
+    private frameworkService: FrameworkService,
+    private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
       this.list$ = this.activatedRoute.paramMap
@@ -40,7 +44,7 @@ export class ApproveViewComponent implements OnInit {
       });
   }
 
-  approvalRequest(){
+  approvalRequest(approvalTerms: any){
     const requestBody = {
       wfId:this.activatedRoute.snapshot.params.id,
       state:this.workflowDetails.currentStatus,
@@ -49,6 +53,7 @@ export class ApproveViewComponent implements OnInit {
     }
     this.approvalService.updateWorkFlowApproval(requestBody).subscribe(res => {
       console.log(res)
+      this._snackBar.open('Terms successfully Approved.', 'cancel')
     });
   }
   closeActionBar(e){

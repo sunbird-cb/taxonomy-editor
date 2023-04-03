@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, EventEmitter } from '@angular/core';
 import { FrameworkService } from '../../services/framework.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateTermComponent } from '../create-term/create-term.component';
@@ -10,6 +10,7 @@ import { ConnectorService } from '../../services/connector.service';
 import { ApprovalService } from '../../services/approval.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { elementAt } from 'rxjs/operators';
 
 @Component({
   selector: 'lib-taxonomy-view',
@@ -20,6 +21,7 @@ export class TaxonomyViewComponent implements OnInit {
   @Input() approvalList: any = []
   @Input() isApprovalView: any = false;
   @Input() workFlowStatus: string;
+  @Output() sentForApprove = new EventEmitter()
   mapping = {};
   heightLighted = []
   localList = []
@@ -29,6 +31,7 @@ export class TaxonomyViewComponent implements OnInit {
   showActionBar = false
   approvalRequiredTerms = []
   draftTerms = []
+  isLoading = false
   constructor(private frameworkService: FrameworkService, 
     private localSvc: LocalConnectionService, 
     public dialog: MatDialog, 
@@ -43,7 +46,11 @@ export class TaxonomyViewComponent implements OnInit {
     //   this.updateLocalData()
     // })
     // debugger
-   
+    this.showActionBar = this.isApprovalView?true:false;
+    
+  }
+  ngOnChanges(){
+    this.draftTerms = this.approvalList;
   }
   init() {
   
@@ -54,9 +61,10 @@ export class TaxonomyViewComponent implements OnInit {
     this.frameworkService.getFrameworkInfo().subscribe(res => {
       this.connectorSvc.removeAllLines()
       this.updateLocalData()
-      this.frameworkService.categoriesHash.value.forEach(cat => {
+      this.frameworkService.categoriesHash.value.forEach((cat:any) => {
         this.loaded[cat.code] = true
       })
+      this.isLoading = false
     })
     // this.newTermSubscription = this.frameworkService.termSubject.subscribe((term: any) => {
     //   // if (term)
@@ -91,7 +99,7 @@ export class TaxonomyViewComponent implements OnInit {
   }
 
   //need to refactor at heigh level
-  updateFinalList(data: { selectedTerm: any, isSelected: boolean, parentData?: any }) {
+  updateFinalList(data: { selectedTerm: any, isSelected: boolean, parentData?: any, colIndex?: any }) {
     if (data.isSelected) {
       // data.selectedTerm.selected = data.isSelected
       this.frameworkService.selectionList.set(data.selectedTerm.category, data.selectedTerm)
@@ -101,6 +109,12 @@ export class TaxonomyViewComponent implements OnInit {
       }
       // notify next
       this.frameworkService.insertUpdateDeleteNotifier.next({ action: data.selectedTerm.category, type: 'select', data: data.selectedTerm })
+    } 
+    if(data.colIndex === 0 && !data.isSelected) {
+      this.isLoading = true;
+      setTimeout(()=> {
+        this.init()
+      },3000)
     }
     // insert in colum 
     // if (data.parentData) {
@@ -146,9 +160,11 @@ export class TaxonomyViewComponent implements OnInit {
         res.parent = null
         if (parentColumn) {
           res.parent = this.frameworkService.selectionList.get(parentColumn.code)
+          res.parent.children? res.parent.children.push(res.term) :res.parent['children'] = [res.term]
+          // res.parent.associations?.push(res)
         }
-        this.frameworkService.setTerm = res;
-        this.updateFinalList({ selectedTerm: res.term, isSelected: false, parentData: res.parent })
+        // this.frameworkService.setTerm = res;
+        this.updateFinalList({ selectedTerm: res.term, isSelected: false, parentData: res.parent, colIndex:colIndex })
         // this.frameworkService.insertUpdateDeleteNotifier.next({ type: 'insert', action: res.parent.code, data: res.term })
       })
     }
@@ -263,15 +279,30 @@ export class TaxonomyViewComponent implements OnInit {
 
 
   sendForApproval(){
-    const req = {
-      updateFieldValues:this.draftTerms
+    if(!this.isApprovalView){
+        let parentList = []
+        this.list.forEach(ele => {
+          const t = ele.children.filter(term => term.selected === true)
+          if(t[0]){
+            parentList.push(t[0])
+          } 
+        })
+        const req = {
+          updateFieldValues:[...parentList, ...this.draftTerms]
+        }
+        this.approvalService.createApproval(req).subscribe(res => {
+          this.frameworkService.removeOldLine()
+          this._snackBar.open('Terms successfully sent for Approval.', 'cancel')
+          // this.router.navigate(['/approval'])
+          // this.showActionBar = false;
+        })
+    } else {
+      this.sentForApprove.emit(this.draftTerms)
+      console.log(this.draftTerms)
     }
-    this.approvalService.createApproval(req).subscribe(res => {
-      this.frameworkService.removeOldLine()
-      this._snackBar.open('Terms successfully sent for Approval.', 'cancel')
-      // this.router.navigate(['/approval'])
-    })
+   
   }
+
   closeActionBar(e){
     this.showActionBar = false;
   }

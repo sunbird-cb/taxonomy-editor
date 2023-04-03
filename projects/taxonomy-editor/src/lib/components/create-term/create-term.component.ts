@@ -132,7 +132,8 @@ export class CreateTermComponent implements OnInit {
           // this.dialogClose({ term: this.selectedTerm, created: true })
           this.frameWorkService.updateTerm(this.data.frameworkId, parent.category, parent.code, reguestBody).subscribe((res: any) => {
             if(counter === this.frameWorkService.selectionList.size ) {
-              this.dialogClose({ term: this.selectedTerm, created: true })
+              // this.selectedTerm['associationProperties']['approvalStatus'] = 'Draft';
+              this.dialogClose({ term: {...this.selectedTerm, ...{associationProperties:{approvalStatus:'Draft'}}}, created: true })
             }
           })
         }

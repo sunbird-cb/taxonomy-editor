@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, S
 import { FrameworkService } from '../../services/framework.service';
 import { Subscription } from 'rxjs';
 import { ConnectorService } from '../../services/connector.service';
+import { ApprovalService } from '../../services/approval.service';
 
 @Component({
   selector: 'lib-taxonomy-column-view',
@@ -17,20 +18,42 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
   columnData = []
   childSubscription: Subscription = null
   newTermSubscription: Subscription = null
+  approvalTerm: any;
+  termshafall = []
   constructor(
     private frameworkService: FrameworkService,
     private connectorService: ConnectorService,
+    private approvalService : ApprovalService
   ) {
   }
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes)
-  }
+  ngOnChanges(changes: SimpleChanges): void {}
 
 
   ngOnInit(): void {
     this.subscribeEvents()
+   
     if (this.column.index === 1) {
-      this.columnData = this.column.children
+      this.approvalService.getUpdateList().subscribe((list:any) => {
+        this.approvalTerm = list.filter(item => this.column.code === item.category)
+        if(this.approvalTerm){
+          this.approvalTerm.forEach((term, i)=> {
+             this.column.children.forEach((lel,j) => {
+                if(lel.identifier === term.identifier){
+                  if(!this.isExists(term)){
+                    this.termshafall.push(lel)
+                  }
+                }
+             })
+          })
+          // this.termshafall = [...this.termshafall]
+          this.column.children.forEach((tr, i) => {
+            if(!this.isExists(tr)){
+              this.termshafall.push(tr)
+            }
+          })
+          this.columnData = this.termshafall
+        }
+      })
     }
     this.connectorMapping = this.connectorService.connectorMap
     // this.frameworkService.isDataUpdated.subscribe(() => {
@@ -38,6 +61,12 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
     // })
   }
 
+  isExists(e){
+    let temp;
+    temp = this.termshafall.map(t => t.identifier)
+    return temp.includes(e.identifier)
+  }
+  
   subscribeEvents() {
     if (this.childSubscription) {
       this.childSubscription.unsubscribe()

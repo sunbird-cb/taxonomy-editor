@@ -6,16 +6,20 @@
 
 <ng-template #cardMinimal>
     <div #cardRef class="term-card clickable" (click)="cardClicked(data, cardRef)" 
-    [ngClass]="[ data.children.selected?'selected':'', data.children.approvalStatus === 'Draft'? 'inDraft':'', 
-    data.children.associationProperties?.approvalStatus === 'Draft' ? 'inAssociationDraft':'']" id="{{data.children.name}}">
+    [ngClass]="[data.children.selected?'selected':'', data.children.approvalStatus === 'Draft'? 'inDraft':'',
+    data.children.associationProperties?.approvalStatus === 'Draft' && isApprovalRequired && !approvalList.length || data.children.highlight && isApprovalRequired ? 'inAssociationDraft':'']" id="{{data.children.name}}">
         <!-- (click)="data.selected=!data.selected" -->
         <span>{{data.children.name}}</span>
         <!-- <span>++{{data.children.selected}}+++</span>
         <span>=={{data.children.status}}==</span>  -->
-        <p>{{data.children.description}}</p>
+        <p>{{data.children.description}} </p>
+        
+        <!-- <p>{{data.children.approvalStatus}}, {{data.children.associationProperties?.approvalStatus}}</p> -->
         <!-- *ngIf="!data.isViewOnly && data.children.approvalStatus === 'Draft' && isApprovalRequired" -->
-        <mat-checkbox  color="primary" *ngIf="data.children.approvalStatus === 'Draft' && isApprovalRequired
-        || data.children.associationProperties?.approvalStatus === 'Draft' && isApprovalRequired || data.children.highlight && isApprovalRequired" 
+        <mat-checkbox  color="primary"
+         *ngIf="data.children.approvalStatus === 'Draft' && isApprovalRequired && !approvalList.length || 
+         data.children.associationProperties?.approvalStatus === 'Draft' && isApprovalRequired && !approvalList.length ||
+         data.children.highlight && isApprovalRequired" 
         [checked]="data.children.highlight" class="termSelection" (change)="handleProductClick(data.children, $event)" (click)="$event.stopPropagation()"></mat-checkbox>
         <!-- data.children.highlight?'highlight':'' -->
         <mat-icon color="primary" class="approve-flag" *ngIf="data.children.highlight && isApprovalRequired">flag</mat-icon>

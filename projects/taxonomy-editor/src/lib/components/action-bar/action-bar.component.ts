@@ -23,4 +23,8 @@ export class ActionBarComponent implements OnInit {
   closeActionBar(){
     this.closeAction.emit('')
   }
+  getApproveLevelText(res){
+    if(!res) { return }
+    return `Approve ${res.substr(res.lastIndexOf('_')+1,res.length)}`
+  }
 }

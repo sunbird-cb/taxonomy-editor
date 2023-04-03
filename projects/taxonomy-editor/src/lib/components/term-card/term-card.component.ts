@@ -20,7 +20,7 @@ export class TermCardComponent implements OnInit {
     this._data = value;
     //  if(this._data)
     //    this.createTimeline(this._data[0].id)
-    this._data.highlight=false
+    this._data.children.highlight=false
   }
   get data(): any {
     return this._data;
@@ -35,7 +35,7 @@ export class TermCardComponent implements OnInit {
     this.isApprovalRequired = this.localConnectionService.getConfigInfo().isApprovalRequired
     // console.log(this._data)
     this.updateApprovalStatus()
-   }
+  }
 
   cardClicked(data: any, cardRef: any) {
     // this.data.selected = true
@@ -58,8 +58,7 @@ export class TermCardComponent implements OnInit {
            if(this.approvalList.includes(id)){
               this._data.children.highlight = true
             }
-      }
-     
+      }     
     })
   }
 }

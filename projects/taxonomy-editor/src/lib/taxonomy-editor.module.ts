@@ -17,7 +17,8 @@ import { MatTabsModule, MAT_TABS_CONFIG } from '@angular/material/tabs';
 import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import {MatTableModule} from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 import { DashboardComponent } from './containers/dashboard/dashboard.component'
@@ -42,7 +43,9 @@ import { ActionBarComponent } from './components/action-bar/action-bar.component
 import { IConnectionType } from './models/connection-type.model'
 import { ApprovalComponent } from './components/approval/approval.component';
 import { PendingApprovalComponent } from './components/pending-approval/pending-approval.component';
-import { ApproveViewComponent } from './components/approve-view/approve-view.component'
+import { ApproveViewComponent } from './components/approve-view/approve-view.component';
+import { OrderByPipe } from './pipes/order-by.pipe';
+import { DatePipe } from './pipes/date.pipe'
 
 @NgModule({
   declarations: [
@@ -61,7 +64,9 @@ import { ApproveViewComponent } from './components/approve-view/approve-view.com
     ActionBarComponent,
     ApprovalComponent,
     PendingApprovalComponent,
-    ApproveViewComponent
+    ApproveViewComponent,
+    OrderByPipe,
+    DatePipe
   ],
   imports: [
     BrowserModule,
@@ -83,7 +88,8 @@ import { ApproveViewComponent } from './components/approve-view/approve-view.com
     MatSnackBarModule,
     MatTooltipModule,
     MatCheckboxModule,
-    MatTableModule
+    MatTableModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },

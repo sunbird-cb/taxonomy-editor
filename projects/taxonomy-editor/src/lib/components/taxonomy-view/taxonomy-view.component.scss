@@ -4,6 +4,21 @@
 
 .w-full {
     width: 100%;
+    &.mat-stroked-button{
+        padding: 3px 15px;
+        text-align: left;
+        border: 2px dotted #b1b1b1;
+        color: #666;
+        border-radius: 8px;
+        .mat-icon{
+            position: absolute;
+            top: 0%;
+            right: 3%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+    }
 }
 
 .mb1{
@@ -62,6 +77,9 @@ flex-center {
     position: relative;
     display: block;
     padding: 1px 2.5em;
+    h3 {
+        padding-left: 10px;
+    }
 }
 
 .cat-columns:hover {
@@ -88,3 +106,9 @@ flex-center {
     height: 0;
   }
 
+.spinner{
+    position: fixed;
+    display: flex;
+    top:50%;
+    left:50%;
+}

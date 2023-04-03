@@ -3,17 +3,21 @@
         <h2>Pending For approval ({{approvalList.length}})</h2>
     </header>
 
-    <mat-card *ngFor="let p of approvalList">
+    <mat-card *ngFor="let p of approvalList | orderBy">
+        
         <mat-card-content>
+            <span class="date">
+                <h4>Date</h4>
+               <span>{{p.lastUpdatedOn | date}}</span>
+            </span>
             <div *ngFor="let t of createApprovalList(p.updateFieldValues)" class="col">
                     <h4>{{t.name}}</h4>
                     <div matTooltip="{{getTerms(t.children)}}" matTooltipPosition="above" matTooltipClass="custom-tooltip">
                             {{t.children[0].name}}
                             <ng-container *ngIf="t.children.length>1">
-                            & {{t.children.length-1}} more...
+                                & {{t.children.length-1}} more...
                             </ng-container>
                     </div>
-                  
             </div> 
             <a class="approve-view-link" routerLink="/approval/{{p.wfId}}"><mat-icon>keyboard_arrow_right</mat-icon></a>
         </mat-card-content>
