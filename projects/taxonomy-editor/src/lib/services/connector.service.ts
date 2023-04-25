@@ -24,14 +24,17 @@ export interface LLOptions {
 const defaultConfig = {
   startPlug: 'disc',
   startPlugColor: 'white',
+  startPlugSize: 3,
   startPlugOutlineColor: '#515151',
-  endPlug: 'disc',
+  endPlug: 'arrow3',
   endPlugColor: 'white',
+  endPlugSize: 3,
   endPlugOutlineColor: '#515151',
   color: '#515151',
-  size: 4,
-  path: 'arc',
-  startSocket: 'right', endSocket: 'left'
+  size: 1,
+  path: 'magnet',
+  startSocket: 'right', endSocket: 'left',
+  dash: {len: 6, gap: 3}
 }
 
 @Injectable()

@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { IConnection } from '../models/connection.model';
 // import { LibConnectionService } from 'taxonomy-editor/lib/services/connection.service';
 import { LocalConnectionService } from './local-connection.service';
+import { COLORS } from '../constants/app-constant';
 
 @Injectable({
   providedIn: 'root'
@@ -210,6 +211,8 @@ export class FrameworkService {
         translations: a.translations,
         category:a.category,
         associations: a.associations,
+        icon: this.getIcon(a.name),
+        color: this.getColor(a.index),
         // children: ([...a.terms, ...localData] || []).map(c => {
         children: (a.terms || []).map(c => {
           const associations = c.associations || []
@@ -243,6 +246,24 @@ export class FrameworkService {
     if(eles.length>0){
         eles.forEach(ele => ele.remove());
     }
+  }
+
+  getIcon(name: string) {
+    if(name.toUpperCase() == 'ROLE'){
+      return "settings";
+    } else if(name.toUpperCase() == 'COMPETENCY') {
+      return "extension";
+    } else if(name.toUpperCase() == 'COMPETENCYLEVEL') {
+      return "bar_chart";
+    } else if(name.toUpperCase() == 'POSITION') {
+      return "account_box";
+    } else {
+      return "";
+    }
+  }
+
+  getColor(index: number) {
+    return COLORS.find((color:string,i:number) => i+1 == index);
   }
 
 }

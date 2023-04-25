@@ -3,6 +3,7 @@ import { NSFramework } from '../../models/framework.model'
 import { ApprovalService } from '../../services/approval.service';
 import { FrameworkService } from '../../services/framework.service'
 import { LocalConnectionService } from '../../services/local-connection.service';
+import { COLORS } from '../../constants/app-constant';
 
 @Component({
   selector: 'lib-term-card',
@@ -14,7 +15,8 @@ export class TermCardComponent implements OnInit {
 
   private _data: NSFramework.ITermCard;
   isApprovalRequired = false
-  approvalList = []
+  approvalList = [];
+  cardRefList:HTMLElement[] = [];
   @Input()
   set data(value: any) {
     this._data = value;
@@ -23,6 +25,7 @@ export class TermCardComponent implements OnInit {
     this._data.children.highlight=false
   }
   get data(): any {
+    console.log("data",this._data);
     return this._data;
   }
 
@@ -60,5 +63,29 @@ export class TermCardComponent implements OnInit {
             }
       }     
     })
+  }
+
+  getColor(indexClass:number, cardRef: HTMLElement,property: string) {
+    this.cardRefList.push(cardRef);
+    if(cardRef.classList.contains('selected') && property === 'bgColor'){
+       return COLORS.find((color:string,index:number) => index === indexClass - 1);
+    }
+    if(property === 'border'){
+      let borderColor;
+      if(cardRef.classList.contains((indexClass).toString())){
+        COLORS.find((color:string, index:number) => {
+         if(index === indexClass-1 && index !=0) {
+           borderColor = "8px solid " + color;
+         }
+        });
+      }
+      // this.cardRefList.forEach((card:HTMLElement) => {
+      //   if(card.classList.contains((indexClass-1).toString())) {
+      //     console.log("hereee");
+      //     cardRef.style.removeProperty('border');
+      //   }
+      // });
+      return borderColor;
+    }
   }
 }

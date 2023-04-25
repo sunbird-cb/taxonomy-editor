@@ -31,7 +31,8 @@ export class TaxonomyViewComponent implements OnInit {
   showActionBar = false
   approvalRequiredTerms = []
   draftTerms = []
-  isLoading = false
+  isLoading = false;
+  categoryList:any = [];
   constructor(private frameworkService: FrameworkService, 
     private localSvc: LocalConnectionService, 
     public dialog: MatDialog, 
@@ -73,7 +74,7 @@ export class TaxonomyViewComponent implements OnInit {
   }
 
   updateTaxonomyTerm(data: { selectedTerm: any, isSelected: boolean }) {
-
+    
     this.updateFinalList(data)
     this.updateSelection(data.selectedTerm.category, data.selectedTerm.code)
 
@@ -100,6 +101,7 @@ export class TaxonomyViewComponent implements OnInit {
 
   //need to refactor at heigh level
   updateFinalList(data: { selectedTerm: any, isSelected: boolean, parentData?: any, colIndex?: any }) {
+    
     if (data.isSelected) {
       // data.selectedTerm.selected = data.isSelected
       this.frameworkService.selectionList.set(data.selectedTerm.category, data.selectedTerm)
@@ -143,7 +145,7 @@ export class TaxonomyViewComponent implements OnInit {
   isEnabled(columnCode: string): boolean {
     return !!this.frameworkService.selectionList.get(columnCode)
   }
-  openCreateTermDialog(column, colIndex) {
+  openCreateTermDialog(column, colIndex) {  
     if (!this.isEnabled(column.code)) {
       const dialog = this.dialog.open(CreateTermComponent, {
         data: { columnInfo: column, frameworkId: this.frameworkService.getFrameworkId(), selectedparents: this.heightLighted, colIndex: colIndex },
@@ -176,7 +178,6 @@ export class TaxonomyViewComponent implements OnInit {
     //   this.updateLocalData()
     // }
     // return this.localList
-    // console.log(Array.from(this.frameworkService.list.values()))
     return Array.from(this.frameworkService.list.values())
   }
 
@@ -251,7 +252,7 @@ export class TaxonomyViewComponent implements OnInit {
   //   return this.frameworkService.list
   // }
   
-  newConnection() {
+  newConnection() { 
     const dialog = this.dialog.open(ConnectorComponent, {
       data: {},
       width: '90%',
@@ -269,6 +270,7 @@ export class TaxonomyViewComponent implements OnInit {
   }
 
   updateDraftStatusTerms(event){
+    
     if(event.checked) {
       this.draftTerms.push(event.term)
       } else {
@@ -276,6 +278,20 @@ export class TaxonomyViewComponent implements OnInit {
     }
     this.showActionBar = this.draftTerms.length>0?true:false
   }
+
+  getNoOfCards(event:any) {
+    if(this.categoryList.length > 0 && event.category !== '') {
+      let index = this.categoryList.findIndex((obj:any) => obj.category == event.category);
+      if(index > -1) {
+        this.categoryList.splice(index);
+      }
+    }
+    if(event.category == '') {
+      this.categoryList[this.categoryList.length-1].count = 0;
+    }
+    this.categoryList.push(event);
+  }
+  
 
 
   sendForApproval(){
@@ -303,7 +319,7 @@ export class TaxonomyViewComponent implements OnInit {
    
   }
 
-  closeActionBar(e){
+  closeActionBar(e){ 
     this.showActionBar = false;
   }
 }

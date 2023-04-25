@@ -5,9 +5,10 @@
 </ng-container>
 
 <ng-template #cardMinimal>
-    <div #cardRef class="term-card clickable" (click)="cardClicked(data, cardRef)" 
+    <div #cardRef class="term-card clickable {{data.index}}" (click)="cardClicked(data, cardRef)" 
     [ngClass]="[data.children.selected?'selected':'', data.children.approvalStatus === 'Draft'? 'inDraft':'',
-    data.children.associationProperties?.approvalStatus === 'Draft' && isApprovalRequired && !approvalList.length || data.children.highlight && isApprovalRequired ? 'inAssociationDraft':'']" id="{{data.children.name}}">
+    data.children.associationProperties?.approvalStatus === 'Draft' && isApprovalRequired && !approvalList.length || data.children.highlight && isApprovalRequired ? 'inAssociationDraft':'']" id="{{data.children.name}}"
+    [ngStyle]="{'background-color':getColor(data.index,cardRef,'bgColor'),'border-left': getColor(data.index,cardRef,'border')}">
         <!-- (click)="data.selected=!data.selected" -->
         <span>{{data.children.name}}</span>
         <!-- <span>++{{data.children.selected}}+++</span>

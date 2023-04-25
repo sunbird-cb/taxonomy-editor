@@ -19,3 +19,5 @@ export const APPROVAL = {
 
 export const LIVE = 'Live'
 export const DRAFT = 'Draft'
+
+export const COLORS = ['#1d2327','#541675','#9a6c80','#d8666a'];
