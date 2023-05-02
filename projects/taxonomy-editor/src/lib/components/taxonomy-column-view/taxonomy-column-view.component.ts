@@ -52,7 +52,8 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
               this.termshafall.push(tr)
             }
           })
-          this.columnData = this.termshafall
+          this.columnData = this.termshafall;
+          this.cardsCount.emit({category: this.columnData[0].category,count:this.columnData.length});
         }
       })
     }
@@ -234,7 +235,7 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
       const connectionLines = this.connectorService._drawLine(
         this.connectorMapping['box' + (this.column.index - 1)].source,
         this.connectorMapping['box' + (this.column.index - 1)].lines,
-        { startPlug: 'disc', endPlug: 'arrow3', color: '#7e7e7e', path: 'grid' },
+        null,
         '#box' + (this.column.index - 1),
         '#box' + this.column.index
       )
@@ -263,7 +264,7 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
         const connectionLines = this.connectorService._drawLine(
           this.connectorMapping['box' + (this.column.index - 1)].source,
           this.connectorMapping['box' + (this.column.index - 1)].lines,
-          { startPlug: 'disc', endPlug: 'arrow3', color: '#7e7e7e', path: 'grid' },
+          null,
           '#box' + (this.column.index - 1),
           '#box' + this.column.index
         )

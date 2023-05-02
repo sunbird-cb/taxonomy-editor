@@ -1,4 +1,4 @@
-<div class="flex flex-1" style="flex-direction: row-reverse; z-index: 11; position: relative;background-color: #fff;padding:4px 4px 0px 0px" >
+<div class="flex flex-1 connectionSettings">
     <button mat-raised-button color="accent" (click)="newConnection()">
         <mat-icon>build</mat-icon>
     </button>
@@ -10,15 +10,18 @@
             <div class="category-heading-sticky">
                 <div class="category-heading-container">
                     <div class='category-header'>
-                        <mat-icon [ngStyle]="{'color':column.color}">{{column.icon}}</mat-icon>
+                        <mat-icon [ngStyle]="{'color':column.config.color}">{{column.config.icon}}</mat-icon>   
                         <h4>{{column.name}}</h4>
-                        <ng-container *ngIf="categoryList.length > 0">
+                        <ng-container *ngIf="i != 0 && categoryList?.length > 0; else firstColumn">
                             <ng-container *ngFor="let category of categoryList">
                                 <ng-container *ngIf="(column.code == category.category) && column.index !== 1">
                                     <span>{{category.count}}</span>
                                 </ng-container>
                             </ng-container>
                         </ng-container>
+                        <ng-template #firstColumn>
+                            <span *ngIf="i == 0">{{column.children.length}}</span>
+                        </ng-template>
                     </div>
                     <div class="mb1" *ngIf="!isApprovalView">
                         <button [disabled]="isEnabled(column.code)" class="w-full" mat-stroked-button color="primary" (click)="openCreateTermDialog(column, i)">Create New

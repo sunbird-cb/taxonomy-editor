@@ -25,6 +25,7 @@ export class FrameworkService {
   environment
   libConfig: IConnection
   frameworkId: string;
+  rootConfig: any;
   constructor(
     private http: HttpClient,
     public localConfig: LocalConnectionService
@@ -211,20 +212,23 @@ export class FrameworkService {
         translations: a.translations,
         category:a.category,
         associations: a.associations,
-        icon: this.getIcon(a.name),
-        color: this.getColor(a.index),
+        config: this.getConfig(a.code),
         // children: ([...a.terms, ...localData] || []).map(c => {
         children: (a.terms || []).map(c => {
+          c =Object.assign(c, this.getConfig(c.category));
           const associations = c.associations || []
           if (associations.length > 0) {
-            Object.assign(c, { children: associations })
+            associations.forEach((val:any,index) => {
+              associations[index] = Object.assign(val, this.getConfig(val.category));
+            });
+            Object.assign(c, { children: associations});
             // delete c.associations
           }
           return c
-        }),
+        })
       })
       // }
-    })
+    });
     const allCategories = []
     this.list.forEach(a => {
       allCategories.push({
@@ -248,22 +252,19 @@ export class FrameworkService {
     }
   }
 
-  getIcon(name: string) {
-    if(name.toUpperCase() == 'ROLE'){
-      return "settings";
-    } else if(name.toUpperCase() == 'COMPETENCY') {
-      return "extension";
-    } else if(name.toUpperCase() == 'COMPETENCYLEVEL') {
-      return "bar_chart";
-    } else if(name.toUpperCase() == 'POSITION') {
-      return "account_box";
-    } else {
-      return "";
-    }
+
+  setConfig(config: any) {
+    this.rootConfig = config
   }
 
-  getColor(index: number) {
-    return COLORS.find((color:string,i:number) => i+1 == index);
+  getConfig(code: string) {
+    let categoryConfig: any;
+    this.rootConfig.forEach((config: any, index: number) => {
+      if(this.frameworkId == config.frameworkId) {
+        categoryConfig = config.config.find((obj: any) => obj.category == code);
+      }
+    });
+    return categoryConfig;
   }
 
 }

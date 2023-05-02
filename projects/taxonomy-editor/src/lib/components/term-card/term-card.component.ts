@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChange } from '@angular/core'
 import { NSFramework } from '../../models/framework.model'
 import { ApprovalService } from '../../services/approval.service';
 import { FrameworkService } from '../../services/framework.service'
@@ -16,7 +16,6 @@ export class TermCardComponent implements OnInit {
   private _data: NSFramework.ITermCard;
   isApprovalRequired = false
   approvalList = [];
-  cardRefList:HTMLElement[] = [];
   @Input()
   set data(value: any) {
     this._data = value;
@@ -25,7 +24,6 @@ export class TermCardComponent implements OnInit {
     this._data.children.highlight=false
   }
   get data(): any {
-    console.log("data",this._data);
     return this._data;
   }
 
@@ -65,26 +63,15 @@ export class TermCardComponent implements OnInit {
     })
   }
 
-  getColor(indexClass:number, cardRef: HTMLElement,property: string) {
-    this.cardRefList.push(cardRef);
+  getColor(indexClass:number, cardRef: any,property: string, data:any) {
     if(cardRef.classList.contains('selected') && property === 'bgColor'){
-       return COLORS.find((color:string,index:number) => index === indexClass - 1);
+       return data.children.color;
     }
     if(property === 'border'){
       let borderColor;
       if(cardRef.classList.contains((indexClass).toString())){
-        COLORS.find((color:string, index:number) => {
-         if(index === indexClass-1 && index !=0) {
-           borderColor = "8px solid " + color;
-         }
-        });
+        borderColor = "8px solid" + data.children.color;
       }
-      // this.cardRefList.forEach((card:HTMLElement) => {
-      //   if(card.classList.contains((indexClass-1).toString())) {
-      //     console.log("hereee");
-      //     cardRef.style.removeProperty('border');
-      //   }
-      // });
       return borderColor;
     }
   }

@@ -1,6 +1,6 @@
 .term-card {
     border: 1px solid #eee;
-    padding: 1em;
+    padding: 0.5em;
     margin: 0 0 1em 0;
     background-color: #ffffff;
     border-radius: 8px;
@@ -32,4 +32,16 @@
     right: 5px;
     top: 35px;
     font-size: 24px;
+}
+.term-card-parent {
+    display: flex;
+    .term-card-content {
+        margin-left: 0.5em;
+        .card-title {
+            margin-bottom: 0.5em;
+        }
+        .card-description {
+            opacity: 0.5;
+        }
+    }
 }

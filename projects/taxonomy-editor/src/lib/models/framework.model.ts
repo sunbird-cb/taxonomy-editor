@@ -95,8 +95,7 @@ export namespace NSFramework {
         children: any[],
         category:string,
         associations: string,
-        icon: string,
-        color: string
+        config: any
     }
     export interface ParentsElements {
         identifier: string;
