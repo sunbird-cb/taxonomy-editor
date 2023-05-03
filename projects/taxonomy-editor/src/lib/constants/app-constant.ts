@@ -57,3 +57,9 @@ export const defaultConfig: LLOptions = {
     startSocket: 'right', endSocket: 'left',
     dash: {len: 6, gap: 3}
   }
+
+export const headerLineConfig = {
+       endPlugColor:'#b9b9b9',
+       endPlugOutlineColor:'#b9b9b9',
+       color:'#b9b9b9'
+}

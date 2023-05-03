@@ -3,7 +3,7 @@ import { FrameworkService } from '../../services/framework.service';
 import { Subscription } from 'rxjs';
 import { ConnectorService } from '../../services/connector.service';
 import { ApprovalService } from '../../services/approval.service';
-
+declare var LeaderLine: any;
 @Component({
   selector: 'lib-taxonomy-column-view',
   templateUrl: './taxonomy-column-view.component.html',
@@ -61,8 +61,9 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
     // this.frameworkService.isDataUpdated.subscribe(() => {
     //   this.ngOnInit()
     // })
+    
   }
-
+ 
   isExists(e){
     let temp;
     temp = this.termshafall.map(t => t.identifier)
@@ -316,4 +317,5 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
       this.childSubscription.unsubscribe()
     }
   }
+  
 }

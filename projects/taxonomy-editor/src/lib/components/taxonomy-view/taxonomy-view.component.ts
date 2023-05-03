@@ -11,7 +11,8 @@ import { ApprovalService } from '../../services/approval.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { elementAt } from 'rxjs/operators';
-
+import { defaultConfig, headerLineConfig } from '../../constants/app-constant';
+declare var LeaderLine: any;
 @Component({
   selector: 'lib-taxonomy-view',
   templateUrl: './taxonomy-view.component.html',
@@ -66,12 +67,20 @@ export class TaxonomyViewComponent implements OnInit {
         this.loaded[cat.code] = true
       })
       this.isLoading = false
+        setTimeout(() => {
+             this.drawHeaderLine(res.result.framework.categories.length);  
+        },500)
     })
     // this.newTermSubscription = this.frameworkService.termSubject.subscribe((term: any) => {
     //   // if (term)
     //   this.updateTerms()
     // })
   }
+  // ngAfterContentChecked(){
+  //   setTimeout(() => {
+  //     this.drawHeaderLine(4);  
+  //   },3000)
+  // }
 
   updateTaxonomyTerm(data: { selectedTerm: any, isSelected: boolean }) {
     
@@ -179,6 +188,15 @@ export class TaxonomyViewComponent implements OnInit {
     // }
     // return this.localList
     return Array.from(this.frameworkService.list.values())
+  }
+  
+  drawHeaderLine(len){
+    const options = {...defaultConfig,...headerLineConfig }
+        for(let i=1; i<len; i++){
+          const startEle = document.querySelector(`#box${i}Header`)
+          const endEle = document.querySelector(`#box${i+1}Header`)
+          const line = new LeaderLine(startEle, endEle, options);
+         }
   }
 
   getColumn(columnCode: string) {
