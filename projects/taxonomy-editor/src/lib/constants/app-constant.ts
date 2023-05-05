@@ -26,11 +26,11 @@ type plugType = 'disc' | 'square' | 'hand' | 'arrow1' | 'arrow2' | 'arrow3';
 type pathType = 'straight' | 'arc' | 'fluid' | 'magnet' | 'grid';
 
 export interface LLOptions {
-    startPlug: plugType,
+    startPlug?: plugType,
     startPlugColor?: string,
     startPlugSize?: Number,
     startPlugOutlineColor?: string,
-    endPlug: plugType,
+    endPlug?: plugType,
     endPlugColor?: string,
     endPlugSize?: Number,
     endPlugOutlineColor?: string,
@@ -61,5 +61,6 @@ export const defaultConfig: LLOptions = {
 export const headerLineConfig = {
        endPlugColor:'#b9b9b9',
        endPlugOutlineColor:'#b9b9b9',
-       color:'#b9b9b9'
+       color:'#b9b9b9',
+       startPlug: 'behind'
 }

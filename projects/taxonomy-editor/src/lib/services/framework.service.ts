@@ -49,8 +49,9 @@ export class FrameworkService {
           throw 'Error in source. Details: ' + err; // Use console.log(err) for detail
         }))
     } else {
-      this.resetAll()
-      return of(this.formateData(FRAMEWORK))
+      this.resetAll();
+      this.formateData(FRAMEWORK);
+      return of(FRAMEWORK)
     }
   }
 

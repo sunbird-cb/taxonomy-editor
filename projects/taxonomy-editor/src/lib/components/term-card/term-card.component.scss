@@ -4,13 +4,13 @@
     margin: 0 0 1em 0;
     background-color: #ffffff;
     border-radius: 8px;
-    font-size: 14px;
     border-radius: 8px;
     /* width: 80%;
     min-height: 70px; */
     overflow: hidden;
     border: 1px solid #e6e6e6;
     position: relative;
+    z-index: 45;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
     .termSelection{
         position: absolute;
@@ -36,6 +36,7 @@
 .term-card-parent {
     display: flex;
     .term-card-content {
+        white-space: initial;
         margin-left: 0.5em;
         .card-title {
             margin-bottom: 0.5em;

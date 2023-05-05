@@ -190,13 +190,15 @@ export class TaxonomyViewComponent implements OnInit {
     return Array.from(this.frameworkService.list.values())
   }
   
-  drawHeaderLine(len){
+  drawHeaderLine(len: number){
     const options = {...defaultConfig,...headerLineConfig }
-        for(let i=1; i<len; i++){
-          const startEle = document.querySelector(`#box${i}Header`)
-          const endEle = document.querySelector(`#box${i+1}Header`)
-          const line = new LeaderLine(startEle, endEle, options);
-         }
+    for(let i=1; i<=len; i++){
+      const startEle = document.querySelector(`#box${i}count`)
+      const endEle = document.querySelector(`#box${i}Header`)
+      if(startEle && endEle) {
+        new LeaderLine(startEle, endEle, options);
+      }
+    }
   }
 
   getColumn(columnCode: string) {

@@ -1,6 +1,6 @@
 .connectionSettings {
     flex-direction: row-reverse;
-    z-index: 0;
+    z-index: 40;
     position: fixed;
     padding: 0px 4px 4px 0px;
     bottom: 0;
@@ -12,6 +12,7 @@
 
 .w-full {
     width: 100%;
+    // white-space: initial;
     &.mat-stroked-button{
         padding: 0.25em 0.8em;
         text-align: left;
@@ -57,8 +58,7 @@ flex-center {
 } */
 
 .heightFix{
-    // height: 100vh;
-    // overflow: scroll;
+    height: 100%;
 }
 
 .cat-columns {
@@ -119,7 +119,7 @@ flex-center {
     /* Firefox */
     -ms-overflow-style: none;
     /* Internet Explorer 10+ */
-    height: calc(100vh - 6%);
+    height: calc(100vh - 18%);
   }
   
   .container::-webkit-scrollbar {
@@ -133,4 +133,54 @@ flex-center {
     display: flex;
     top:50%;
     left:50%;
+}
+.arrow {
+    left: 30px;
+    position: relative;
+}
+
+@media only screen and (max-width: 1024px) {
+    .containers4 {
+        max-width: 250px;
+        font-size: 12px;
+        .w-full {
+            &.mat-stroked-button {
+                font-size: 12px;
+            }
+        }
+        .padding-x2,.category-heading-container {
+            padding: 0 2em;
+        }
+    }
+    .containers5 {
+        max-width: 230px;
+    }
+    .containers6 {
+        max-width: 150px;
+    }
+    .containers7 {
+        max-width: 100px;
+    }
+}
+@media only screen and (max-width: 992px) {
+    .containers4 {
+        max-width: 220px;
+        font-size: 10px;
+        .w-full {
+            &.mat-stroked-button {
+                font-size: 10px;
+            }
+        }
+        .padding-x2,.category-heading-container {
+            padding: 0 1.5em;
+        }
+    }
+}
+@media only screen and (max-width: 768px) {
+    .containers4 {
+        max-width: 165px;
+    }
+    .padding-x2,.category-heading-container {
+        padding: 0 1em;
+    }
 }
