@@ -28,8 +28,8 @@
                     </div>
                     <div class="mb1" *ngIf="!isApprovalView">
                         <button [disabled]="isEnabled(column.code)" class="w-full addCardButton" mat-stroked-button color="primary" (click)="openCreateTermDialog(column, i)">
-                            <span>Create New {{column.name}}</span>
-                            <span><mat-icon>add</mat-icon></span>
+                            Create New {{column.name}}
+                            <mat-icon>add</mat-icon>
                         </button>
                     </div>
                 </div>

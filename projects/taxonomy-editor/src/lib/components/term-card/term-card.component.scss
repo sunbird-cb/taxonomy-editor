@@ -17,6 +17,23 @@
         right: 10px;
         top: 10px;
     }
+    .term-card-parent {
+        display: flex;
+        width: 90%;
+        .term-card-content {
+            white-space: initial;
+            margin-left: 0.5em;
+            .card-title {
+                margin-bottom: 0.5em;
+            }
+            .card-description {
+                opacity: 0.5;
+            }
+        }
+    }
+    .term-card-checkbox {
+        width: 10%;
+    }
 }
 
 .term-card.selected {
@@ -32,17 +49,4 @@
     right: 5px;
     top: 35px;
     font-size: 24px;
-}
-.term-card-parent {
-    display: flex;
-    .term-card-content {
-        white-space: initial;
-        margin-left: 0.5em;
-        .card-title {
-            margin-bottom: 0.5em;
-        }
-        .card-description {
-            opacity: 0.5;
-        }
-    }
 }

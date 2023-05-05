@@ -12,6 +12,8 @@
 
 .w-full {
     width: 100%;
+    align-items: center;
+    display: flex;
     // white-space: initial;
     &.mat-stroked-button{
         padding: 0.25em 0.8em;
@@ -52,13 +54,10 @@ flex-center {
     padding: 0 2.5em;
 }
 
-/* .scrollable-y {
-    overflow: hidden;
-    overflow-y: scroll;
-} */
-
 .heightFix{
     height: 100%;
+    width: 100%;
+    justify-content: space-around;
 }
 
 .cat-columns {
@@ -119,7 +118,7 @@ flex-center {
     /* Firefox */
     -ms-overflow-style: none;
     /* Internet Explorer 10+ */
-    height: calc(100vh - 18%);
+    height: calc(100% - 16vh);
   }
   
   .container::-webkit-scrollbar {
@@ -138,18 +137,30 @@ flex-center {
     left: 30px;
     position: relative;
 }
+::ng-deep mat-checkbox .mat-checkbox-inner-container {
+    @media only screen and (max-width: 1024px) {
+        height: 0.8em;
+        width: 0.8em;
+    }
+}
 
 @media only screen and (max-width: 1024px) {
     .containers4 {
         max-width: 250px;
-        font-size: 12px;
+        font-size: 0.75em;
         .w-full {
+            height: 3.5em;
             &.mat-stroked-button {
-                font-size: 12px;
+                font-size: 0.85em;
             }
         }
         .padding-x2,.category-heading-container {
             padding: 0 2em;
+        }
+        mat-icon {
+           font-size: 1.25em;
+           width: 1.25em;
+           height: 1.25em; 
         }
     }
     .containers5 {
@@ -165,10 +176,10 @@ flex-center {
 @media only screen and (max-width: 992px) {
     .containers4 {
         max-width: 220px;
-        font-size: 10px;
+        font-size: 0.625em;
         .w-full {
             &.mat-stroked-button {
-                font-size: 10px;
+                font-size: 0.75em;
             }
         }
         .padding-x2,.category-heading-container {
@@ -179,8 +190,21 @@ flex-center {
 @media only screen and (max-width: 768px) {
     .containers4 {
         max-width: 165px;
+        font-size: 0.6em;
+        .w-full {
+            height: 2.5em;
+            &.mat-stroked-button {
+                font-size: 0.7em;
+            }
+        }
+        .padding-x2,.category-heading-container {
+            padding: 0 1em;
+        }
+        mat-icon {
+           font-size: 1em;
+           width: 1em;
+           height: 1em; 
+        }
     }
-    .padding-x2,.category-heading-container {
-        padding: 0 1em;
-    }
+
 }
