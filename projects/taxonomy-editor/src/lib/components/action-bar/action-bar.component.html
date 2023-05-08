@@ -1,15 +1,19 @@
 <!-- *ngIf="configType !=='APPROVED' && actionType" -->
 <mat-card class="action-bar">
-    <button mat-raised-button color="default" (click)="closeActionBar()">Cancel</button>
+    <div class="action-bar-buttons">
+        <div>
+            <button mat-raised-button color="default" (click)="closeActionBar()">Cancel</button>
+        </div>
+        <div>
+            <button mat-raised-button color="primary" (click)="SendForApproval()">
+                {{actionType? getApproveLevelText(configType) :'Send for Approval'}}  
+           </button>
+        </div>
+    </div>
         <!-- <button mat-raised-button color="primary" (click)="publishFramwork()">Publish</button> -->
         <!-- <button *ngIf="actionType" mat-button color="primary">
             <mat-icon color="primary">flag</mat-icon>
             Terms tobe Approve
        </button> -->
-    <div>
-        
-    <button mat-raised-button color="primary" (click)="SendForApproval()">
-        {{actionType? getApproveLevelText(configType) :'Send for Approval'}}  
-   </button>
-   </div>
+
 </mat-card>

@@ -148,20 +148,6 @@ flex-center {
     .containers4 {
         max-width: 250px;
         font-size: 0.75em;
-        .w-full {
-            height: 3.5em;
-            &.mat-stroked-button {
-                font-size: 0.85em;
-            }
-        }
-        .padding-x2,.category-heading-container {
-            padding: 0 2em;
-        }
-        mat-icon {
-           font-size: 1.25em;
-           width: 1.25em;
-           height: 1.25em; 
-        }
     }
     .containers5 {
         max-width: 230px;
@@ -172,39 +158,55 @@ flex-center {
     .containers7 {
         max-width: 100px;
     }
+    .w-full {
+        height: 3.5em;
+        &.mat-stroked-button {
+            font-size: 0.9em;
+        }
+    }
+    .padding-x2,.category-heading-container {
+        padding: 0 2em;
+    }
+    mat-icon {
+       font-size: 1.25em;
+       width: 1.25em;
+       height: 1.25em; 
+    }
+    .connectionSettings .mat-raised-button {
+        min-width:auto;
+        padding: 0em 0.5em;
+        line-height: 2em;
+    }
 }
 @media only screen and (max-width: 992px) {
     .containers4 {
         max-width: 220px;
         font-size: 0.625em;
-        .w-full {
-            &.mat-stroked-button {
-                font-size: 0.75em;
-            }
-        }
-        .padding-x2,.category-heading-container {
-            padding: 0 1.5em;
-        }
+    }
+    .padding-x2,.category-heading-container {
+        padding: 0 1.5em;
     }
 }
 @media only screen and (max-width: 768px) {
     .containers4 {
         max-width: 165px;
         font-size: 0.6em;
-        .w-full {
-            height: 2.5em;
-            &.mat-stroked-button {
-                font-size: 0.7em;
-            }
-        }
-        .padding-x2,.category-heading-container {
-            padding: 0 1em;
-        }
-        mat-icon {
-           font-size: 1em;
-           width: 1em;
-           height: 1em; 
-        }
+    }
+    .w-full {
+        height: 2.5em;
+    }
+    .padding-x2,.category-heading-container {
+        padding: 0 1em;
+    }
+    mat-icon {
+       font-size: 1em;
+       width: 1em;
+       height: 1em; 
+    }
+    .connectionSettings .mat-raised-button {
+        min-width:auto;
+        padding: 0em 0.3em;
+        line-height: 1.5em;
     }
 
 }

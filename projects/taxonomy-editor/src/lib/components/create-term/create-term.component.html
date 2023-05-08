@@ -1,5 +1,5 @@
 <div class="dialog">
-    <h1 mat-dialog-title>Create New {{data.columnInfo.name}}</h1>
+    <div class="dialog-title" mat-dialog-title>Create New {{data.columnInfo.name}}</div>
     <form [formGroup]="createTermForm" novalidate (ngSubmit)="disableCreate?updateTerm():saveTerm()">
         <mat-form-field appearance="none">
             <!-- <mat-label>Enter {{data.name}} name</mat-label> -->

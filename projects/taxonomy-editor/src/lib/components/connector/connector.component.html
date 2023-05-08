@@ -8,7 +8,7 @@
         <div class="container flex flex-1">
             <div class="side flex flex-1">
                 <div class="'flex flex-2 padding-s">
-                    <h1 mat-dialog-title>Create New Connection</h1>
+                    <div class="dialog-title" mat-dialog-title>Create New Connection</div>
                     <form [formGroup]="connectorForm" novalidate (ngSubmit)="saveConnection()">
                         <mat-form-field appearance="outline">
                             <mat-label>Enter Endpoint</mat-label>
@@ -37,7 +37,7 @@
             </div>
             <div class="side flex flex-1">
                 <div class="'flex flex-1 padding-s">
-                    <h1 mat-dialog-title>Experience Taxonomy</h1>
+                    <div class="dialog-title" mat-dialog-title>Experience Taxonomy</div>
                     <button mat-raised-button class="play" color="primary" type="reset" (click)="loadDefault()">
                         Let's Play with it
                     </button>
