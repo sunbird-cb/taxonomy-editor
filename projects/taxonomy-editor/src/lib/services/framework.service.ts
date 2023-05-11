@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { IConnection } from '../models/connection.model';
 // import { LibConnectionService } from 'taxonomy-editor/lib/services/connection.service';
 import { LocalConnectionService } from './local-connection.service';
+import { COLORS } from '../constants/app-constant';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +25,7 @@ export class FrameworkService {
   environment
   libConfig: IConnection
   frameworkId: string;
+  rootConfig: any;
   constructor(
     private http: HttpClient,
     public localConfig: LocalConnectionService
@@ -47,8 +49,9 @@ export class FrameworkService {
           throw 'Error in source. Details: ' + err; // Use console.log(err) for detail
         }))
     } else {
-      this.resetAll()
-      return of(this.formateData(FRAMEWORK))
+      this.resetAll();
+      this.formateData(FRAMEWORK);
+      return of(FRAMEWORK)
     }
   }
 
@@ -210,18 +213,23 @@ export class FrameworkService {
         translations: a.translations,
         category:a.category,
         associations: a.associations,
+        config: this.getConfig(a.code),
         // children: ([...a.terms, ...localData] || []).map(c => {
         children: (a.terms || []).map(c => {
+          c =Object.assign(c, this.getConfig(c.category));
           const associations = c.associations || []
           if (associations.length > 0) {
-            Object.assign(c, { children: associations })
+            associations.forEach((val:any,index) => {
+              associations[index] = Object.assign(val, this.getConfig(val.category));
+            });
+            Object.assign(c, { children: associations});
             // delete c.associations
           }
           return c
-        }),
+        })
       })
       // }
-    })
+    });
     const allCategories = []
     this.list.forEach(a => {
       allCategories.push({
@@ -243,6 +251,21 @@ export class FrameworkService {
     if(eles.length>0){
         eles.forEach(ele => ele.remove());
     }
+  }
+
+
+  setConfig(config: any) {
+    this.rootConfig = config
+  }
+
+  getConfig(code: string) {
+    let categoryConfig: any;
+    this.rootConfig.forEach((config: any, index: number) => {
+      if(this.frameworkId == config.frameworkId) {
+        categoryConfig = config.config.find((obj: any) => obj.category == code);
+      }
+    });
+    return categoryConfig;
   }
 
 }

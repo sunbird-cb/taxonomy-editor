@@ -1,4 +1,4 @@
-<div class="flex flex-1" style="flex-direction: row-reverse; z-index: 11; position: relative;background-color: #fff;" >
+<div class="flex flex-1 connectionSettings">
     <button mat-raised-button color="accent" (click)="newConnection()">
         <mat-icon>build</mat-icon>
     </button>
@@ -6,13 +6,29 @@
 
 <div *ngIf="list && list.length > 0" class="flex heightFix ">
     <ng-container *ngFor="let column of list; let i = index;">
-        <div class="flex-1 felx-col  col-container" id="box{{i+1}}Container">
+        <div class="flex-1 felx-col  col-container containers{{list.length}}" id="box{{i+1}}Container">
             <div class="category-heading-sticky">
                 <div class="category-heading-container">
-                    <h3>{{column.name}}</h3>
+                    <div class='category-header'>
+                       <div class="category-header-items" id="box{{i}}Header">
+                            <mat-icon [ngStyle]="{'color':column.config.color}">{{column.config.icon}}</mat-icon>   
+                            <h4>{{column.name}}</h4>
+                            <ng-container *ngIf="i != 0 && categoryList?.length > 0; else firstColumn">
+                                <ng-container *ngFor="let category of categoryList">
+                                    <ng-container *ngIf="(column.code == category.category) && column.index !== 1">
+                                        <span>{{category.count}}</span>
+                                    </ng-container>
+                                </ng-container>
+                            </ng-container>
+                            <ng-template #firstColumn>
+                                <span *ngIf="i == 0" id="box{{i+1}}count">{{column.children.length}}</span>
+                            </ng-template>
+                            <div class="arrow" id="box{{i+1}}count"></div>
+                       </div>
+                    </div>
                     <div class="mb1" *ngIf="!isApprovalView">
-                        <button [disabled]="isEnabled(column.code)" class="w-full" mat-stroked-button color="primary" (click)="openCreateTermDialog(column, i)">Create New
-                            {{column.name}}
+                        <button [disabled]="isEnabled(column.code)" class="w-full addCardButton" mat-stroked-button color="primary" (click)="openCreateTermDialog(column, i)">
+                            Create New {{column.name}}
                             <mat-icon>add</mat-icon>
                         </button>
                     </div>
@@ -20,7 +36,7 @@
             </div>
             <!-- {{column.code}} -->
             <div class="padding-x2 cat-columns container" id="box{{i+1}}">
-                <lib-taxonomy-column-view *ngIf="loaded[column.code]" #selectedTaxonomyTerm [column]="column" [containerId]="'box'+(i+1)" (updateTaxonomyTerm)="updateTaxonomyTerm($event)" (updateTermList)="updateDraftStatusTerms($event)">
+                <lib-taxonomy-column-view *ngIf="loaded[column.code]" #selectedTaxonomyTerm [column]="column" [containerId]="'box'+(i+1)" (updateTaxonomyTerm)="updateTaxonomyTerm($event)" (updateTermList)="updateDraftStatusTerms($event)" (cardsCount)="getNoOfCards($event)">
                 </lib-taxonomy-column-view>
             </div>
         </div>

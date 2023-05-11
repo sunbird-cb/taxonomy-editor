@@ -3,7 +3,7 @@ import { FrameworkService } from '../../services/framework.service';
 import { Subscription } from 'rxjs';
 import { ConnectorService } from '../../services/connector.service';
 import { ApprovalService } from '../../services/approval.service';
-
+declare var LeaderLine: any;
 @Component({
   selector: 'lib-taxonomy-column-view',
   templateUrl: './taxonomy-column-view.component.html',
@@ -14,7 +14,8 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
   @Input() containerId: string
   connectorMapping: any = {}
   @Output() updateTaxonomyTerm = new EventEmitter<{ selectedTerm: any, isSelected: boolean }>(true)
-  @Output() updateTermList = new EventEmitter<any>()
+  @Output() updateTermList = new EventEmitter<any>();
+  @Output() cardsCount = new EventEmitter<{category: string, count: number}>();
   columnData = []
   childSubscription: Subscription = null
   newTermSubscription: Subscription = null
@@ -51,7 +52,8 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
               this.termshafall.push(tr)
             }
           })
-          this.columnData = this.termshafall
+          this.columnData = this.termshafall;
+          this.cardsCount.emit({category: this.columnData[0].category,count:this.columnData.length});
         }
       })
     }
@@ -59,8 +61,9 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
     // this.frameworkService.isDataUpdated.subscribe(() => {
     //   this.ngOnInit()
     // })
+    
   }
-
+ 
   isExists(e){
     let temp;
     temp = this.termshafall.map(t => t.identifier)
@@ -84,7 +87,7 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
             item.selected = false
           }
           return item
-        })
+        });
         this.setConnectors(e.cardRef, this.columnData, 'SINGLE')
         return
         // console.log("SKIP: from subscription===>", "FOR " + this.category, e)
@@ -125,7 +128,7 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
         }
 
         if (next && next.index < this.column.index) {
-          this.columnData = []
+          this.columnData = [];
         }
       }
     })
@@ -152,7 +155,6 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
       }
     })
     // get last parent and filter Above
-
     this.columnData = [...localTerms, ...(e.data.children || [])]
       .filter(x => {
         return x.category == this.column.code
@@ -165,7 +167,13 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
         mer.selected = false
         mer.children = ([...this.column.children.filter(x => { return x.code === mer.code }).map(a => a.children)].shift() || [])
         return mer
-      })
+      });
+
+    if(this.columnData.length > 0) {
+      this.cardsCount.emit({category: this.columnData[0].category,count:this.columnData.length});
+    } else {
+      this.cardsCount.emit({category: this.column.code,count: 0});
+    }
     // this.updateTerms()
 
     // console.log(this.columnData)
@@ -228,7 +236,7 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
       const connectionLines = this.connectorService._drawLine(
         this.connectorMapping['box' + (this.column.index - 1)].source,
         this.connectorMapping['box' + (this.column.index - 1)].lines,
-        { startPlug: 'disc', endPlug: 'disc', color: '#7e7e7e', path: 'grid' },
+        null,
         '#box' + (this.column.index - 1),
         '#box' + this.column.index
       )
@@ -257,7 +265,7 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
         const connectionLines = this.connectorService._drawLine(
           this.connectorMapping['box' + (this.column.index - 1)].source,
           this.connectorMapping['box' + (this.column.index - 1)].lines,
-          { startPlug: 'disc', endPlug: 'disc', color: '#7e7e7e', path: 'grid' },
+          null,
           '#box' + (this.column.index - 1),
           '#box' + this.column.index
         )
@@ -309,4 +317,5 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
       this.childSubscription.unsubscribe()
     }
   }
+  
 }

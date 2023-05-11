@@ -1,44 +1,47 @@
 .term-card {
     border: 1px solid #eee;
-    padding: 1em;
+    padding: 0.5em;
     margin: 0 0 1em 0;
-    background-color: #f0f0f0;
+    background-color: #ffffff;
     border-radius: 8px;
-    font-size: 14px;
-    border-radius: 4px;
+    border-radius: 8px;
     /* width: 80%;
     min-height: 70px; */
     overflow: hidden;
     border: 1px solid #e6e6e6;
     position: relative;
+    z-index: 45;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
     .termSelection{
         position: absolute;
         right: 10px;
         top: 10px;
     }
+    .term-card-parent {
+        display: flex;
+        width: 90%;
+        .term-card-content {
+            white-space: initial;
+            margin-left: 0.5em;
+            .card-title {
+                margin-bottom: 0.5em;
+            }
+            .card-description {
+                opacity: 0.5;
+            }
+        }
+    }
+    .term-card-checkbox {
+        width: 10%;
+    }
 }
 
 .term-card.selected {
-    background-color: #515151;
     color: #fff;
+    border-style: none;
 }
-
-
 .clickable {
     cursor: pointer;
-}
-
-.inDraft{
-    border-color: #1ed11e;
-    background: #d9f7db;
-}
-.inAssociationDraft{
-    border-color: #6b1cd3;
-    background: #d8c1f7;
-}
-.highlight{
-    border-color: #6b1cd3;
-    background: #aa2caa;
 }
 
 .approve-flag{

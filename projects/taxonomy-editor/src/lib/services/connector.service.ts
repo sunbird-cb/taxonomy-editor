@@ -2,37 +2,11 @@
 import { ElementRef, Injectable } from '@angular/core';
 import { BehaviorSubject, of } from 'rxjs';
 import { FrameworkService } from './framework.service';
+import { defaultConfig } from '../constants/app-constant';
+import { LLOptions } from '../constants/app-constant';
 
 declare var LeaderLine: any;
 
-type plugType = 'disc' | 'square' | 'hand' | 'arrow1' | 'arrow2' | 'arrow3';
-type pathType = 'straight' | 'arc' | 'fluid' | 'magnet' | 'grid';
-
-
-export interface LLOptions {
-  startPlug: plugType,
-  startPlugColor?: string,
-  startPlugOutlineColor?: string,
-  endPlug: plugType,
-  endPlugColor?: string,
-  endPlugOutlineColor?: string,
-  color?: string,
-  size?: number,
-  path?: pathType,
-};
-
-const defaultConfig = {
-  startPlug: 'disc',
-  startPlugColor: 'white',
-  startPlugOutlineColor: '#515151',
-  endPlug: 'disc',
-  endPlugColor: 'white',
-  endPlugOutlineColor: '#515151',
-  color: '#515151',
-  size: 4,
-  path: 'arc',
-  startSocket: 'right', endSocket: 'left'
-}
 
 @Injectable()
 export class ConnectorService {
@@ -58,7 +32,7 @@ export class ConnectorService {
     console.log('connectorMap -------', this.connectorMap)
   }
 
-  _drawLine(source, target, options: LLOptions, sourceContainerId = undefined, targetContainerId = undefined) {
+  _drawLine(source, target, options = defaultConfig, sourceContainerId = undefined, targetContainerId = undefined) {
     console.log('sourceContainerId ::', sourceContainerId)
     console.log('targetContainerId ::', targetContainerId)
     const _options = <LLOptions>{...defaultConfig, ...options}
@@ -158,4 +132,9 @@ export class ConnectorService {
     // to reset connector map after clearing all the lines
     this.updateConnectorsMap({})
   }
+
+  // _drawHeaderLine(source, target, options = defaultConfig) {
+  //   console.log(source,target,options);
+  //   new LeaderLine(source, target, options);
+  // }
 }

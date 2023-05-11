@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChange } from '@angular/core'
 import { NSFramework } from '../../models/framework.model'
 import { ApprovalService } from '../../services/approval.service';
 import { FrameworkService } from '../../services/framework.service'
 import { LocalConnectionService } from '../../services/local-connection.service';
+import { COLORS } from '../../constants/app-constant';
 
 @Component({
   selector: 'lib-term-card',
@@ -14,7 +15,7 @@ export class TermCardComponent implements OnInit {
 
   private _data: NSFramework.ITermCard;
   isApprovalRequired = false
-  approvalList = []
+  approvalList = [];
   @Input()
   set data(value: any) {
     this._data = value;
@@ -60,5 +61,18 @@ export class TermCardComponent implements OnInit {
             }
       }     
     })
+  }
+
+  getColor(indexClass:number, cardRef: any,property: string, data:any) {
+    if(cardRef.classList.contains('selected') && property === 'bgColor'){
+       return data.children.color;
+    }
+    if(property === 'border'){
+      let borderColor;
+      if(cardRef.classList.contains((indexClass).toString())){
+        borderColor = "8px solid" + data.children.color;
+      }
+      return borderColor;
+    }
   }
 }
