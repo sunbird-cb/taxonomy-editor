@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { labels } from '../../labels/strings'
 declare var LeaderLine: any;
 
 @Component({
@@ -8,8 +9,9 @@ declare var LeaderLine: any;
 })
 export class CategoriesPreviewComponent implements OnChanges, OnInit { 
 
-  @Input() data
-  lineRef = []
+  @Input() data;
+  lineRef = [];
+  app_strings: any = labels;
   constructor() { }
 
   ngOnChanges(){

@@ -3,7 +3,8 @@ import { NSFramework } from '../../models/framework.model'
 import { ApprovalService } from '../../services/approval.service';
 import { FrameworkService } from '../../services/framework.service'
 import { LocalConnectionService } from '../../services/local-connection.service';
-import { COLORS } from '../../constants/app-constant';
+import { labels } from '../../labels/strings';
+import { CardSelection, CardChecked, Card } from '../../models/variable-type.model';
 
 @Component({
   selector: 'lib-term-card',
@@ -14,8 +15,9 @@ export class TermCardComponent implements OnInit {
   // @Input() data!: NSFramework.ITermCard
 
   private _data: NSFramework.ITermCard;
-  isApprovalRequired = false
-  approvalList = [];
+  isApprovalRequired: boolean = false
+  approvalList: Array<Card> = [];
+  app_strings: any = labels;
   @Input()
   set data(value: any) {
     this._data = value;
@@ -27,8 +29,8 @@ export class TermCardComponent implements OnInit {
     return this._data;
   }
 
-  @Output() isSelected = new EventEmitter<any>()
-  @Output() selectedCard = new EventEmitter<any>()
+  @Output() isSelected = new EventEmitter<CardSelection>()
+  @Output() selectedCard = new EventEmitter<CardChecked>()
 
   constructor(private frameworkService: FrameworkService, private localConnectionService: LocalConnectionService, private approvalService: ApprovalService) { }
 
@@ -64,13 +66,14 @@ export class TermCardComponent implements OnInit {
   }
 
   getColor(indexClass:number, cardRef: any,property: string, data:any) {
+    let config = this.frameworkService.getConfig(data.category);
     if(cardRef.classList.contains('selected') && property === 'bgColor'){
-       return data.children.color;
+       return config.color;
     }
     if(property === 'border'){
       let borderColor;
       if(cardRef.classList.contains((indexClass).toString())){
-        borderColor = "8px solid" + data.children.color;
+        borderColor = "8px solid" + config.color;
       }
       return borderColor;
     }

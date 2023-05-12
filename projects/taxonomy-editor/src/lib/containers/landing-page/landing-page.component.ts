@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FrameworkService } from '../../services/framework.service';
+import { labels } from '../../labels/strings';
 
 @Component({
   selector: 'lib-landing-page',
@@ -7,7 +8,8 @@ import { FrameworkService } from '../../services/framework.service';
   styleUrls: ['./landing-page.component.scss']
 })
 export class LandingPageComponent implements OnInit {
-  frameworkCategories;
+  frameworkCategories: any;
+  app_strings: any = labels;
 
   constructor(private frameworkService: FrameworkService) { }
 

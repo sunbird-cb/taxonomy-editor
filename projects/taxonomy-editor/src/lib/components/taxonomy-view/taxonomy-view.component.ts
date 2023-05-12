@@ -10,8 +10,10 @@ import { ConnectorService } from '../../services/connector.service';
 import { ApprovalService } from '../../services/approval.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { elementAt } from 'rxjs/operators';
 import { defaultConfig, headerLineConfig } from '../../constants/app-constant';
+import { labels } from '../../labels/strings';
+import { CardSelection, CardChecked, Card } from '../../models/variable-type.model';
+
 declare var LeaderLine: any;
 @Component({
   selector: 'lib-taxonomy-view',
@@ -19,21 +21,22 @@ declare var LeaderLine: any;
   styleUrls: ['./taxonomy-view.component.scss']
 })
 export class TaxonomyViewComponent implements OnInit {
-  @Input() approvalList: any = []
-  @Input() isApprovalView: any = false;
+  @Input() approvalList: Array<Card> = [];
+  @Input() isApprovalView: boolean = false;
   @Input() workFlowStatus: string;
-  @Output() sentForApprove = new EventEmitter()
+  @Output() sentForApprove = new EventEmitter<any>()
   mapping = {};
   heightLighted = []
   localList = []
-  showPublish = false
+  showPublish: boolean = false
   newTermSubscription: Subscription = null
   loaded: any = {}
-  showActionBar = false
+  showActionBar: boolean = false
   approvalRequiredTerms = []
-  draftTerms = []
-  isLoading = false;
+  draftTerms: Array<Card> = [];
+  isLoading: boolean = false;
   categoryList:any = [];
+  app_strings: any = labels;
   constructor(private frameworkService: FrameworkService, 
     private localSvc: LocalConnectionService, 
     public dialog: MatDialog, 
@@ -110,7 +113,6 @@ export class TaxonomyViewComponent implements OnInit {
 
   //need to refactor at heigh level
   updateFinalList(data: { selectedTerm: any, isSelected: boolean, parentData?: any, colIndex?: any }) {
-    
     if (data.isSelected) {
       // data.selectedTerm.selected = data.isSelected
       this.frameworkService.selectionList.set(data.selectedTerm.category, data.selectedTerm)
@@ -162,6 +164,9 @@ export class TaxonomyViewComponent implements OnInit {
         panelClass: 'custom-dialog-container'
       })
       dialog.afterClosed().subscribe(res => {
+        if(!res) {
+          return;
+        }
         if (res && res.created) {
           this.showPublish = true
         }
@@ -290,7 +295,6 @@ export class TaxonomyViewComponent implements OnInit {
   }
 
   updateDraftStatusTerms(event){
-    
     if(event.checked) {
       this.draftTerms.push(event.term)
       } else {

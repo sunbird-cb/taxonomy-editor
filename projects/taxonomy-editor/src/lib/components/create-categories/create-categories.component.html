@@ -1,14 +1,14 @@
 
 <div class="form-wrap">
-    <h1>Create Categories</h1>
+    <h1>{{app_strings.createCategories}}</h1>
     <form [formGroup]="createCategoriesForm" (ngSubmit)="saveForm()" novalidate>
         <div class="form-field">
             <div class="form-field__wrap" formArrayName="categories" cdkDropListGroup>
                 <div cdkDropList [cdkDropListData]="categories().controls" (cdkDropListDropped)="drop($event)">
                 <div class="form__category" *ngFor="let cat of categories().controls; let i = index" >
                         <mat-form-field appearance="outline" [formGroupName]="i" cdkDrag>
-                            <mat-label>Category {{i}}</mat-label>
-                            <input matInput placeholder="Enter category name" formControlName="name" (blur)="emitCategory($event)"> 
+                            <mat-label>{{app_strings.category}} {{i}}</mat-label>
+                            <input matInput placeholder="{{app_strings.categoryName}}" formControlName="name" (blur)="emitCategory($event)"> 
                             <div class="drag-Handle" cdkDragHandle>
                                 <svg width="24px" fill="currentColor" viewBox="0 0 24 24">
                                   <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
@@ -16,7 +16,7 @@
                                 </svg>
                             </div>
                         </mat-form-field>
-                            <mat-icon (click)="removeCategory(i)">remove_circle_outline</mat-icon>
+                            <mat-icon (click)="removeCategory(i)">{{app_strings.removeCircleOutline}}</mat-icon>
                            
                     </div>
                 </div>
@@ -24,7 +24,7 @@
         </div>
         <footer>
             <button type="button"  mat-raised-button (click)="addCategory()" color="primary">
-                Add
+                {{app_strings.add | titlecase}}
              </button>
         </footer>
     </form>

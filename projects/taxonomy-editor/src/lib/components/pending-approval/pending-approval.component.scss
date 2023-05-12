@@ -24,7 +24,7 @@
     }
 
     .mat-card {
-        background: $light-grey;
+        background: $white-smoke;
         margin-top: 25px;
         padding:5px 0;
         box-shadow:none;
@@ -52,14 +52,14 @@
         padding-right: 100px;
         div {
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: $font-size-20;
         }
     }
 
 }
 
     ::ng-deep .custom-tooltip {
-        font-size: 18px;
+        font-size: $font-size-16;
         background: $white !important;
         color:$black !important;
         padding:10px 0;
