@@ -1,15 +1,17 @@
+@import "projects/taxonomy-editor/src/styles/variable";
+
 .dialog {
 
     .mat-dialog-title {
         padding: 10px 20px;
         margin-bottom: 0;
-        background: #dfdfdf;
+        background: $light-gray;
     }
 
     .mat-form-field {
         width: 90%;
         padding: 0;
-        background: #fff;
+        background: $white;
         margin: 20px;
         border-radius: 2px;
     }
@@ -83,8 +85,8 @@
 }
 
 .or-label {
-    background: #fff;
-    color: #000;
+    background: $white;
+    color: $black;
     height: 1em;
     left: 50%;
     margin-left: -1.25em;
@@ -110,14 +112,14 @@
 }
 
 ::ng-deep .cdk-overlay-pane {
-    @media only screen and (max-width: 1024px) and (max-height:768px) {
+    @media only screen and (max-width: 1024px) {
         width: 70% !important;
         height: 60% !important;
     }
 }
-@media only screen and (max-width: 1024px) and (max-height:768px) {
+@media only screen and (max-width: 1024px) {
     mat-icon {
-        font-size: 1.25em;
+        font-size: $font-size-20;
         width: 1.25em;
         height: 1.25em; 
     }
@@ -128,7 +130,7 @@
     }
     .dialog.flex {
         height: calc(100% - 16vh);
-        font-size: 0.75em;
+        font-size: $font-size-12;
         mat-form-field {
             margin: 1em;
         }
@@ -136,15 +138,17 @@
     .dialog .actions {
         padding: 0;
         button {
-            font-size: 1em;
+            font-size: $font-size-12;
+            line-height: 2.5em;
+            margin: 0 5px;
         }
     }
     .dialog-title {
-        font-size: 1em;
+        font-size: $font-size-14;
         height: 1em;
     }
     .play {
         padding: 0.6em; 
-        font-size: 1em;      
+        font-size: $font-size-12;      
     }
 }

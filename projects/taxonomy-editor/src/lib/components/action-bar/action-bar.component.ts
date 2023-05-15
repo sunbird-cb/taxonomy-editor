@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FrameworkService } from '../../services/framework.service';
+import { labels } from '../../labels/strings';
 
 @Component({
   selector: 'lib-action-bar',
@@ -9,8 +10,9 @@ import { FrameworkService } from '../../services/framework.service';
 export class ActionBarComponent implements OnInit {
   @Input() actionType;
   @Input() configType;
-  @Output() sendApproval = new EventEmitter()
-  @Output() closeAction = new EventEmitter()
+  @Output() sendApproval = new EventEmitter();
+  @Output() closeAction = new EventEmitter();
+  app_strings: any = labels;
   constructor(private frameworkService: FrameworkService) { }
 
   ngOnInit() {

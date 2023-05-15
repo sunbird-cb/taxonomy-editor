@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { labels } from '../../labels/strings';
 
 @Component({
   selector: 'lib-approval',
@@ -7,6 +8,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
   encapsulation:ViewEncapsulation.Emulated
 })
 export class ApprovalComponent implements OnInit {
+  app_strings: any = labels;
 
   constructor() { }
 

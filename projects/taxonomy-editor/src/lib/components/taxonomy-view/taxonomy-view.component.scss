@@ -1,3 +1,5 @@
+@import "projects/taxonomy-editor/src/styles/variable";
+
 .connectionSettings {
     flex-direction: row-reverse;
     z-index: 40;
@@ -147,28 +149,31 @@ flex-center {
 @media only screen and (max-width: 1024px) {
     .containers4 {
         max-width: 250px;
-        font-size: 0.75em;
+        font-size: $font-size-10;
     }
     .containers5 {
+        //Adjust below width for five
         max-width: 230px;
     }
     .containers6 {
+        //Adjust below width for six
         max-width: 150px;
     }
     .containers7 {
+        //Adjust below width for seven
         max-width: 100px;
     }
     .w-full {
         height: 3.5em;
         &.mat-stroked-button {
-            font-size: 0.9em;
+            font-size: $font-size-8;
         }
     }
     .padding-x2,.category-heading-container {
         padding: 0 2em;
     }
     mat-icon {
-       font-size: 1.25em;
+       font-size: $font-size-12;
        width: 1.25em;
        height: 1.25em; 
     }
@@ -181,7 +186,7 @@ flex-center {
 @media only screen and (max-width: 992px) {
     .containers4 {
         max-width: 220px;
-        font-size: 0.625em;
+        font-size: $font-size-9;
     }
     .padding-x2,.category-heading-container {
         padding: 0 1.5em;
@@ -190,7 +195,7 @@ flex-center {
 @media only screen and (max-width: 768px) {
     .containers4 {
         max-width: 165px;
-        font-size: 0.6em;
+        font-size: $font-size-8;
     }
     .w-full {
         height: 2.5em;
@@ -199,7 +204,7 @@ flex-center {
         padding: 0 1em;
     }
     mat-icon {
-       font-size: 1em;
+       font-size: $font-size-8;
        width: 1em;
        height: 1em; 
     }

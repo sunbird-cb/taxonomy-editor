@@ -2,7 +2,8 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ApprovalService } from '../../services/approval.service';
 import * as API from '../../constants/app-constant';
 import { FrameworkService } from '../../services/framework.service';
-import * as IApp from '../../models/approval.model'
+import * as IApp from '../../models/approval.model';
+import { labels } from '../../labels/strings';
 
 @Component({
   selector: 'lib-pending-approval',
@@ -10,9 +11,10 @@ import * as IApp from '../../models/approval.model'
   styleUrls: ['./pending-approval.component.scss']
 })
 export class PendingApprovalComponent implements OnInit {
-  pendingList = []
-  approvalList = []
-  categories = []
+  pendingList = [];
+  approvalList = [];
+  categories = [];
+  app_strings: any = labels;
   constructor(private approvalService: ApprovalService, private frameworkService: FrameworkService) { }
 
   ngOnInit() {

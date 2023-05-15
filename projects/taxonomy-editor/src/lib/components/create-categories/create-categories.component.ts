@@ -1,6 +1,8 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, OnInit, Input, Output , EventEmitter} from '@angular/core';
 import { FormArray, FormControl, FormBuilder, FormGroup } from '@angular/forms';
+import { labels } from '../../labels/strings'
+
 
 @Component({
   selector: 'lib-create-categories',
@@ -14,6 +16,8 @@ export class CreateCategoriesComponent implements OnInit {
   @Output() changePosition = new EventEmitter()
 
   createCategoriesForm: FormGroup
+
+  app_strings: any = labels;
   
   constructor(private fb: FormBuilder) { }
 

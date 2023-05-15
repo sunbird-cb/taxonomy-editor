@@ -1,6 +1,6 @@
 <div class="flex flex-1 flex-row-reverse pointer">
     <button mat-raised-button color="default" (click)="dialogClose()" >
-        <mat-icon mat-raised-button >close</mat-icon>
+        <mat-icon mat-raised-button >{{app_strings.close}}</mat-icon>
     </button>
 </div>
 <div class="dialog flex">
@@ -8,38 +8,38 @@
         <div class="container flex flex-1">
             <div class="side flex flex-1">
                 <div class="'flex flex-2 padding-s">
-                    <div class="dialog-title" mat-dialog-title>Create New Connection</div>
+                    <div class="dialog-title" mat-dialog-title>{{app_strings.newConnection}}</div>
                     <form [formGroup]="connectorForm" novalidate (ngSubmit)="saveConnection()">
                         <mat-form-field appearance="outline">
-                            <mat-label>Enter Endpoint</mat-label>
-                            <input matInput type="url" formControlName="endpoint" placeholder="Enter End point" />
+                            <mat-label>{{app_strings.endPoint}}</mat-label>
+                            <input matInput type="url" formControlName="endpoint" placeholder="{{app_strings.endPoint}}" />
                         </mat-form-field>
                         <mat-form-field appearance="outline">
-                            <mat-label>Enter Token</mat-label>
-                            <input matInput formControlName="token" placeholder="Enter Token" />
+                            <mat-label>{{app_strings.token}}</mat-label>
+                            <input matInput formControlName="token" placeholder="{{app_strings.token}}" />
                         </mat-form-field>
                         <mat-form-field appearance="outline">
-                            <mat-label>Enter Framework Name</mat-label>
-                            <input matInput formControlName="frameworkName" placeholder="Framework Name" />
+                            <mat-label>{{app_strings.enterFrameworkName}}</mat-label>
+                            <input matInput formControlName="frameworkName" placeholder="{{app_strings.frameworkName}}" />
                         </mat-form-field>
                         <footer class="actions">
                             <button mat-raised-button color="default" type="reset"
-                                (click)="dialogClose()">Cancel</button>
-                            <button mat-raised-button color="default" type="reset" (click)="clear()">Clear</button>
-                            <button mat-raised-button color="primary" type="submit" cdkFocusInitial>Update</button>
+                                (click)="dialogClose()">{{app_strings.cancel}}</button>
+                            <button mat-raised-button color="default" type="reset" (click)="clear()">{{app_strings.clear}}</button>
+                            <button mat-raised-button color="primary" type="submit" cdkFocusInitial>{{app_strings.update}}</button>
                         </footer>
                     </form>
                 </div>
             </div>
             <div class="or">
                 <div class="or-line"></div>
-                <div class="or-label">Or</div>
+                <div class="or-label">{{app_strings.or}}</div>
             </div>
             <div class="side flex flex-1">
                 <div class="'flex flex-1 padding-s">
-                    <div class="dialog-title" mat-dialog-title>Experience Taxonomy</div>
+                    <div class="dialog-title" mat-dialog-title>{{app_strings.experienceTaxonomy}}</div>
                     <button mat-raised-button class="play" color="primary" type="reset" (click)="loadDefault()">
-                        Let's Play with it
+                        {{app_strings.playWithIt}}
                     </button>
                 </div>
             </div>

@@ -5,8 +5,11 @@ import { startWith, map } from 'rxjs/operators';
 import { FormArray, FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/internal/Observable';
 import { Identifiers } from '@angular/compiler';
-import { NSFramework } from '../../models/framework.model'
-import * as appConstants from '../../constants/app-constant'
+import { NSFramework } from '../../models/framework.model';
+import * as appConstants from '../../constants/app-constant';
+import { labels } from '../../labels/strings';
+import { CardChecked, CardSelection, CardsCount, Card } from '../../models/variable-type.model';
+
 @Component({
   selector: 'lib-create-term',
   templateUrl: './create-term.component.html',
@@ -14,13 +17,14 @@ import * as appConstants from '../../constants/app-constant'
 })
 
 export class CreateTermComponent implements OnInit {
-  name: string = ''
-  termLists: any = []
+  name: string = '';
+  termLists: Array<Card> = [];
   filtedTermLists: Observable<any[]>;
   createTermForm: FormGroup
-  disableCreate = false
-  isTermExist = false
-  selectedTerm:any = {}
+  disableCreate: boolean = false;
+  isTermExist: boolean = false;
+  selectedTerm:Card = {};
+  app_strings = labels;
    constructor(
     public dialogRef: MatDialogRef<CreateTermComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,

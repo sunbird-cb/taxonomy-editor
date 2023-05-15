@@ -1,3 +1,5 @@
+@import "projects/taxonomy-editor/src/styles/variable";
+
 .form {
    
     &-wrap {
@@ -6,7 +8,7 @@
         justify-content: center;
         padding:15px;
         h1 {
-            font-size:24px;
+            font-size: $font-size-24;
             color:#666;
             font-weight: 500;
         }
@@ -55,7 +57,7 @@
     position: absolute;
     top: 8px;
     right: 0px;
-    color: #9b9b9b;
+    color: $light-dark-grey;
     cursor: grabbing;
 }
 .cdk-drag-animating {
@@ -70,5 +72,33 @@ footer {
     justify-content: start;
     .mat-raised-button {
         padding:0px 40px;
+    }
+}
+
+@media only screen and (max-width:1024px) {
+    .form-wrap {
+        h1 {
+            font-size: $font-size-20;
+        }
+        &-field__wrap{
+             .mat-form-field {
+                width: 250px;
+             }
+        }
+        ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+            top: 10px;
+            bottom: 4px;
+        }
+        ::ng-deep .mat-form-field-wrapper {
+            padding-bottom: 0.3em;
+        }
+        ::ng-deep .mat-input-element {
+            font-size: $font-size-10;
+        }
+        ::ng-deep .mat-raised-button {
+            min-width:auto;
+            padding: 0em 0.5em;
+            line-height: 2em;
+        }
     }
 }

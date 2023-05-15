@@ -20,8 +20,6 @@ export const APPROVAL = {
 export const LIVE = 'Live'
 export const DRAFT = 'Draft'
 
-export const COLORS = ['#1d2327','#541675','#9a6c80','#d8666a'];
-
 type plugType = 'disc' | 'square' | 'hand' | 'arrow1' | 'arrow2' | 'arrow3';
 type pathType = 'straight' | 'arc' | 'fluid' | 'magnet' | 'grid';
 

@@ -8,7 +8,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { IConnection } from '../models/connection.model';
 // import { LibConnectionService } from 'taxonomy-editor/lib/services/connection.service';
 import { LocalConnectionService } from './local-connection.service';
-import { COLORS } from '../constants/app-constant';
 
 @Injectable({
   providedIn: 'root'
@@ -216,14 +215,9 @@ export class FrameworkService {
         config: this.getConfig(a.code),
         // children: ([...a.terms, ...localData] || []).map(c => {
         children: (a.terms || []).map(c => {
-          c =Object.assign(c, this.getConfig(c.category));
           const associations = c.associations || []
           if (associations.length > 0) {
-            associations.forEach((val:any,index) => {
-              associations[index] = Object.assign(val, this.getConfig(val.category));
-            });
-            Object.assign(c, { children: associations});
-            // delete c.associations
+            Object.assign(c, { children: associations })
           }
           return c
         })

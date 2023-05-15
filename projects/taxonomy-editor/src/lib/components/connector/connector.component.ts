@@ -4,6 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { LocalConnectionService } from '../../services/local-connection.service';
 import { FrameworkService } from '../../services/framework.service';
 import { IConnectionType } from '../../models/connection-type.model';
+import { labels } from '../../labels/strings';
 
 
 @Component({
@@ -13,7 +14,8 @@ import { IConnectionType } from '../../models/connection-type.model';
 })
 
 export class ConnectorComponent implements OnInit {
-  connectorForm: FormGroup
+  connectorForm: FormGroup;
+  app_strings: any = labels;
   constructor(
     public dialogRef: MatDialogRef<ConnectorComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,

@@ -3,6 +3,7 @@ import { FrameworkService } from '../../services/framework.service';
 import { Subscription } from 'rxjs';
 import { ConnectorService } from '../../services/connector.service';
 import { ApprovalService } from '../../services/approval.service';
+import { CardChecked, CardSelection, CardsCount, Card } from '../../models/variable-type.model';
 declare var LeaderLine: any;
 @Component({
   selector: 'lib-taxonomy-column-view',
@@ -10,17 +11,17 @@ declare var LeaderLine: any;
   styleUrls: ['./taxonomy-column-view.component.scss']
 })
 export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() column: any
+  @Input() column: Card;
   @Input() containerId: string
   connectorMapping: any = {}
-  @Output() updateTaxonomyTerm = new EventEmitter<{ selectedTerm: any, isSelected: boolean }>(true)
-  @Output() updateTermList = new EventEmitter<any>();
-  @Output() cardsCount = new EventEmitter<{category: string, count: number}>();
-  columnData = []
-  childSubscription: Subscription = null
-  newTermSubscription: Subscription = null
+  @Output() updateTaxonomyTerm = new EventEmitter<CardSelection>(true);
+  @Output() updateTermList = new EventEmitter<CardChecked>();
+  @Output() cardsCount = new EventEmitter<CardsCount>();
+  columnData: Array<Card> = [];
+  childSubscription: Subscription = null;
+  newTermSubscription: Subscription = null;
   approvalTerm: any;
-  termshafall = []
+  termshafall: Array<Card> = [];
   constructor(
     private frameworkService: FrameworkService,
     private connectorService: ConnectorService,
@@ -32,7 +33,7 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
 
   ngOnInit(): void {
     this.subscribeEvents()
-   
+
     if (this.column.index === 1) {
       this.approvalService.getUpdateList().subscribe((list:any) => {
         this.approvalTerm = list.filter(item => this.column.code === item.category)
@@ -78,7 +79,6 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
       if (!e) {
         return
       } else if (e.type === this.column.code) {
-        // debugger
         this.updateTaxonomyTerm.emit({ isSelected: true, selectedTerm: e.data })
         this.columnData = (this.columnData || []).map(item => {
           if (item.code === e.data.code) {
@@ -309,7 +309,7 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
     }
   }
   selectedCard(event){
-    this.updateTermList.emit(event)
+    this.updateTermList.emit(event);
   }
 
   ngOnDestroy(): void {
