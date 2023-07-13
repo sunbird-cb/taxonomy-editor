@@ -11,7 +11,7 @@
                 <div class="category-heading-container">
                     <div class='category-header'>
                         <div class="category-header-items" id="box{{i}}Header">
-                            <mat-icon [ngStyle]="{'color':column.config.color}">{{column.config.icon}}</mat-icon>
+                            <mat-icon [ngStyle]="{'color':column?.config?.color}">{{column.config.icon}}</mat-icon>
                             <h4>{{column.name}}</h4>
                             <ng-container *ngIf="i != 0 && categoryList?.length > 0; else firstColumn">
                                 <ng-container *ngFor="let category of categoryList">

@@ -1,6 +1,6 @@
 {
     "/api/*": {
-      "target": "https://portal.igot-dev.in",
+      "target": "https://compass-dev.tarento.com",
       "secure": false,
       "logLevel": "debug",
       "changeOrigin": true,

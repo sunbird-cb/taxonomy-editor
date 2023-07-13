@@ -22,7 +22,7 @@ import { environment } from 'src/environments/environment'
         { 
           endpoint: environment.url,
           token: environment.token, 
-          frameworkName: 'devmvp3',
+          frameworkName: environment.frameworkName,
           isApprovalRequired:environment.isApprovalRequired
         }
     }),

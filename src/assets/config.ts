@@ -56,5 +56,34 @@ export const taxonomyConfig = [
                 "color": "#d8666a"
             }
         ]
+    },
+    {
+        "frameworkId" :"compass_fw",
+        "config" : [
+            {   
+                "index": 1,
+                "category": "board",
+                "icon": "settings",
+                "color": "#1d2327"
+            },
+            {   
+                "index": 2,
+                "category": "medium",
+                "icon": "extension",
+                "color": "#541675"
+            },
+            {   
+                "index": 3,
+                "category": "subject",
+                "icon": "bar_chart",
+                "color": "#9a6c80"
+            },
+            {   
+                "index": 4,
+                "category": "gradeLevel",
+                "icon": "account_box",
+                "color": "#d8666a"
+            }
+        ]
     }
 ]
